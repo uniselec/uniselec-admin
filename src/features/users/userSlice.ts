@@ -27,17 +27,7 @@ function getUsers({ page = 1, perPage = 10, search = "" }) {
   return `${endpointUrl}?${parseQueryParams(params)}`;
 }
 
-function createUserMutation(user: User) {
-  return { url: endpointUrl, method: "POST", body: user };
-}
 
-function updateUserMutation(user: User) {
-  return {
-    url: `${endpointUrl}/${user.id}`,
-    method: "PUT",
-    body: user,
-  };
-}
 
 function getUser({ id }: { id: string }) {
   return `${endpointUrl}/${id}`;
@@ -52,22 +42,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     getUser: query<Result, { id: string }>({
       query: getUser,
       providesTags: ["Users"],
-    }),
-    createUser: mutation<Result, User>({
-      query: createUserMutation,
-      invalidatesTags: ["Users"],
-    }),
-    updateUser: mutation<Result, User>({
-      query: updateUserMutation,
-      invalidatesTags: ["Users"],
-    }),
+    })
   }),
 });
 
 
 export const {
   useGetUsersQuery,
-  useCreateUserMutation,
-  useUpdateUserMutation,
   useGetUserQuery,
 } = usersApiSlice;

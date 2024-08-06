@@ -47,7 +47,7 @@ export function UserTable({
     },
     { field: "name", headerName: "Nome", flex: 1, renderCell: renderNameCell },
     { field: "email", headerName: "E-mail", flex: 1, renderCell: renderNameCell },
-    { field: "login", headerName: "Login", flex: 1, renderCell: renderNameCell }
+    { field: "cpf", headerName: "CPF", flex: 1, renderCell: renderNameCell }
   ];
 
   function mapDataToGridRows(data: Results) {
@@ -56,7 +56,7 @@ export function UserTable({
       id: user.id,
       name: user.name,
       email: user.email,
-      login: user.login,
+      cpf: user.cpf,
       created_at: user.created_at,
     }));
   }
