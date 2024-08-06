@@ -37,7 +37,7 @@ export const UserList = () => {
   }
 
   return (
-    <Box sx={{ mt: 4, mb: 4 }}>
+    <Box>
 
       <UserTable
         users={data}
