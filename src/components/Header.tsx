@@ -3,13 +3,14 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Box, Button, IconButton, Toolbar } from "@mui/material";
 import LogoUNILAB from "../assets/img/logo-unilab.png";
+import { styled } from '@mui/material/styles';
 import { AccountMenu } from "./AccountMenu";
 
+const ImageLogo = styled('img')`
+  width: 300px;
+  padding: 30px;
+`;
 
-// const ImageLogo = styled(({ ...otherProps }) => <img alt="Logo UNILAB" src={LogoUNILAB} {...otherProps} />)`
-//   width: 300px;
-//   padding: 30px;
-// `;
 
 type HeaderProps = {
   toggle: () => void;
@@ -40,8 +41,7 @@ export function Header({ toggle, isAuth = false, isDark = false, handleDrawerTog
             <AccountMenu isDark={isDark} toggleTheme={toggle} />
           </>
         )}
-        LOGO AQUI
-        {/* <ImageLogo /> */}
+ <ImageLogo alt="Logo UNILAB" src={LogoUNILAB}/>
       </Toolbar>
     </Box>
   );

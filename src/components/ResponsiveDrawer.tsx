@@ -30,7 +30,7 @@ export default function ResponsiveDrawer({ open, onClose, isDark }: Props) {
 
   const routes = [
     { path: "/", name: "Início" },
-    { path: "/patients", name: "Pacientes" },
+    { path: "/users", name: "Usuários" },
 
   ];
 
@@ -38,7 +38,7 @@ export default function ResponsiveDrawer({ open, onClose, isDark }: Props) {
   const drawer = (
     <div>
       <Toolbar sx={{ mt: 5 }}>
-        LOGO AQUI
+        UniSelec - Admin
       </Toolbar>
       <Divider />
       <List>
