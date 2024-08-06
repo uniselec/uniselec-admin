@@ -6,7 +6,7 @@ export function useAppTheme() {
   const [theme, setTheme] = useState(darkTheme);
   const [soredThemeMode, setStoredThemeMode] = useLocalStorage<
     "dark" | "light"
-  >("themeMode", "dark");
+  >("themeMode", "light");
 
   const toggleTheme = () => {
     const currentTheme = theme.palette.mode === "dark" ? lightTheme : darkTheme;
