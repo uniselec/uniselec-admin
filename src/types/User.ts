@@ -1,27 +1,25 @@
 
 
 export interface Results {
-    data:  User[];
-    links: Links;
-    meta:  Meta;
+  data: User[];
+  links: Links;
+  meta: Meta;
 }
 export interface Result {
-    data:  User;
+  data: User;
 }
 
 export interface User {
-    id:              number;
-    name:            string;
-    email:           string;
-    login:           string;
-    role:            string;
-    division_id:      number | null;
-    division_sig:     null | string;
-    division_sig_id:   number | null;
-    email_verified_at: null | string;
-    created_at: null | string;
-    updated_at: null | string;
+  id?: number;
+  name?: string;
+  email?: string;
+  cpf?: string;
+  password?: string;
+  created_at?: null | string;
+  updated_at?: null | string;
 }
+
+
 export interface Links {
   prev: string;
   last: string;

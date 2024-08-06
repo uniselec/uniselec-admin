@@ -14,11 +14,6 @@ export interface Admin {
     name:            string;
     email:           string;
     login:           string;
-    role:            string;
-    division_id:      number | null;
-    division_sig:     null | string;
-    division_sig_id:   number | null;
-    email_verified_at: null | string;
     created_at: null | string;
     updated_at: null | string;
 }
