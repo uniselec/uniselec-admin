@@ -28,7 +28,7 @@ const ApplicationCard = ({
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} sm={12} xl={4} lg={4} md={4}>
                 <Card variant="outlined">
                     <CardContent>
                         <Typography variant="h5" component="div" gutterBottom>
@@ -75,7 +75,7 @@ const ApplicationCard = ({
                     </CardContent>
                 </Card>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} sm={12} xl={4} lg={4} md={4}>
                 <Card variant="outlined">
                     <CardContent>
                         <Typography variant="h5" component="div" gutterBottom>
@@ -108,7 +108,7 @@ const ApplicationCard = ({
                     </CardContent>
                 </Card>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} sm={12} xl={4} lg={4} md={4}>
                 <Card variant="outlined">
                     <CardContent>
                         <Typography variant="h5" component="div" gutterBottom>
