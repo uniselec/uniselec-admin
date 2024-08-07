@@ -1,6 +1,8 @@
 import React from 'react';
 import { Card, CardContent, Typography, Grid, Table, TableBody, TableCell, TableRow } from '@mui/material';
 import { Application } from '../../../types/Application';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 type Props = {
     application: Application;
@@ -11,12 +13,18 @@ const ApplicationCard = ({
     application,
     isLoading = false,
 }: Props) => {
-    if(application === undefined) {
-        return  <div>Loading...</div>;
+    if (application === undefined) {
+        return <div>Loading...</div>;
     }
     if (isLoading) {
         return <div>Loading...</div>;
     }
+
+    const formatDate = (dateString: string | undefined) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return format(date, 'dd/MM/yyyy', { locale: ptBR });
+    };
 
     return (
         <Grid container spacing={2}>
@@ -42,7 +50,7 @@ const ApplicationCard = ({
                                 </TableRow>
                                 <TableRow>
                                     <TableCell component="th">Data de Nascimento</TableCell>
-                                    <TableCell>{application?.data?.birtdate}</TableCell>
+                                    <TableCell>{formatDate(application?.data?.birtdate)}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell component="th">Sexo</TableCell>
@@ -92,12 +100,8 @@ const ApplicationCard = ({
                                     <TableCell>{application?.data?.enem}</TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell component="th">Escola Pública</TableCell>
-                                    <TableCell>{application?.data?.publicSchool ? 'Sim' : 'Não'}</TableCell>
-                                </TableRow>
-                                <TableRow>
                                     <TableCell component="th">Atualizado em</TableCell>
-                                    <TableCell>{application?.data?.updated_at}</TableCell>
+                                    <TableCell>{formatDate(application?.data?.updated_at)}</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
@@ -116,7 +120,7 @@ const ApplicationCard = ({
                                     <TableCell component="th">Vagas</TableCell>
                                     <TableCell>
                                         <ul>
-                                            {application?.data?.vaga.map((vaga, index) => (
+                                            {application?.data?.vaga?.map((vaga, index) => (
                                                 <li key={index}>{vaga}</li>
                                             ))}
                                         </ul>
@@ -127,7 +131,7 @@ const ApplicationCard = ({
                                         <TableCell component="th">Bonificação</TableCell>
                                         <TableCell>
                                             <ul>
-                                                {application?.data?.bonus.map((bonus, index) => (
+                                                {application?.data?.bonus?.map((bonus, index) => (
                                                     <li key={index}>{bonus}</li>
                                                 ))}
                                             </ul>

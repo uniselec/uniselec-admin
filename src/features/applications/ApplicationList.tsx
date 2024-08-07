@@ -15,7 +15,7 @@ export const ApplicationList = () => {
   const [options, setOptions] = useState({
     page: 1,
     search: "",
-    perPage: 1000,
+    perPage: 25,
     rowsPerPage: [25, 50, 100],
   });
   const { data, isFetching, error } = useGetApplicationsQuery(options);

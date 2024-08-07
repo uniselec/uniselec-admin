@@ -59,7 +59,7 @@ export function ApplicationTable({
 
       const applicationShow = {
         id: application.id,
-        id2: application?.data?.enem,
+        id2: application.id,
         user_name: application?.user?.name,
         email: application?.user?.email,
         cpf: application?.user?.cpf,

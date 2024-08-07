@@ -44,7 +44,7 @@ export function UserTable({
       type: "string",
       width: 150
     },
-    { field: "id2", headerName: "ID", flex: 1 },
+    { field: "id2", width: 100, headerName: "ID"},
     { field: "name", headerName: "Nome", flex: 1 },
     { field: "email", headerName: "E-mail", flex: 1 },
     { field: "cpf", headerName: "CPF", flex: 1 }

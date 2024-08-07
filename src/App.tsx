@@ -19,7 +19,7 @@ function App() {
     <Box
       component="main"
       sx={{
-        height: "100vh"
+        height: "90vh"
       }}
     >
       <Layout>
