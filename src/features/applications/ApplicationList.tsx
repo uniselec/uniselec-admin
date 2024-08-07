@@ -1,76 +1,54 @@
-import { Box, Card, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
-import applicationsData from '../../applications.json';
+import { Box, Typography } from "@mui/material";
+import {
+  useGetApplicationsQuery,
+} from "./applicationSlice";
 
-interface Application {
-  id: number;
-  user_id: number;
-  data: {
-    edital: string;
-    position: string;
-    location_position: string;
-    name: string;
-    email: string;
-    cpf: string;
-    birtdate: string;
-    sex: string;
-    phone1: string;
-    social_name?: string;
-    address: string;
-    city: string;
-    uf: string;
-    vaga: string[];
-    bonus: string[];
-    enem: string;
-    updated_at: string;
-  };
-  verification_expected: string;
-  verification_code: string;
-  valid_verification_code: boolean;
-  created_at: string;
-  updated_at: string;
+import { GridFilterModel } from "@mui/x-data-grid";
+import { useState } from "react";
+import { ApplicationTable } from "./components/ApplicationTable";
+interface PaginationModel {
+  pageSize: number;
+  page: number;
 }
 
-// Lista completa de UFs do Brasil
-const allUFs = [
-  "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS",
-  "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"
-];
-
-// Tipando o import de JSON explicitamente
-const applications: Application[] = applicationsData as Application[];
-
 export const ApplicationList = () => {
-  const [ufCount, setUfCount] = useState<Record<string, number>>({});
+  const [options, setOptions] = useState({
+    page: 1,
+    search: "",
+    perPage: 1000,
+    rowsPerPage: [25, 50, 100],
+  });
+  const { data, isFetching, error } = useGetApplicationsQuery(options);
 
-  useEffect(() => {
-    const count: Record<string, number> = {};
-    // Inicializando a contagem para todas as UFs com 0
-    allUFs.forEach((uf) => {
-      count[uf] = 0;
-    });
-    // Contando as UFs presentes nos dados
-    applications.forEach((application) => {
-      const uf = application.data.uf;
-      if (count[uf] !== undefined) {
-        count[uf] += 1;
-      }
-    });
-    setUfCount(count);
-  }, []);
+  function setPaginationModel(paginateModel:{ page: number, pageSize: number }){
+    setOptions({ ...options, page: paginateModel.page + 1, perPage: paginateModel.pageSize});
+  }
+  function handleFilterChange(filterModel: GridFilterModel) {
+
+    if (!filterModel.quickFilterValues?.length) {
+      return setOptions({ ...options, search: "" });
+    }
+    const search = filterModel.quickFilterValues.join(" ");
+    setOptions({ ...options, search });
+  }
+
+  if (error) {
+    return <Typography>Error fetching applications</Typography>;
+  }
 
   return (
-    <Box sx={{ mt: 4, mb: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Lista de Applications por UF
-      </Typography>
-      <Card sx={{ minWidth: 275, p: 2 }}>
-        {Object.keys(ufCount).map((uf) => (
-          <Typography key={uf}>
-            {uf}: {ufCount[uf]}
-          </Typography>
-        ))}
-      </Card>
+    <Box>
+
+      <ApplicationTable
+        applications={data}
+        isFetching={isFetching}
+        paginationModel={{
+          pageSize: 25,
+          page: 0,
+        }}
+        handleSetPaginationModel={setPaginationModel}
+        handleFilterChange={handleFilterChange}
+      />
     </Box>
   );
 };

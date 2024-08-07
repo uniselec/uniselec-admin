@@ -1,3 +1,5 @@
+import { User } from "./User";
+
 export interface Results {
     data: Application[];
     links: Links;
@@ -10,6 +12,7 @@ export interface Result {
 
 export interface Application {
     id: string;
+    user?: User;
     data: {
         name: string;
         social_name: string;
@@ -34,12 +37,13 @@ export interface Application {
         termsAgreement: boolean;
         updated_at?: string;
     };
-    verification_expected: string,
-    verification_code: string,
-    valid_verification_code: boolean,
+    verification_expected: string;
+    verification_code: string;
+    valid_verification_code: boolean;
     created_at: null | string;
     updated_at: null | string;
 }
+
 
 export interface Links {
     prev: string;

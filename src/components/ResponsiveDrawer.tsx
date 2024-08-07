@@ -31,6 +31,7 @@ export default function ResponsiveDrawer({ open, onClose, isDark }: Props) {
   const routes = [
     { path: "/", name: "Início" },
     { path: "/users", name: "Usuários" },
+    { path: "/applications", name: "Inscrições" },
 
   ];
 

@@ -38,7 +38,7 @@ export const applicationsApiSlice = apiSlice.injectEndpoints({
       query: getApplications,
       providesTags: ["Applications"],
     }),
-    getApplication: query<Result, { id: string }>({
+    getApplication: query<Application, { id: string }>({
       query: getApplication,
       providesTags: ["Applications"],
     }),

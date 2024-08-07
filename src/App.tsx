@@ -9,6 +9,7 @@ import { ApplicationList } from "./features/applications/ApplicationList";
 import { UserList } from "./features/users/UserList";
 import ApplicationsChart from "./features/applications/ApplicationChart";
 import { DashboardApplications } from "./features/applications/DashboardApplications";
+import { ApplicationSelected } from "./features/applications/ApplicationSelected";
 
 
 
@@ -25,6 +26,8 @@ function App() {
         <Routes>
           <Route path="/" element={<ProtectedRoute><DashboardApplications /></ProtectedRoute>} />
           <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
+          <Route path="/applications" element={<ProtectedRoute><ApplicationList  /></ProtectedRoute>} />
+          <Route path="/applications/:id" element={<ProtectedRoute><ApplicationSelected /></ProtectedRoute>} />
 
           <Route path="/charts" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
 

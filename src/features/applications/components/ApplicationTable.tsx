@@ -9,19 +9,19 @@ import {
   ptBR,
 } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
-import { Results } from "../../../types/User";
+import { Application, Results } from "../../../types/Application";
 import { useDemoData } from '@mui/x-data-grid-generator';
 
 type Props = {
-  users: Results | undefined;
+  applications: Results | undefined;
   paginationModel: object;
   isFetching: boolean;
   handleSetPaginationModel: (paginateModel: { page: number, pageSize: number }) => void;
   handleFilterChange: (filterModel: GridFilterModel) => void;
 };
 
-export function UserTable({
-  users,
+export function ApplicationTable({
+  applications,
   paginationModel,
   isFetching,
   handleSetPaginationModel,
@@ -42,41 +42,50 @@ export function UserTable({
       field: "id",
       headerName: "Id",
       type: "string",
-      width: 150
+      width: 150,
+      renderCell: renderNameCell,
     },
-    { field: "id2", headerName: "ID", flex: 1 },
-    { field: "name", headerName: "Nome", flex: 1 },
-    { field: "email", headerName: "E-mail", flex: 1 },
-    { field: "cpf", headerName: "CPF", flex: 1 }
+    { field: "id2", headerName: "ID", width: 100, renderCell: renderNameCell },
+    { field: "user_name", headerName: "Nome", flex: 1, renderCell: renderNameCell },
+    { field: "email", headerName: "E-mail", flex: 1, renderCell: renderNameCell },
+    { field: "cpf", headerName: "CPF", flex: 1, renderCell: renderNameCell },
   ];
 
   function mapDataToGridRows(data: Results) {
-    const { data: users } = data;
-    return users.map((user) => ({
-      id: user.id,
-      id2: user.id,
-      name: user.name,
-      email: user.email,
-      cpf: user.cpf,
-      created_at: user.created_at,
-    }));
+    const { data: applications } = data;
+
+
+    return applications.map((application) => {
+
+      const applicationShow = {
+        id: application.id,
+        id2: application?.data?.enem,
+        user_name: application?.user?.name,
+        email: application?.user?.email,
+        cpf: application?.user?.cpf,
+        updated_at: application.updated_at,
+        data: application.data,
+        created_at: application.created_at,
+      };
+      return applicationShow;
+    });
   }
 
 
-  // function renderNameCell(rowData: GridRenderCellParams) {
-  //   return (
-  //     <Link
-  //       style={{ textDecoration: "none" }}
-  //       to={`/users/edit/${rowData.id}`}
-  //     >
-  //       <Typography color="primary">{rowData.value}</Typography>
-  //     </Link>
-  //   );
-  // }
+  function renderNameCell(rowData: GridRenderCellParams) {
+    return (
+      <Link
+        style={{ textDecoration: "none" }}
+        to={`/applications/${rowData.id}`}
+      >
+        <Typography color="primary">{rowData.value}</Typography>
+      </Link>
+    );
+  }
 
 
-  const rows = users ? mapDataToGridRows(users) : [];
-  const rowCount = users?.meta.total || 0;
+  const rows = applications ? mapDataToGridRows(applications) : [];
+  const rowCount = applications?.meta.total || 0;
 
   return (
     <Box sx={{ display: "flex", height: 450, width: '100%' }}>
