@@ -11,6 +11,9 @@ const ApplicationCard = ({
     application,
     isLoading = false,
 }: Props) => {
+    if(application === undefined) {
+        return  <div>Loading...</div>;
+    }
     if (isLoading) {
         return <div>Loading...</div>;
     }
