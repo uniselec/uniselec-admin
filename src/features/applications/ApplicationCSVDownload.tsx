@@ -47,10 +47,11 @@ const paginateApplications = (applications: any[], pageSize: number) => {
 
 const downloadCSV = (applications: any[], fileNamePrefix: string) => {
   const pages = paginateApplications(applications, 1000);
+  const totalPages = pages.length;
   pages.forEach((page, index) => {
     const csvContent = page.map(app => app.data.enem).join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, `${fileNamePrefix}_part${index + 1}.csv`);
+    saveAs(blob, `${fileNamePrefix}_parte_${index + 1}_de_${totalPages}.txt`);
   });
 };
 
@@ -76,12 +77,12 @@ export const ApplicationCSVDownload = () => {
     if (!selectedModality) return;
 
     if (selectedModality === "AC") {
-      downloadCSV(allApplications, 'applications_enem');
+      downloadCSV(allApplications, `inscricoes_enem_${selectedModality}`);
     } else {
       const filteredApplications = allApplications.filter(app =>
         app.data.vaga && Array.isArray(app.data.vaga) && app.data.vaga.some((vaga: string) => vaga.startsWith(selectedModality))
       );
-      downloadCSV(filteredApplications, `applications_enem_${selectedModality}`);
+      downloadCSV(filteredApplications, `inscricoes_enem_${selectedModality}`);
     }
   };
 
@@ -103,7 +104,7 @@ export const ApplicationCSVDownload = () => {
     <Card sx={{ maxWidth: 600, mx: 'auto', mt: 4 }}>
       <CardContent>
         <Typography variant="h4" gutterBottom>
-          Download ENEM Numbers as CSV
+          Download arquivo CSV para o INEP
         </Typography>
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel id="modality-select-label">Selecionar Modalidade</InputLabel>
