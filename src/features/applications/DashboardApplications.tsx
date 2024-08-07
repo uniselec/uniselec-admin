@@ -49,10 +49,13 @@ const DashboardApplications: React.FC = () => {
                         <Grid item xs={12} md={6}>
                             <Paper elevation={3}>
                                 <Typography variant="h6" gutterBottom>
-                                    Downloads de Inscrições Por Modalidade
+                                    Downloads dos Arquivos Para o INEP Por Modalidade
                                 </Typography>
                                 <Box display="flex" flexDirection="column">
-                                    <Link to="/download/modalidade-a" style={{ marginBottom: 8 }}>
+                                    <Typography variant="h6" gutterBottom>
+                                        Em Breve
+                                    </Typography>
+                                    {/* <Link to="/download/modalidade-a" style={{ marginBottom: 8 }}>
                                         Modalidade A
                                     </Link>
                                     <Link to="/download/modalidade-b" style={{ marginBottom: 8 }}>
@@ -60,7 +63,7 @@ const DashboardApplications: React.FC = () => {
                                     </Link>
                                     <Link to="/download/modalidade-c">
                                         Modalidade C
-                                    </Link>
+                                    </Link> */}
                                 </Box>
                             </Paper>
                         </Grid>
@@ -70,12 +73,15 @@ const DashboardApplications: React.FC = () => {
                                     Download da Lista Preliminar de Deferidos e Indeferidos
                                 </Typography>
                                 <Box display="flex" flexDirection="column">
-                                    <Link to="/download/deferidos" style={{ marginBottom: 8 }}>
+                                    <Typography variant="h6" gutterBottom>
+                                        Em Breve
+                                    </Typography>
+                                    {/* <Link to="/download/deferidos" style={{ marginBottom: 8 }}>
                                         Lista de Deferidos
                                     </Link>
                                     <Link to="/download/indeferidos">
                                         Lista de Indeferidos
-                                    </Link>
+                                    </Link> */}
                                 </Box>
                             </Paper>
                         </Grid>

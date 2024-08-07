@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, Typography, Grid, Table, TableBody, TableCell, TableRow } from '@mui/material';
 import { Application } from '../../../types/Application';
 import { format } from 'date-fns';
@@ -120,6 +120,11 @@ const ApplicationCard = ({
                                     <TableCell component="th">Vagas</TableCell>
                                     <TableCell>
                                         <ul>
+
+                                            <li>AC: Ampla Concorrência</li>
+
+                                        </ul>
+                                        <ul>
                                             {application?.data?.vaga?.map((vaga, index) => (
                                                 <li key={index}>{vaga}</li>
                                             ))}
@@ -131,6 +136,9 @@ const ApplicationCard = ({
                                         <TableCell component="th">Bonificação</TableCell>
                                         <TableCell>
                                             <ul>
+                                                {application?.data?.bonus === undefined || application?.data?.bonus?.length === 0
+                                                    ? (<> Nenhuma das anteriores</>) : (<></>)
+                                                }
                                                 {application?.data?.bonus?.map((bonus, index) => (
                                                     <li key={index}>{bonus}</li>
                                                 ))}
