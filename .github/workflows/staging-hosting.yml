@@ -43,6 +43,6 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
           server: jefponte.com
-          username: uniselec-staging@jefponte.com
-          password: ${{ secrets.FTP_STAGING_PASSWORD }}
+          username: uniselec-admin@jefponte.com
+          password: ${{ secrets.FTP_PASSWORD }}
           local-dir: dist/
