@@ -10,6 +10,7 @@ import { UserList } from "./features/users/UserList";
 import ApplicationsChart from "./features/applications/ApplicationChart";
 import { DashboardApplications } from "./features/applications/DashboardApplications";
 import { ApplicationSelected } from "./features/applications/ApplicationSelected";
+import { ApplicationCSVDownload } from "./features/applications/ApplicationCSVDownload";
 
 
 
@@ -24,7 +25,7 @@ function App() {
     >
       <Layout>
         <Routes>
-          <Route path="/" element={<ProtectedRoute><DashboardApplications /></ProtectedRoute>} />
+          <Route path="/" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
           <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
           <Route path="/applications" element={<ProtectedRoute><ApplicationList  /></ProtectedRoute>} />
           <Route path="/applications/:id" element={<ProtectedRoute><ApplicationSelected /></ProtectedRoute>} />
