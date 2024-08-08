@@ -49,6 +49,7 @@ export function ApplicationTable({
     { field: "user_name", headerName: "Nome", flex: 1, renderCell: renderNameCell },
     { field: "email", headerName: "E-mail", flex: 1, renderCell: renderNameCell },
     { field: "cpf", headerName: "CPF", flex: 1, renderCell: renderNameCell },
+    { field: "enem", headerName: "ENEM", flex: 1, renderCell: renderNameCell },
   ];
 
   function mapDataToGridRows(data: Results) {
@@ -63,9 +64,11 @@ export function ApplicationTable({
         user_name: application?.user?.name,
         email: application?.user?.email,
         cpf: application?.user?.cpf,
+        enem: application?.data?.enem,
         updated_at: application.updated_at,
         data: application.data,
         created_at: application.created_at,
+
       };
       return applicationShow;
     });

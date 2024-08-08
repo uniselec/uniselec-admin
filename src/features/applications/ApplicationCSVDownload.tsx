@@ -16,9 +16,9 @@ const modalities = [
 ];
 
 const countApplicationsByModality = (applications: any[]) => {
-  const counts: Record<string, number> = {};
+  const counts: Record<string, { deferred: number, notDeferred: number }> = {};
   modalities.forEach(modality => {
-    counts[modality.value] = 0;
+    counts[modality.value] = { deferred: 0, notDeferred: 0 };
   });
 
   applications.forEach(app => {
@@ -26,13 +26,29 @@ const countApplicationsByModality = (applications: any[]) => {
       app.data.vaga.forEach((vaga: string) => {
         const modality = modalities.find(modality => vaga.startsWith(modality.value));
         if (modality) {
-          counts[modality.value]++;
+          const enem = app.data.enem;
+          const isDeferred = enem && enem.length === 12 && enem.startsWith('23');
+          if (isDeferred) {
+            counts[modality.value].deferred++;
+          } else {
+            counts[modality.value].notDeferred++;
+          }
         }
       });
     }
   });
 
-  counts["AC"] = applications.length; // Total count for AC
+  // Total count for AC
+  counts["AC"] = applications.reduce((acc, app) => {
+    const enem = app.data.enem;
+    const isDeferred = enem && enem.length === 12 && enem.startsWith('23');
+    if (isDeferred) {
+      acc.deferred++;
+    } else {
+      acc.notDeferred++;
+    }
+    return acc;
+  }, { deferred: 0, notDeferred: 0 });
 
   return counts;
 };
@@ -52,6 +68,13 @@ const downloadCSV = (applications: any[], fileNamePrefix: string) => {
     const csvContent = page.map(app => app.data.enem).join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     saveAs(blob, `${fileNamePrefix}_parte_${index + 1}_de_${totalPages}.txt`);
+  });
+};
+
+const filterDeferredApplications = (applications: any[]) => {
+  return applications.filter(app => {
+    const enem = app.data.enem;
+    return enem && enem.length === 12 && enem.startsWith('23');
   });
 };
 
@@ -76,14 +99,16 @@ export const ApplicationCSVDownload = () => {
   const handleDownloadByModality = () => {
     if (!selectedModality) return;
 
-    if (selectedModality === "AC") {
-      downloadCSV(allApplications, `inscricoes_enem_${selectedModality}`);
-    } else {
-      const filteredApplications = allApplications.filter(app =>
+    let filteredApplications = allApplications;
+
+    if (selectedModality !== "AC") {
+      filteredApplications = filteredApplications.filter(app =>
         app.data.vaga && Array.isArray(app.data.vaga) && app.data.vaga.some((vaga: string) => vaga.startsWith(selectedModality))
       );
-      downloadCSV(filteredApplications, `inscricoes_enem_${selectedModality}`);
     }
+
+    const deferredApplications = filterDeferredApplications(filteredApplications);
+    downloadCSV(deferredApplications, `inscricoes_enem_${selectedModality}`);
   };
 
   if (isLoading) {
@@ -131,9 +156,12 @@ export const ApplicationCSVDownload = () => {
           <List>
             {modalities.map((modality) => (
               <ListItem key={modality.value}>
-                <ListItemText primary={`${modality.value}: ${modalityCounts[modality.value]}`} />
+                <ListItemText primary={`${modality.value}: ${modalityCounts[modality.value].deferred} deferidos, ${modalityCounts[modality.value].notDeferred} indeferidos`} />
               </ListItem>
             ))}
+            <ListItem>
+              <ListItemText primary={`AC: ${modalityCounts["AC"].deferred} deferidos, ${modalityCounts["AC"].notDeferred} indeferidos`} />
+            </ListItem>
           </List>
         </Box>
       </CardContent>
