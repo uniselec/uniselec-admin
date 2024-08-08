@@ -52,12 +52,10 @@ const DashboardApplications: React.FC = () => {
                                     Downloads dos Arquivos Para o INEP Por Modalidade
                                 </Typography>
                                 <Box display="flex" flexDirection="column">
-                                    <Typography variant="h6" gutterBottom>
-                                        Em Breve
-                                    </Typography>
-                                    {/* <Link to="/download/modalidade-a" style={{ marginBottom: 8 }}>
+                                    <Link to="/download/modalidade-a" style={{ marginBottom: 8 }}>
                                         Modalidade A
                                     </Link>
+                                    {/*
                                     <Link to="/download/modalidade-b" style={{ marginBottom: 8 }}>
                                         Modalidade B
                                     </Link>
