@@ -159,9 +159,6 @@ export const ApplicationCSVDownload = () => {
                 <ListItemText primary={`${modality.value}: ${modalityCounts[modality.value].deferred} deferidos, ${modalityCounts[modality.value].notDeferred} indeferidos`} />
               </ListItem>
             ))}
-            <ListItem>
-              <ListItemText primary={`AC: ${modalityCounts["AC"].deferred} deferidos, ${modalityCounts["AC"].notDeferred} indeferidos`} />
-            </ListItem>
           </List>
         </Box>
       </CardContent>
