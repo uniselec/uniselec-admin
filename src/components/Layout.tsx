@@ -1,4 +1,4 @@
-import { AppBar, Box, CssBaseline, ThemeProvider } from "@mui/material";
+import { AppBar, Box, CssBaseline, ThemeProvider, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { SnackbarProvider } from "notistack";
 import React, { useState } from "react";
@@ -54,7 +54,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </SnackbarProvider>
 
       </Box>
-      <Footer />
+      <Box component="footer" sx={{
+        mt: 5,
+        zIndex: 2,
+        ml: { sm: `${drawerWidth}px` },
+      }}>
+        <Typography variant="h6" align="center" gutterBottom>
+          Uniselec
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          align="center"
+          color="text.secondary"
+          component="p"
+        >
+          Sistema de Seleção de Alunos da UNILAB
+        </Typography>
+      </Box>
     </ThemeProvider>
   );
 }
