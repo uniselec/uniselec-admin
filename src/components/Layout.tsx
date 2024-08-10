@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import { useAppTheme } from "../hooks/useAppTheme";
 import { Header } from "./Header";
 import ResponsiveDrawer from "./ResponsiveDrawer";
-import { Footer } from "./Footer";
 import { useSelector } from "react-redux";
 import { selectIsAuthenticated } from "../features/auth/authSlice";
 
