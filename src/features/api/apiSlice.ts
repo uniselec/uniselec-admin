@@ -6,7 +6,7 @@ const baseUrl = import.meta.env.VITE_API_URL+'/api/backoffice';
 
 export const apiSlice = createApi({
     reducerPath: "api",
-    tagTypes: ["Applications", "Users", "Admins"],
+    tagTypes: ["Applications", "Users", "Admins", "EnemScores", "ApplicationOutcomes"],
     baseQuery: fetchBaseQuery({
         baseUrl: baseUrl,
         prepareHeaders: (headers, { getState }) => {
