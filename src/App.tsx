@@ -16,6 +16,7 @@ import { EnemScoreCreate } from "./features/enemScores/EnemScoreCreate";
 import { ApplicationOutcomeList } from "./features/applicationOutcomes/ApplicationOutcomeList";
 import { ApplicationOutcomeEdit } from "./features/applicationOutcomes/ApplicationOutcomeEdit";
 import { ApplicationOutcomeCreate } from "./features/applicationOutcomes/ApplicationOutcomeCreate";
+import { EnemScoreImport } from "./features/enemScores/EnemScoreImport";
 
 
 
@@ -30,7 +31,8 @@ function App() {
     >
       <Layout>
         <Routes>
-          <Route path="/" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
+        <Route path="/" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
+          {/* <Route path="/" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} /> */}
           <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
           <Route path="/applications" element={<ProtectedRoute><ApplicationList  /></ProtectedRoute>} />
           <Route path="/applications/:id" element={<ProtectedRoute><ApplicationSelected /></ProtectedRoute>} />
