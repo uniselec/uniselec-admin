@@ -10,13 +10,19 @@ export interface Result {
 }
 
 export interface EnemScore {
-  id: number;
-  application_id: number;
+  id?: number;
+  application_id?: number;
   enem: string;
-  scores: string;
+  scores: {
+    science_score: string;
+    humanities_score: string;
+    language_score: string;
+    math_score: string;
+    writing_score: string;
+  };
   original_scores: string;
-  created_at: null | string;
-  updated_at: null | string;
+  created_at?: null | string;
+  updated_at?: null | string;
 }
 
 export interface Links {
