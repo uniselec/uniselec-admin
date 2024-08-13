@@ -55,14 +55,16 @@ export function ApplicationOutcomeForm({
           {/* Exibição das informações do EnemScore */}
           {applicationOutcome.application?.enem_score && (
             <Grid item xs={12}>
-              <Typography variant="h6">Informações do ENEM Score</Typography>
+              <Typography variant="h6">Informações do INEP </Typography>
+
               <Typography>ENEM: {applicationOutcome.application.enem_score.enem}</Typography>
+              <Typography>Nome: {applicationOutcome.application.enem_score.scores?.name}</Typography>
               <Typography>Nota Ciências da Natureza: {applicationOutcome.application.enem_score.scores?.science_score}</Typography>
               <Typography>Nota Ciências Humanas: {applicationOutcome.application.enem_score.scores?.humanities_score}</Typography>
               <Typography>Nota Linguagens: {applicationOutcome.application.enem_score.scores?.language_score}</Typography>
               <Typography>Nota Matemática: {applicationOutcome.application.enem_score.scores?.math_score}</Typography>
               <Typography>Nota Redação: {applicationOutcome.application.enem_score.scores?.writing_score}</Typography>
-              <Typography>Original Scores: {applicationOutcome.application.enem_score.original_scores}</Typography>
+              <Typography>Dado Original: {applicationOutcome.application.enem_score.original_scores}</Typography>
             </Grid>
           )}
 
