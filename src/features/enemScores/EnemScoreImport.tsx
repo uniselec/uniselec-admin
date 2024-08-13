@@ -35,18 +35,22 @@ const EnemScoreImport = () => {
 
             for (let i = 0; i < parsedData.length; i++) {
                 const row = parsedData[i];
+
+                // Verifica se a linha contém "Candidato não encontrado"
+                const isNotFound = row[1] === "Candidato não encontrado";
+
                 const enemScore = {
                     enem: row[0],
-                    scores: {
-                        name: row[2],
-                        cpf: row[1],
-                        science_score: row[3],
-                        humanities_score: row[4],
-                        language_score: row[5],
-                        math_score: row[6],
-                        writing_score: row[7],
-                    },
                     original_scores: row.join(';'),
+                    scores: {
+                        name: isNotFound ? "N/A" : row[2],
+                        cpf: isNotFound ? "N/A" : row[1],
+                        science_score: isNotFound ? "0" : row[3],
+                        humanities_score: isNotFound ? "0" : row[4],
+                        language_score: isNotFound ? "0" : row[5],
+                        math_score: isNotFound ? "0" : row[6],
+                        writing_score: isNotFound ? "0" : row[7],
+                    },
                 };
 
                 try {
@@ -58,7 +62,7 @@ const EnemScoreImport = () => {
 
                 setProgress(i + 1);
 
-
+                // Pausa entre as requisições
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
 
@@ -95,7 +99,7 @@ const EnemScoreImport = () => {
                                     {parsedData.map((row, index) => (
                                         <tr key={index}>
                                             <td>{row[0]}</td>
-                                            <td>{row[2]}</td>
+                                            <td>{row[2] || "Candidato não encontrado"}</td>
                                         </tr>
                                     ))}
                                 </tbody>

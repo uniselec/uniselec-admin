@@ -15,7 +15,7 @@ export interface EnemScore {
   application_id?: number;
   enem: string;
   application?: Application;
-  scores: {
+  scores?: {
     name: string;
     cpf: string;
     science_score: string;
