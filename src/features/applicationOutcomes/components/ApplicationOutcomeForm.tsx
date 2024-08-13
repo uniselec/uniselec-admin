@@ -28,18 +28,16 @@ export function ApplicationOutcomeForm({
   handleChange,
   handleStatusChange,
 }: Props) {
+
+  const formatDateToBR = (dateStr: string) => {
+    const [year, month, day] = dateStr.split("-");
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <Box p={2}>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
-          {/* Exibição das informações do ApplicationOutcome */}
-          <Grid item xs={12}>
-            <Typography variant="h6">Informações do Resultado</Typography>
-            <Typography>ID: {applicationOutcome.id}</Typography>
-            <Typography>Score Médio: {applicationOutcome.average_score}</Typography>
-            <Typography>Score Final: {applicationOutcome.final_score}</Typography>
-            <Typography>Ranking: {applicationOutcome.ranking || "N/A"}</Typography>
-          </Grid>
 
           {/* Exibição das informações da Application associada */}
           {applicationOutcome.application && (
@@ -50,8 +48,32 @@ export function ApplicationOutcomeForm({
               <Typography>Email: {applicationOutcome.application.data.email}</Typography>
               <Typography>Curso: {applicationOutcome.application.data.position}</Typography>
               <Typography>Local do Curso: {applicationOutcome.application.data.location_position}</Typography>
+              <Typography>Data de Nascimento: {formatDateToBR(applicationOutcome.application.data.birtdate)}</Typography>
             </Grid>
           )}
+
+          {/* Exibição das informações do EnemScore */}
+          {applicationOutcome.application?.enem_score && (
+            <Grid item xs={12}>
+              <Typography variant="h6">Informações do ENEM Score</Typography>
+              <Typography>ENEM: {applicationOutcome.application.enem_score.enem}</Typography>
+              <Typography>Nota Ciências da Natureza: {applicationOutcome.application.enem_score.scores?.science_score}</Typography>
+              <Typography>Nota Ciências Humanas: {applicationOutcome.application.enem_score.scores?.humanities_score}</Typography>
+              <Typography>Nota Linguagens: {applicationOutcome.application.enem_score.scores?.language_score}</Typography>
+              <Typography>Nota Matemática: {applicationOutcome.application.enem_score.scores?.math_score}</Typography>
+              <Typography>Nota Redação: {applicationOutcome.application.enem_score.scores?.writing_score}</Typography>
+              <Typography>Original Scores: {applicationOutcome.application.enem_score.original_scores}</Typography>
+            </Grid>
+          )}
+
+          {/* Exibição das informações do ApplicationOutcome */}
+          <Grid item xs={12}>
+            <Typography variant="h6">Informações do Resultado</Typography>
+            <Typography>ID: {applicationOutcome.id}</Typography>
+            <Typography>Score Médio: {applicationOutcome.average_score}</Typography>
+            <Typography>Score Final: {applicationOutcome.final_score}</Typography>
+            <Typography>Ranking: {applicationOutcome.ranking || "N/A"}</Typography>
+          </Grid>
 
           {/* Switch para definir deferido ou indeferido */}
           <Grid item xs={12}>
