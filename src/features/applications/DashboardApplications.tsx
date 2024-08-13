@@ -124,28 +124,6 @@ const DashboardApplications: React.FC = () => {
                     </Grid>
                 </CardContent>
             </Card>
-            {/* <Card elevation={3} sx={{ marginBottom: 3 }}>
-                <CardContent>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} md={4}>
-                            <Paper elevation={3}>
-                                <Typography variant="h6" align="center" gutterBottom>
-                                    Inscritos por Modalidade
-                                </Typography>
-                                <Bar data={barData} />
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Paper elevation={3}>
-                                <Typography variant="h6" align="center" gutterBottom>
-                                    Distribuição de Inscritos
-                                </Typography>
-                                <Pie data={pieData} />
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                </CardContent>
-            </Card> */}
         </>
     );
 };

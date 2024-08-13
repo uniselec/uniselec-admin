@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { ApplicationOutcome } from "../../../types/ApplicationOutcome";
+import useTranslate from '../../polyglot/useTranslate';
 
 type Props = {
   applicationOutcome: ApplicationOutcome;
@@ -28,6 +29,8 @@ export function ApplicationOutcomeForm({
   handleChange,
   handleStatusChange,
 }: Props) {
+  const translate = useTranslate('status');
+
 
   const formatDateToBR = (dateStr: string) => {
     const [year, month, day] = dateStr.split("-");
@@ -87,7 +90,7 @@ export function ApplicationOutcomeForm({
                   disabled={isdisabled}
                 />
               }
-              label="Deferido"
+              label={translate(applicationOutcome.status)}
             />
           </Grid>
 

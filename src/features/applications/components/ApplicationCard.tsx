@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Card, CardContent, Typography, Grid, Table, TableBody, TableCell, TableRow } from '@mui/material';
 import { Application } from '../../../types/Application';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 type Props = {
     application: Application;
@@ -20,10 +18,11 @@ const ApplicationCard = ({
         return <div>Loading...</div>;
     }
 
+    // Função de formatação de data sem criar um objeto Date
     const formatDate = (dateString: string | undefined) => {
         if (!dateString) return '';
-        const date = new Date(dateString);
-        return format(date, 'dd/MM/yyyy', { locale: ptBR });
+        const [year, month, day] = dateString.split("-");
+        return `${day}/${month}/${year}`;
     };
 
     return (
@@ -120,9 +119,7 @@ const ApplicationCard = ({
                                     <TableCell component="th">Vagas</TableCell>
                                     <TableCell>
                                         <ul>
-
                                             <li>AC: Ampla Concorrência</li>
-
                                         </ul>
                                         <ul>
                                             {application?.data?.vaga?.map((vaga, index) => (
