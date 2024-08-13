@@ -55,6 +55,7 @@ const EnemScoreImport = () => {
                     scores: {
                         name: isNotFound ? "N/A" : row[2],
                         cpf: isNotFound ? "N/A" : row[1],
+                        birthdate: isNotFound ? "N/A" : row[13], // Agora, row[13] é o índice da data de nascimento no CSV
                         science_score: isNotFound ? "0" : row[3],
                         humanities_score: isNotFound ? "0" : row[4],
                         language_score: isNotFound ? "0" : row[5],
