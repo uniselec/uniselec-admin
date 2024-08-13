@@ -72,7 +72,7 @@ const EnemScoreImport = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Paper sx={{ padding: 4, width: '80%', maxWidth: 800 }}>
                 <Box mb={2}>
                     <Typography variant="h4" align="center">Create EnemScore</Typography>

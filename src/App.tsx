@@ -11,12 +11,13 @@ import { DashboardApplications } from "./features/applications/DashboardApplicat
 import { ApplicationSelected } from "./features/applications/ApplicationSelected";
 import { ApplicationCSVDownload } from "./features/applications/ApplicationCSVDownload";
 import { EnemScoreList } from "./features/enemScores/EnemScoreList";
-import { EnemScoreEdit } from "./features/enemScores/EnemScoreEdit";
-import { EnemScoreCreate } from "./features/enemScores/EnemScoreCreate";
+
+
 import { ApplicationOutcomeList } from "./features/applicationOutcomes/ApplicationOutcomeList";
 import { ApplicationOutcomeEdit } from "./features/applicationOutcomes/ApplicationOutcomeEdit";
 import { ApplicationOutcomeCreate } from "./features/applicationOutcomes/ApplicationOutcomeCreate";
 import { EnemScoreImport } from "./features/enemScores/EnemScoreImport";
+import { EnemScoreSelected } from "./features/enemScores/EnemScoreSelected";
 
 
 
@@ -46,8 +47,7 @@ function App() {
           <Route path="/profile" element={<ProtectedRoute><AuthProfile /></ProtectedRoute>} />
 
           <Route path="/enem-scores" element={<ProtectedRoute><EnemScoreList /></ProtectedRoute>} />
-          <Route path="/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreEdit /></ProtectedRoute>} />
-          <Route path="/enem-scores/create" element={<ProtectedRoute><EnemScoreCreate /></ProtectedRoute>} />
+          <Route path="/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} />
 
           <Route path="/application-outcomes" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} />
           <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} />

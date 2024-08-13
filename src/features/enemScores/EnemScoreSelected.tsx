@@ -7,9 +7,10 @@ import {
   useUpdateEnemScoreMutation,
 } from "./enemScoreSlice";
 import { EnemScore } from "../../types/EnemScore";
-import { EnemScoreForm } from "./components/EnemScoreForm";
+import { EnemScoreCard } from "./components/EnemScoreCard";
 
-export const EnemScoreEdit = () => {
+
+export const EnemScoreSelected = () => {
   const id = useParams().id as string;
   const { data: enemScore, isFetching } = useGetEnemScoreQuery({ id });
   const [isdisabled, setIsdisabled] = useState(false);
@@ -53,12 +54,9 @@ export const EnemScoreEdit = () => {
             <Typography variant="h4">Edit EnemScore</Typography>
           </Box>
         </Box>
-        <EnemScoreForm
+        <EnemScoreCard
           isLoading={false}
           enemScore={enemScoreState}
-          isdisabled={isFetching || isdisabled}
-          handleSubmit={handleSubmit}
-          handleChange={handleChange}
         />
       </Paper>
     </Box>

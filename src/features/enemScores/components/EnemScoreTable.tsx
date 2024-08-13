@@ -45,7 +45,8 @@ export function EnemScoreTable({
       width: 150,
       renderCell: renderNameCell,
     },
-    { field: "enem", headerName: "Nome", flex: 1, renderCell: renderNameCell },
+    { field: "id2", headerName: "ID", flex: 1, renderCell: renderNameCell },
+    { field: "enem", headerName: "Inscrição ENEM", flex: 1, renderCell: renderNameCell },
     { field: "original_score", headerName: "E-mail", flex: 1, renderCell: renderNameCell },
   ];
 
@@ -53,7 +54,8 @@ export function EnemScoreTable({
     const { data: enemScores } = data;
     return enemScores.map((enemScore) => ({
       id: enemScore.id,
-      name: enemScore.enem,
+      id2: enemScore.id,
+      enem: enemScore.enem,
       original_score: enemScore.original_scores,
       created_at: enemScore.created_at,
     }));
@@ -64,7 +66,7 @@ export function EnemScoreTable({
     return (
       <Link
         style={{ textDecoration: "none" }}
-        to={`/enemScores/edit/${rowData.id}`}
+        to={`/enem-scores/edit/${rowData.id}`}
       >
         <Typography color="primary">{rowData.value}</Typography>
       </Link>
@@ -100,7 +102,7 @@ export function EnemScoreTable({
         slots={{ toolbar: GridToolbar }}
         slotProps={{
           toolbar: {
-            showQuickFilter: true,
+            showQuickFilter: false,
           },
         }}
         onFilterModelChange={handleFilterChange}
