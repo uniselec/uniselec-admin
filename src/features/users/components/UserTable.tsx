@@ -42,9 +42,8 @@ export function UserTable({
       field: "id",
       headerName: "Id",
       type: "string",
-      width: 150
+      width: 100
     },
-    { field: "id2", width: 100, headerName: "ID"},
     { field: "name", headerName: "Nome", flex: 1 },
     { field: "email", headerName: "E-mail", flex: 1 },
     { field: "cpf", headerName: "CPF", flex: 1 }
@@ -54,7 +53,6 @@ export function UserTable({
     const { data: users } = data;
     return users.map((user) => ({
       id: user.id,
-      id2: user.id,
       name: user.name,
       email: user.email,
       cpf: user.cpf,

@@ -40,7 +40,7 @@ function generateApplicationOutcomeMutation() {
 function updateApplicationOutcomeMutation(application: ApplicationOutcome) {
   return {
     url: `${endpointUrl}/${application.id}`,
-    method: "PUT",
+    method: "PATCH",
     body: application,
   };
 }

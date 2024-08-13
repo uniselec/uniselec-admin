@@ -20,8 +20,13 @@ export const ApplicationOutcomeEdit = () => {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await updateApplicationOutcome(applicationOutcomeState);
-  }
+
+    if (applicationOutcomeState.id) {
+        await updateApplicationOutcome(applicationOutcomeState);
+    } else {
+        console.error("ID não encontrado no applicationOutcomeState");
+    }
+}
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

@@ -45,7 +45,6 @@ export function ApplicationTable({
       width: 150,
       renderCell: renderNameCell,
     },
-    { field: "id2", headerName: "ID", width: 100, renderCell: renderNameCell },
     { field: "user_name", headerName: "Nome", flex: 1, renderCell: renderNameCell },
     { field: "email", headerName: "E-mail", flex: 1, renderCell: renderNameCell },
     { field: "cpf", headerName: "CPF", flex: 1, renderCell: renderNameCell },
