@@ -32,8 +32,8 @@ import { ApplicationOutcome } from "../../../types/ApplicationOutcome";
               <FormControl fullWidth>
                 <TextField
                   required
-                  name="name"
-                  label="Name"
+                  name="reason"
+                  label="Justificativa"
                   value={applicationOutcome.reason || ""}
                   disabled={isdisabled}
                   onChange={handleChange}
@@ -59,7 +59,7 @@ import { ApplicationOutcome } from "../../../types/ApplicationOutcome";
 
             <Grid item xs={12}>
               <Box display="flex" gap={2}>
-                <Button variant="contained" component={Link} to="/applicationOutcomes">
+                <Button variant="contained" component={Link} to="/application-outcomes">
                   Back
                 </Button>
 

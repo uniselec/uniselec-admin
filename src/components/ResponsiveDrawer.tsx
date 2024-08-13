@@ -33,7 +33,7 @@ export default function ResponsiveDrawer({ open, onClose, isDark }: Props) {
     { path: "/users", name: "Usuários" },
     { path: "/applications", name: "Inscrições" },
     { path: "/enem-scores", name: "Notas do Enem" },
-
+    { path: "/application-outcomes", name: "Resultados" },
 
   ];
 

@@ -2,33 +2,17 @@ import { Box, Paper, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  useGetEnemScoreQuery,
-  useUpdateEnemScoreMutation,
-} from "./enemScoreSlice";
+import { useGetEnemScoreQuery, useUpdateEnemScoreMutation } from "./enemScoreSlice";
 import { EnemScore } from "../../types/EnemScore";
 import { EnemScoreCard } from "./components/EnemScoreCard";
-
 
 export const EnemScoreSelected = () => {
   const id = useParams().id as string;
   const { data: enemScore, isFetching } = useGetEnemScoreQuery({ id });
-  const [isdisabled, setIsdisabled] = useState(false);
   const [updateEnemScore, status] = useUpdateEnemScoreMutation();
   const [enemScoreState, setEnemScoreState] = useState<EnemScore>({} as EnemScore);
 
   const { enqueueSnackbar } = useSnackbar();
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    await updateEnemScore(enemScoreState);
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setEnemScoreState({ ...enemScoreState, [name]: value });
-  };
-
 
   useEffect(() => {
     if (enemScore) {
@@ -39,7 +23,6 @@ export const EnemScoreSelected = () => {
   useEffect(() => {
     if (status.isSuccess) {
       enqueueSnackbar("EnemScore updated successfully", { variant: "success" });
-      setIsdisabled(false);
     }
     if (status.error) {
       enqueueSnackbar("EnemScore not updated", { variant: "error" });
@@ -51,13 +34,10 @@ export const EnemScoreSelected = () => {
       <Paper>
         <Box p={2}>
           <Box mb={2}>
-            <Typography variant="h4">Edit EnemScore</Typography>
+            <Typography variant="h4">Pontuação do ENEM</Typography>
           </Box>
         </Box>
-        <EnemScoreCard
-          isLoading={false}
-          enemScore={enemScoreState}
-        />
+        <EnemScoreCard enemScore={enemScoreState} isLoading={isFetching} />
       </Paper>
     </Box>
   );

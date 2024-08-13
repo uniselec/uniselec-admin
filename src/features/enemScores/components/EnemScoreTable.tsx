@@ -45,9 +45,10 @@ export function EnemScoreTable({
       width: 150,
       renderCell: renderNameCell,
     },
-    { field: "id2", headerName: "ID", flex: 1, renderCell: renderNameCell },
-    { field: "enem", headerName: "Inscrição ENEM", flex: 1, renderCell: renderNameCell },
-    { field: "original_score", headerName: "E-mail", flex: 1, renderCell: renderNameCell },
+    { field: "id2", headerName: "ID", width: 100, renderCell: renderNameCell },
+    { field: "name", headerName: "Nome", width: 300, renderCell: renderNameCell },
+    { field: "enem", headerName: "Inscrição ENEM", width: 150, renderCell: renderNameCell },
+    { field: "original_score", headerName: "Score INEP", flex: 1, renderCell: renderNameCell },
   ];
 
   function mapDataToGridRows(data: Results) {
@@ -56,6 +57,7 @@ export function EnemScoreTable({
       id: enemScore.id,
       id2: enemScore.id,
       enem: enemScore.enem,
+      name: enemScore?.scores?.name,
       original_score: enemScore.original_scores,
       created_at: enemScore.created_at,
     }));

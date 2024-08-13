@@ -9,7 +9,7 @@ const EnemScoreImport = () => {
     const [error, setError] = useState<string | null>(null);
     const [parsedData, setParsedData] = useState<string[][] | null>(null);
     const [errors, setErrors] = useState<string[]>([]);
-    const [progress, setProgress] = useState(0); // Estado para acompanhar o progresso
+    const [progress, setProgress] = useState(0);
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -56,9 +56,9 @@ const EnemScoreImport = () => {
                     errorMessages.push(message);
                 }
 
-                setProgress(i + 1); // Atualiza a contagem do progresso
+                setProgress(i + 1);
 
-                // Pausa de 100ms entre as requisições
+
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
 
@@ -67,7 +67,7 @@ const EnemScoreImport = () => {
             }
 
             setIsLoading(false);
-            setParsedData(null); // Limpar os dados após o envio
+            setParsedData(null);
         }
     };
 

@@ -63,7 +63,7 @@ export function ApplicationOutcomeTable({
     return (
       <Link
         style={{ textDecoration: "none" }}
-        to={`/applicationOutcomes/edit/${rowData.id}`}
+        to={`/application-outcomes/edit/${rowData.id}`}
       >
         <Typography color="primary">{rowData.value}</Typography>
       </Link>

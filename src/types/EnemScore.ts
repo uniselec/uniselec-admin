@@ -1,3 +1,4 @@
+import { Application } from "./Application";
 
 
 export interface Results {
@@ -13,7 +14,10 @@ export interface EnemScore {
   id?: number;
   application_id?: number;
   enem: string;
+  application?: Application;
   scores: {
+    name: string;
+    cpf: string;
     science_score: string;
     humanities_score: string;
     language_score: string;
