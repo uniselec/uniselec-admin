@@ -75,7 +75,7 @@ const EnemScoreImport = () => {
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Paper sx={{ padding: 4, width: '80%', maxWidth: 800 }}>
                 <Box mb={2}>
-                    <Typography variant="h4" align="center">Create EnemScore</Typography>
+                    <Typography variant="h4" align="center">Importar Notas do ENEM</Typography>
                 </Box>
                 <Box mb={2} display="flex" flexDirection="column" alignItems="center">
                     <input type="file" accept=".txt, .csv" onChange={handleFileUpload} />
