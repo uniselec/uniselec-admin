@@ -8,11 +8,11 @@
   <title>Uniselec</title>
   <style>
     #barra-brasil {
-      z-index: 3;
+      z-index: 1000; /* Mantém a barra acima de outros elementos */
       padding: 0;
       width: 100%;
-      position: relative;
-      /* Alterado para relative */
+      position: fixed; /* Alterado para fixed para fixar no topo */
+      top: 0;
       display: block;
       background: #313235 !important;
       border-bottom: 1px solid #313235;
@@ -22,7 +22,6 @@
       list-style: none;
       margin: 0;
       padding: 10px;
-      /* Adicionado padding */
     }
 
     #menu-barra-temp li {
@@ -38,9 +37,9 @@
       color: #fff;
     }
 
+    /* Ajuste a margem do root para evitar sobreposição */
     #root {
-      margin-top: 0px;
-      /* Ajustando margem superior para evitar sobreposição */
+      margin-top: 50px; /* Ajuste essa margem para compensar a altura da barra */
     }
   </style>
 </head>

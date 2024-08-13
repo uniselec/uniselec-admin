@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useCreateEnemScoreMutation } from '../enemScores/enemScoreSlice';
 import Papa from 'papaparse';
 import { Box, Paper, Typography, Button, CircularProgress } from '@mui/material';
+import { useSnackbar } from 'notistack';
 
 const EnemScoreImport = () => {
+    const { enqueueSnackbar } = useSnackbar();
     const [createEnemScore] = useCreateEnemScoreMutation();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -22,6 +24,14 @@ const EnemScoreImport = () => {
                 },
             });
         }
+    };
+
+    const resetForm = () => {
+        setIsLoading(false);
+        setParsedData(null);
+        setProgress(0);
+        setErrors([]);
+        setError(null);
     };
 
     const handleConfirm = async () => {
@@ -68,10 +78,13 @@ const EnemScoreImport = () => {
 
             if (errorMessages.length > 0) {
                 setErrors(errorMessages);
+                enqueueSnackbar("Erro ao importar algumas linhas.", { variant: "error" });
+            } else {
+                enqueueSnackbar("Importação concluída com sucesso.", { variant: "success" });
             }
 
             setIsLoading(false);
-            setParsedData(null);
+            resetForm(); // Reseta o formulário para permitir uma nova inserção
         }
     };
 
@@ -106,10 +119,10 @@ const EnemScoreImport = () => {
                             </table>
                         </Box>
                         <Box mt={2} display="flex" justifyContent="center" gap={2}>
-                            <Button variant="contained" color="primary" onClick={handleConfirm}>
+                            <Button variant="contained" color="primary" onClick={handleConfirm} disabled={isLoading}>
                                 Confirmar Importação
                             </Button>
-                            <Button variant="outlined" color="secondary" onClick={() => setParsedData(null)}>
+                            <Button variant="outlined" color="secondary" onClick={resetForm} disabled={isLoading}>
                                 Cancelar
                             </Button>
                         </Box>

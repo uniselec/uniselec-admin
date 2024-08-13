@@ -25,10 +25,12 @@ import { EnemScoreSelected } from "./features/enemScores/EnemScoreSelected";
 function App() {
   return (
     <Box
-      component="main"
-      sx={{
-        height: "90vh"
-      }}
+    component="main"
+    sx={{
+      minHeight: "100vh",
+      display: "flex",
+      flexDirection: "column",
+    }}
     >
       <Layout>
         <Routes>

@@ -80,7 +80,7 @@ export function EnemScoreTable({
   const rowCount = enemScores?.meta.total || 0;
 
   return (
-    <Box sx={{ display: "flex", height: 450, width: '100%' }}>
+    <Box sx={{ display: "flex", height: "60vh", width: '100%' }}>
       <DataGrid
         {...data}
         initialState={{
