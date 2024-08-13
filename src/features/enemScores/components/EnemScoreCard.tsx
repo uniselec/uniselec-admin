@@ -26,6 +26,7 @@ export function EnemScoreCard({ enemScore, isLoading = false }: Props) {
           <Typography>ENEM: {enemScore.enem}</Typography>
           <Typography>Nome: {enemScore.scores.name || 'N/A'}</Typography>
           <Typography>CPF: {enemScore.scores.cpf || 'N/A'}</Typography>
+          <Typography>Data de Nascimento: {enemScore.scores.birthdate || 'N/A'}</Typography>
           <Typography>Nota em Ciências da Natureza: {enemScore.scores.science_score || 'N/A'}</Typography>
           <Typography>Nota em Ciências Humanas: {enemScore.scores.humanities_score || 'N/A'}</Typography>
           <Typography>Nota em Linguagens e Códigos: {enemScore.scores.language_score || 'N/A'}</Typography>
