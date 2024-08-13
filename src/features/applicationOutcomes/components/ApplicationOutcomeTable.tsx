@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { Results } from "../../../types/ApplicationOutcome";
 import { useDemoData } from '@mui/x-data-grid-generator';
+import useTranslate from '../../polyglot/useTranslate';
 
 type Props = {
   applicationOutcomes: Results | undefined;
@@ -28,6 +29,7 @@ export function ApplicationOutcomeTable({
   handleFilterChange,
 
 }: Props) {
+  const translate = useTranslate('status');
   const { data  } = useDemoData({
     dataSet: 'Commodity',
     rowLength: 100,
@@ -45,15 +47,23 @@ export function ApplicationOutcomeTable({
       width: 150,
       renderCell: renderNameCell,
     },
+    { field: "id2", headerName: "ID", width: 100, renderCell: renderNameCell },
     { field: "name", headerName: "Nome", flex: 1, renderCell: renderNameCell },
-    { field: "email", headerName: "E-mail", flex: 1, renderCell: renderNameCell },
+    { field: "reason", headerName: "Motivo de Indeferimento", flex: 1, renderCell: renderNameCell },
+    { field: "status", headerName: "Estado", flex: 1, renderCell: renderNameCell },
+    { field: "classification_status", headerName: "Classificação", flex: 1, renderCell: renderNameCell },
+
   ];
 
   function mapDataToGridRows(data: Results) {
     const { data: applicationOutcomes } = data;
     return applicationOutcomes.map((applicationOutcome) => ({
       id: applicationOutcome.id,
-      name: applicationOutcome.reason,
+      id2: applicationOutcome.id,
+      reason: applicationOutcome.reason,
+      name: applicationOutcome?.application?.data?.name,
+      status: translate(applicationOutcome?.status),
+      classification_status: applicationOutcome?.classification_status != null ? translate(applicationOutcome?.classification_status) : "-",
       created_at: applicationOutcome.created_at,
     }));
   }

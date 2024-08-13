@@ -1,54 +1,46 @@
 {
     "pt-BR": {
         "status": {
-            "reopened": "Reabert",
-            "opened": "Aberto",
-            "closed": "Fechado",
-            "in progress": "Em Atendimento",
-            "reserved": "Reservado",
-            "pending resource": "Aguardando Ativo",
-            "pending customer response": "Aguardando Resposta do Cliente",
-            "committed": "Confirmado",
-            "canceled": "Cancelado"
+            "approved": "Deferido",
+            "rejected": "Indeferido",
+            "pending": "Pendente",
+            "classified": "Classificado",
+            "classifiable": "Classificável",
+            "disqualified": "Desclassificado"
+
         }
     },
     "en": {
         "status": {
-            "reopened": "Opened",
-            "opened": "opened",
-            "closed": "closed",
-            "in progress": "in progress",
-            "reserved": "reserved",
-            "pending resource": "pending resource",
-            "pending customer response": "pending customer response",
-            "committed": "committed",
-            "canceled": "canceled"
+            "approved": "Deferido",
+            "rejected": "Indeferido",
+            "pending": "Pendente",
+            "classified": "Classificado",
+            "classifiable": "Classificável",
+            "disqualified": "Desclassificado"
+
         }
     },
     "fr": {
         "status": {
-            "reopened": "Ouvert",
-            "opened": "ouvert ",
-            "closed": "Fermé",
-            "in progress": "En cours",
-            "reserved": "Réservé",
-            "pending resource": "En attente de ressources",
-            "pending customer response": "En attente de la réponse du client",
-            "committed": "Engagé",
-            "canceled": "Annulé"
+            "approved": "Deferido",
+            "rejected": "Indeferido",
+            "pending": "Pendente",
+            "classified": "Classificado",
+            "classifiable": "Classificável",
+            "disqualified": "Desclassificado"
+
         }
     },
     "es": {
         "status": {
-            "reopened": "Abierto",
-            "opened": "abierto ",
-            "closed": "Cerrado",
-            "in progress": "En progreso",
-            "reserved": "Reservado",
-            "pending resource": "Pendiente de recurso",
-            "pending customer response": "Pendiente de respuesta del cliente",
-            "committed": "Comprometido",
-            "canceled": "Cancelado"
+            "approved": "Deferido",
+            "rejected": "Indeferido",
+            "pending": "Pendente",
+            "classified": "Classificado",
+            "classifiable": "Classificável",
+            "disqualified": "Desclassificado"
+
         }
     }
 }

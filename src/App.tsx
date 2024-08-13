@@ -11,11 +11,8 @@ import { DashboardApplications } from "./features/applications/DashboardApplicat
 import { ApplicationSelected } from "./features/applications/ApplicationSelected";
 import { ApplicationCSVDownload } from "./features/applications/ApplicationCSVDownload";
 import { EnemScoreList } from "./features/enemScores/EnemScoreList";
-
-
 import { ApplicationOutcomeList } from "./features/applicationOutcomes/ApplicationOutcomeList";
 import { ApplicationOutcomeEdit } from "./features/applicationOutcomes/ApplicationOutcomeEdit";
-import { ApplicationOutcomeCreate } from "./features/applicationOutcomes/ApplicationOutcomeCreate";
 import { EnemScoreImport } from "./features/enemScores/EnemScoreImport";
 import { EnemScoreSelected } from "./features/enemScores/EnemScoreSelected";
 
@@ -25,19 +22,20 @@ import { EnemScoreSelected } from "./features/enemScores/EnemScoreSelected";
 function App() {
   return (
     <Box
-    component="main"
-    sx={{
-      minHeight: "100vh",
-      display: "flex",
-      flexDirection: "column",
-    }}
+      component="main"
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+      }}
     >
       <Layout>
         <Routes>
-        <Route path="/" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
-          {/* <Route path="/" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} /> */}
+          <Route path="/" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
+          <Route path="/import-enem-score" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
+          <Route path="/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
           <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
-          <Route path="/applications" element={<ProtectedRoute><ApplicationList  /></ProtectedRoute>} />
+          <Route path="/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
           <Route path="/applications/:id" element={<ProtectedRoute><ApplicationSelected /></ProtectedRoute>} />
 
           <Route path="/charts" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
@@ -53,12 +51,11 @@ function App() {
 
           <Route path="/application-outcomes" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} />
           <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} />
-          <Route path="/application-outcomes/create" element={<ProtectedRoute><ApplicationOutcomeCreate /></ProtectedRoute>} />
 
 
           <Route path="/login" element={<Login />} />
 
-          <Route path="*" element={<NotFoundCard/>} />
+          <Route path="*" element={<NotFoundCard />} />
         </Routes>
       </Layout>
 

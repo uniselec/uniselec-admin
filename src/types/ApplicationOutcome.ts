@@ -1,3 +1,4 @@
+import { Application } from "./Application";
 import { User } from "./User";
 
 export interface Results {
@@ -13,6 +14,7 @@ export interface Result {
 export interface ApplicationOutcome {
     id: string;
     application_id: number;
+    application?: Application;
     status: string;
     classification_status: string;
     average_score: number;
