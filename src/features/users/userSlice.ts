@@ -24,7 +24,8 @@ function parseQueryParams(params: UserParams) {
 function getUsers({ page = 1, perPage = 10, search = "" }) {
   const params = { page, perPage, search };
 
-  return `${endpointUrl}?${parseQueryParams(params)}`;
+  // return `${endpointUrl}?${parseQueryParams(params)}`; //Quero buscar tudo e filtrar no cliente
+  return `${endpointUrl}?per_page=4000`;
 }
 
 

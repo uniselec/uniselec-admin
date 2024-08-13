@@ -28,7 +28,8 @@ function parseQueryParams(params: ApplicationOutcomeParams) {
 function getApplicationOutcomes({ page = 1, perPage = 10, search = "" }) {
   const params = { page, perPage, search, isActive: true };
 
-  return `${endpointUrl}?${parseQueryParams(params)}`;
+  // return `${endpointUrl}?${parseQueryParams(params)}`;
+  return `${endpointUrl}?per_page=4000`;
 }
 
 

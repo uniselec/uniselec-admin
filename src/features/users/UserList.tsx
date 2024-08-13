@@ -42,12 +42,12 @@ export const UserList = () => {
       <UserTable
         users={data}
         isFetching={isFetching}
-        paginationModel={{
-          pageSize: 25,
-          page: 0,
-        }}
-        handleSetPaginationModel={setPaginationModel}
-        handleFilterChange={handleFilterChange}
+        // paginationModel={{
+        //   pageSize: 25,
+        //   page: 0,
+        // }}
+        // handleSetPaginationModel={setPaginationModel}
+        // handleFilterChange={handleFilterChange}
       />
     </Box>
   );

@@ -27,14 +27,8 @@ function parseQueryParams(params: EnemScoreParams) {
 function getEnemScores({ page = 1, perPage = 10, search = "" }) {
   const params = { page, perPage, search, isActive: true };
 
-  return `${endpointUrl}?${parseQueryParams(params)}`;
-}
-
-function deleteEnemScoreMutation(category: EnemScore) {
-  return {
-    url: `${endpointUrl}/${category.id}`,
-    method: "DELETE",
-  };
+  // return `${endpointUrl}?${parseQueryParams(params)}`;
+  return `${endpointUrl}?per_page=4000`;
 }
 
 function createEnemScoreMutation(category: EnemScore) {

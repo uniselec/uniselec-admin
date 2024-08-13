@@ -24,7 +24,8 @@ function parseQueryParams(params: ApplicationParams) {
 function getApplications({ page = 1, perPage = 10, search = "" }) {
   const params = { page, perPage, search };
 
-  return `${endpointUrl}?${parseQueryParams(params)}`;
+  // return `${endpointUrl}?${parseQueryParams(params)}`;
+  return `${endpointUrl}?per_page=4000`;
 }
 
 

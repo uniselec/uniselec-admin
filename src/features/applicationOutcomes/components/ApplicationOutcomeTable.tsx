@@ -15,18 +15,18 @@ import useTranslate from '../../polyglot/useTranslate';
 
 type Props = {
   applicationOutcomes: Results | undefined;
-  paginationModel: object;
+  // paginationModel: object;
   isFetching: boolean;
-  handleSetPaginationModel: (paginateModel: { page: number, pageSize: number }) => void;
-  handleFilterChange: (filterModel: GridFilterModel) => void;
+  // handleSetPaginationModel: (paginateModel: { page: number, pageSize: number }) => void;
+  // handleFilterChange: (filterModel: GridFilterModel) => void;
 };
 
 export function ApplicationOutcomeTable({
   applicationOutcomes,
-  paginationModel,
+  // paginationModel,
   isFetching,
-  handleSetPaginationModel,
-  handleFilterChange,
+  // handleSetPaginationModel,
+  // handleFilterChange,
 
 }: Props) {
   const translate = useTranslate('status');
@@ -89,21 +89,21 @@ export function ApplicationOutcomeTable({
   return (
     <Box sx={{ display: "flex", height: "60vh", width: '100%' }}>
       <DataGrid
-        {...data}
-        initialState={{
-          ...data.initialState,
-          pagination: {
-            ...data.initialState?.pagination,
-            paginationModel: paginationModel,
-          },
-        }}
-        onPaginationModelChange={handleSetPaginationModel}
+        // {...data}
+        // initialState={{
+        //   ...data.initialState,
+        //   pagination: {
+        //     ...data.initialState?.pagination,
+        //     paginationModel: paginationModel,
+        //   },
+        // }}
+        // onPaginationModelChange={handleSetPaginationModel}
         columns={columns}
         rows={rows}
-        filterMode="server"
+        filterMode="client"
         rowCount={rowCount}
         loading={isFetching}
-        paginationMode="server"
+        paginationMode="client"
         checkboxSelection={false}
         disableColumnFilter={true}
         disableColumnSelector={true}
@@ -111,10 +111,10 @@ export function ApplicationOutcomeTable({
         slots={{ toolbar: GridToolbar }}
         slotProps={{
           toolbar: {
-            showQuickFilter: false,
+            showQuickFilter: true,
           },
         }}
-        onFilterModelChange={handleFilterChange}
+        // onFilterModelChange={handleFilterChange}
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
       />
     </Box>

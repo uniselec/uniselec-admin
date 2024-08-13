@@ -14,18 +14,18 @@ import { useDemoData } from '@mui/x-data-grid-generator';
 
 type Props = {
   users: Results | undefined;
-  paginationModel: object;
+  // paginationModel: object;
   isFetching: boolean;
-  handleSetPaginationModel: (paginateModel: { page: number, pageSize: number }) => void;
-  handleFilterChange: (filterModel: GridFilterModel) => void;
+  // handleSetPaginationModel: (paginateModel: { page: number, pageSize: number }) => void;
+  // handleFilterChange: (filterModel: GridFilterModel) => void;
 };
 
 export function UserTable({
   users,
-  paginationModel,
+  // paginationModel,
   isFetching,
-  handleSetPaginationModel,
-  handleFilterChange,
+  // handleSetPaginationModel,
+  // handleFilterChange,
 
 }: Props) {
   const { data  } = useDemoData({
@@ -81,21 +81,21 @@ export function UserTable({
   return (
     <Box sx={{ display: "flex", height: 450, width: '100%' }}>
       <DataGrid
-        {...data}
-        initialState={{
-          ...data.initialState,
-          pagination: {
-            ...data.initialState?.pagination,
-            paginationModel: paginationModel,
-          },
-        }}
-        onPaginationModelChange={handleSetPaginationModel}
+        // {...data}
+        // initialState={{
+        //   ...data.initialState,
+        //   pagination: {
+        //     ...data.initialState?.pagination,
+        //     paginationModel: paginationModel,
+        //   },
+        // }}
+        // onPaginationModelChange={handleSetPaginationModel}
         columns={columns}
         rows={rows}
-        filterMode="server"
+        filterMode="client"
         rowCount={rowCount}
         loading={isFetching}
-        paginationMode="server"
+        paginationMode="client"
         checkboxSelection={false}
         disableColumnFilter={true}
         disableColumnSelector={true}
@@ -103,10 +103,10 @@ export function UserTable({
         slots={{ toolbar: GridToolbar }}
         slotProps={{
           toolbar: {
-            showQuickFilter: false,
+            showQuickFilter: true,
           },
         }}
-        onFilterModelChange={handleFilterChange}
+        // onFilterModelChange={handleFilterChange}
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
       />
     </Box>
