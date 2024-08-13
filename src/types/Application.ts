@@ -1,3 +1,4 @@
+import { EnemScore } from "./EnemScore";
 import { User } from "./User";
 
 export interface Results {
@@ -37,6 +38,7 @@ export interface Application {
         termsAgreement: boolean;
         updated_at?: string;
     };
+    enem_score?: EnemScore;
     verification_expected: string;
     verification_code: string;
     valid_verification_code: boolean;

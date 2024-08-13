@@ -18,6 +18,7 @@ export interface EnemScore {
   scores?: {
     name: string;
     cpf: string;
+    birthdate?: string;
     science_score: string;
     humanities_score: string;
     language_score: string;
