@@ -32,11 +32,10 @@ export default function ResponsiveDrawer({ open, onClose, isDark }: Props) {
     { path: "/", name: "Início" },
     { path: "/export-csv", name: "Exportar Inscrições" },
     { path: "/import-enem-score", name: "Importar Notas" },
-    { path: "/generate-results", name: "Gerar Resultados" },
+    { path: "/generate-results", name: "Processar Resultados" },
     { path: "/users", name: "Usuários" },
     { path: "/applications", name: "Inscrições" },
     { path: "/enem-scores", name: "Notas do Enem" },
-    { path: "/application-outcomes", name: "Resultados" },
 
 
 

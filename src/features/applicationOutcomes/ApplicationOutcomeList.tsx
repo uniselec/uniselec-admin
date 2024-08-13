@@ -38,18 +38,9 @@ export const ApplicationOutcomeList = () => {
 
   return (
     <Box sx={{ mt: 0, mb: 0 }}>
-      <h3 className="pb-4 mb-2 fst-italic border-bottom">
-          Usuários
-      </h3>
       <ApplicationOutcomeTable
         applicationOutcomes={data}
         isFetching={isFetching}
-        // paginationModel={{
-        //   pageSize: 25,
-        //   page: 0,
-        // }}
-        // handleSetPaginationModel={setPaginationModel}
-        // handleFilterChange={handleFilterChange}
       />
     </Box>
   );

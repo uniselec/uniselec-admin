@@ -2,6 +2,7 @@ import { Box, Paper, Typography, Button } from '@mui/material';
 import React from 'react';
 import { useGenerateApplicationOutcomeMutation } from "./applicationOutcomeSlice";
 import { useSnackbar } from "notistack";
+import { Link } from 'react-router-dom';
 
 const GenerateApplicationOutcomes = () => {
     const { enqueueSnackbar } = useSnackbar();
@@ -39,8 +40,35 @@ const GenerateApplicationOutcomes = () => {
                         color="primary"
                         onClick={handleSubmit}
                         disabled={isLoading}
+                        sx={{ mb: 2 }}
                     >
                         {isLoading ? "Processando..." : "Gerar Resultados"}
+                    </Button>
+                    <Button
+                        component={Link}
+                        to="/listas-resultado"
+                        variant="outlined"
+                        color="primary"
+                        sx={{ mb: 1 }}
+                    >
+                        Listas Resultado
+                    </Button>
+                    <Button
+                        component={Link}
+                        to="/deferidos-indeferidos"
+                        variant="outlined"
+                        color="secondary"
+                        sx={{ mb: 1 }}
+                    >
+                        Lista de Deferidos e Indeferidos
+                    </Button>
+                    <Button
+                        component={Link}
+                        to="/application-outcomes"
+                        variant="outlined"
+                        color="error"
+                    >
+                        Pendências
                     </Button>
                 </Box>
             </Paper>
