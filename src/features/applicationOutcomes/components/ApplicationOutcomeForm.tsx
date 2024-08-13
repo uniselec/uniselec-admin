@@ -4,77 +4,103 @@ import {
   FormControl,
   Grid,
   TextField,
+  Typography,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
-
-  import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ApplicationOutcome } from "../../../types/ApplicationOutcome";
 
-  type Props = {
-    applicationOutcome: ApplicationOutcome;
-    isdisabled?: boolean;
-    isLoading?: boolean;
-    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  };
+type Props = {
+  applicationOutcome: ApplicationOutcome;
+  isdisabled?: boolean;
+  isLoading?: boolean;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleStatusChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
-  export function ApplicationOutcomeForm({
-    applicationOutcome,
-    isdisabled = false,
-    isLoading = false,
-    handleSubmit,
-    handleChange
-  }: Props) {
-    return (
-      <Box p={2}>
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <TextField
-                  required
-                  name="reason"
-                  label="Justificativa"
-                  value={applicationOutcome.reason || ""}
-                  disabled={isdisabled}
-                  onChange={handleChange}
-                  inputProps={{ "data-testid": "name" }}
-                />
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <TextField
-                  required
-                  name="description"
-                  label="Description"
-                  inputProps={{ "data-testid": "description" }}
-                  disabled={isdisabled}
-                  onChange={handleChange}
-                  value={applicationOutcome.reason || ""}
-                />
-              </FormControl>
-            </Grid>
-
-
-            <Grid item xs={12}>
-              <Box display="flex" gap={2}>
-                <Button variant="contained" component={Link} to="/application-outcomes">
-                  Back
-                </Button>
-
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="secondary"
-                  disabled={isdisabled || isLoading}
-                >
-                  {isLoading ? "Loading..." : "Save"}
-                </Button>
-              </Box>
-            </Grid>
+export function ApplicationOutcomeForm({
+  applicationOutcome,
+  isdisabled = false,
+  isLoading = false,
+  handleSubmit,
+  handleChange,
+  handleStatusChange,
+}: Props) {
+  return (
+    <Box p={2}>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={3}>
+          {/* Exibição das informações do ApplicationOutcome */}
+          <Grid item xs={12}>
+            <Typography variant="h6">Informações do Resultado</Typography>
+            <Typography>ID: {applicationOutcome.id}</Typography>
+            <Typography>Score Médio: {applicationOutcome.average_score}</Typography>
+            <Typography>Score Final: {applicationOutcome.final_score}</Typography>
+            <Typography>Ranking: {applicationOutcome.ranking || "N/A"}</Typography>
           </Grid>
-        </form>
-      </Box>
-    );
-  }
+
+          {/* Exibição das informações da Application associada */}
+          {applicationOutcome.application && (
+            <Grid item xs={12}>
+              <Typography variant="h6">Informações da Inscrição</Typography>
+              <Typography>Nome: {applicationOutcome.application.data.name}</Typography>
+              <Typography>CPF: {applicationOutcome.application.data.cpf}</Typography>
+              <Typography>Email: {applicationOutcome.application.data.email}</Typography>
+              <Typography>Curso: {applicationOutcome.application.data.position}</Typography>
+              <Typography>Local do Curso: {applicationOutcome.application.data.location_position}</Typography>
+            </Grid>
+          )}
+
+          {/* Switch para definir deferido ou indeferido */}
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={applicationOutcome.status === "approved"}
+                  onChange={handleStatusChange}
+                  disabled={isdisabled}
+                />
+              }
+              label="Deferido"
+            />
+          </Grid>
+
+          {/* Campo para Motivo de Indeferimento */}
+          {applicationOutcome.status === "rejected" && (
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <TextField
+                  name="reason"
+                  label="Motivo de Indeferimento"
+                  value={applicationOutcome.reason || ""}
+                  disabled={isdisabled}
+                  onChange={handleChange}
+                  inputProps={{ "data-testid": "reason" }}
+                />
+              </FormControl>
+            </Grid>
+          )}
+
+          {/* Botões de ação */}
+          <Grid item xs={12}>
+            <Box display="flex" gap={2}>
+              <Button variant="contained" component={Link} to="/application-outcomes">
+                Voltar
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="secondary"
+                disabled={isdisabled || isLoading}
+              >
+                {isLoading ? "Salvando..." : "Salvar"}
+              </Button>
+            </Box>
+          </Grid>
+        </Grid>
+      </form>
+    </Box>
+  );
+}

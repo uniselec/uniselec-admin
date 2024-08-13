@@ -46,72 +46,80 @@ const DashboardApplications: React.FC = () => {
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={4}>
 
-                            <Paper elevation={3}>
-                                <Typography variant="h6" gutterBottom>
-                                    Passo 1
-                                </Typography>
-                                <Box display="flex" flexDirection="column">
-                                    <Link to="/download/modalidade-a" style={{ marginBottom: 8 }}>
-                                        Exportar Inscrições
-                                    </Link>
-
-                                </Box>
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-
-                            <Paper elevation={3}>
-                                <Typography variant="h6" gutterBottom>
-                                    Passo 2
-                                </Typography>
-                                <Box display="flex" flexDirection="column">
-                                    <Link to="/download/modalidade-a" style={{ marginBottom: 8 }}>
-                                        Importar Notas
-                                    </Link>
-
-                                </Box>
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-
-                            <Paper elevation={3}>
-                                <Typography variant="h6" gutterBottom>
-                                    Passo 3
-                                </Typography>
-                                <Box display="flex" flexDirection="column">
-                                    <Link to="/download/modalidade-a" style={{ marginBottom: 8 }}>
-                                        Processar resultados
-                                    </Link>
-
-                                </Box>
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Paper elevation={3}>
-                                <Typography variant="h6" gutterBottom>
-                                    Passo 4
-                                </Typography>
-                                <Box display="flex" flexDirection="column">
-                                    <Link to="/download/modalidade-a" style={{ marginBottom: 8 }}>
-                                        Gerar Listas
-                                    </Link>
-
-                                </Box>
-                            </Paper>
-                        </Grid>
-
-                        <Grid item xs={12} md={4}>
-                            <Paper elevation={3}>
-                                <Typography variant="h6" gutterBottom>
-                                    Auditoria
-                                </Typography>
-                                <Box display="flex" flexDirection="column">
+                            <Card>
+                                <CardContent>
                                     <Typography variant="h6" gutterBottom>
-                                        Em Breve
+                                        Passo 1
+                                    </Typography>
+                                    <Box display="flex" flexDirection="column">
+                                        <Link to="/export-csv" style={{ marginBottom: 8 }}>
+                                            Exportar Inscrições
+                                        </Link>
+
+                                    </Box>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" gutterBottom>
+                                        Passo 2
+                                    </Typography>
+                                    <Box display="flex" flexDirection="column">
+                                        <Link to="/import-enem-score" style={{ marginBottom: 8 }}>
+                                            Importar Notas
+                                        </Link>
+                                    </Box>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" gutterBottom>
+                                        Passo 3
+                                    </Typography>
+                                    <Box display="flex" flexDirection="column">
+                                        <Link to="/generate-results" style={{ marginBottom: 8 }}>
+                                            Processar resultados
+                                        </Link>
+
+                                    </Box>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" gutterBottom>
+                                        Passo 4
+                                    </Typography>
+                                    <Box display="flex" flexDirection="column">
+                                        <Link to="/list-generate" style={{ marginBottom: 8 }}>
+                                            Gerar Listas
+                                        </Link>
+
+                                    </Box>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+
+                        <Grid item xs={12} md={4}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" gutterBottom>
+                                        Auditar Processo
                                     </Typography>
 
-                                </Box>
-                            </Paper>
+                                    <Box display="flex" flexDirection="column">
+                                        <Link to="/list-generate" style={{ marginBottom: 8 }}>
+                                            Gerar Listas
+                                        </Link>
+                                    </Box>
+                                </CardContent>
+                            </Card>
                         </Grid>
                     </Grid>
                 </CardContent>

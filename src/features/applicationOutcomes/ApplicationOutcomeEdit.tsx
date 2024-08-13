@@ -28,6 +28,10 @@ export const ApplicationOutcomeEdit = () => {
     setApplicationOutcomeState({ ...applicationOutcomeState, [name]: value });
   };
 
+  const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const status = e.target.checked ? 'approved' : 'rejected';
+    setApplicationOutcomeState({ ...applicationOutcomeState, status });
+  };
 
   useEffect(() => {
     if (applicationOutcome) {
@@ -50,7 +54,7 @@ export const ApplicationOutcomeEdit = () => {
       <Paper>
         <Box p={2}>
           <Box mb={2}>
-            <Typography variant="h4">Edit ApplicationOutcome</Typography>
+            <Typography variant="h4">Resultado</Typography>
           </Box>
         </Box>
         <ApplicationOutcomeForm
@@ -59,6 +63,7 @@ export const ApplicationOutcomeEdit = () => {
           isdisabled={isFetching || isdisabled}
           handleSubmit={handleSubmit}
           handleChange={handleChange}
+          handleStatusChange={handleStatusChange}
         />
       </Paper>
     </Box>

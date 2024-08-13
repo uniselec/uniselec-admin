@@ -31,22 +31,16 @@ function getApplicationOutcomes({ page = 1, perPage = 10, search = "" }) {
   return `${endpointUrl}?${parseQueryParams(params)}`;
 }
 
-function deleteApplicationOutcomeMutation(category: ApplicationOutcome) {
-  return {
-    url: `${endpointUrl}/${category.id}`,
-    method: "DELETE",
-  };
+
+function generateApplicationOutcomeMutation() {
+  return { url: `process-outcomes`, method: "POST" };
 }
 
-function createApplicationOutcomeMutation(category: ApplicationOutcome) {
-  return { url: endpointUrl, method: "POST", body: category };
-}
-
-function updateApplicationOutcomeMutation(category: ApplicationOutcome) {
+function updateApplicationOutcomeMutation(application: ApplicationOutcome) {
   return {
-    url: `${endpointUrl}/${category.id}`,
+    url: `${endpointUrl}/${application.id}`,
     method: "PUT",
-    body: category,
+    body: application,
   };
 }
 
@@ -64,8 +58,8 @@ export const applicationOutcomesApiSlice = apiSlice.injectEndpoints({
       query: getApplicationOutcome,
       providesTags: ["ApplicationOutcomes"],
     }),
-    createApplicationOutcome: mutation<Result, ApplicationOutcome>({
-      query: createApplicationOutcomeMutation,
+    generateApplicationOutcome: mutation<Result, void>({
+      query: generateApplicationOutcomeMutation,
       invalidatesTags: ["ApplicationOutcomes"],
     }),
     updateApplicationOutcome: mutation<Result, ApplicationOutcome>({
@@ -78,7 +72,7 @@ export const applicationOutcomesApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetApplicationOutcomesQuery,
-  useCreateApplicationOutcomeMutation,
+  useGenerateApplicationOutcomeMutation,
   useUpdateApplicationOutcomeMutation,
   useGetApplicationOutcomeQuery,
 } = applicationOutcomesApiSlice;

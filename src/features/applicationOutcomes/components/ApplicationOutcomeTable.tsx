@@ -49,6 +49,7 @@ export function ApplicationOutcomeTable({
     },
     { field: "id2", headerName: "ID", width: 100, renderCell: renderNameCell },
     { field: "name", headerName: "Nome", flex: 1, renderCell: renderNameCell },
+    { field: "enem", headerName: "N Inscrição ENEM", flex: 1, renderCell: renderNameCell },
     { field: "reason", headerName: "Motivo de Indeferimento", flex: 1, renderCell: renderNameCell },
     { field: "status", headerName: "Estado", flex: 1, renderCell: renderNameCell },
     { field: "classification_status", headerName: "Classificação", flex: 1, renderCell: renderNameCell },
@@ -61,6 +62,7 @@ export function ApplicationOutcomeTable({
       id: applicationOutcome.id,
       id2: applicationOutcome.id,
       reason: applicationOutcome.reason,
+      enem: applicationOutcome?.application?.data?.enem,
       name: applicationOutcome?.application?.data?.name,
       status: translate(applicationOutcome?.status),
       classification_status: applicationOutcome?.classification_status != null ? translate(applicationOutcome?.classification_status) : "-",
@@ -109,7 +111,7 @@ export function ApplicationOutcomeTable({
         slots={{ toolbar: GridToolbar }}
         slotProps={{
           toolbar: {
-            showQuickFilter: true,
+            showQuickFilter: false,
           },
         }}
         onFilterModelChange={handleFilterChange}
