@@ -12,29 +12,24 @@ import { Link } from "react-router-dom";
 import { Results } from "../../../types/ApplicationOutcome";
 import { useDemoData } from '@mui/x-data-grid-generator';
 import useTranslate from '../../polyglot/useTranslate';
+import { useState } from "react";
 
 type Props = {
   applicationOutcomes: Results | undefined;
-  // paginationModel: object;
   isFetching: boolean;
-  // handleSetPaginationModel: (paginateModel: { page: number, pageSize: number }) => void;
-  // handleFilterChange: (filterModel: GridFilterModel) => void;
 };
 
 export function ApplicationOutcomeTable({
   applicationOutcomes,
-  // paginationModel,
+
   isFetching,
-  // handleSetPaginationModel,
-  // handleFilterChange,
+
 
 }: Props) {
+
+
   const translate = useTranslate('status');
-  const { data  } = useDemoData({
-    dataSet: 'Commodity',
-    rowLength: 100,
-    maxColumns: 6,
-  });
+
 
 
 
@@ -88,15 +83,6 @@ export function ApplicationOutcomeTable({
   return (
     <Box sx={{ display: "flex", height: "60vh", width: '100%' }}>
       <DataGrid
-        // {...data}
-        // initialState={{
-        //   ...data.initialState,
-        //   pagination: {
-        //     ...data.initialState?.pagination,
-        //     paginationModel: paginationModel,
-        //   },
-        // }}
-        // onPaginationModelChange={handleSetPaginationModel}
         columns={columns}
         rows={rows}
         filterMode="client"
@@ -104,7 +90,7 @@ export function ApplicationOutcomeTable({
         loading={isFetching}
         paginationMode="client"
         checkboxSelection={false}
-        disableColumnFilter={true}
+        disableColumnFilter={false}
         disableColumnSelector={true}
         disableDensitySelector={true}
         slots={{ toolbar: GridToolbar }}
@@ -113,7 +99,6 @@ export function ApplicationOutcomeTable({
             showQuickFilter: true,
           },
         }}
-        // onFilterModelChange={handleFilterChange}
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
       />
     </Box>
