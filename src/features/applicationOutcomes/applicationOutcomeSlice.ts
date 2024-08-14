@@ -36,7 +36,9 @@ function getApplicationOutcomes({ page = 1, perPage = 10, search = "" }) {
 function generateApplicationOutcomeMutation() {
   return { url: `process-outcomes`, method: "POST" };
 }
-
+function generateApplicationOutcomeWitoutPendingMutation() {
+  return { url: `process-outcomes-without-pending`, method: "POST" };
+}
 function updateApplicationOutcomeMutation(application: ApplicationOutcome) {
   return {
     url: `${endpointUrl}/${application.id}`,
@@ -63,6 +65,10 @@ export const applicationOutcomesApiSlice = apiSlice.injectEndpoints({
       query: generateApplicationOutcomeMutation,
       invalidatesTags: ["ApplicationOutcomes"],
     }),
+    generateApplicationOutcomeWithoutPending: mutation<Result, void>({
+      query: generateApplicationOutcomeWitoutPendingMutation,
+      invalidatesTags: ["ApplicationOutcomes"],
+    }),
     updateApplicationOutcome: mutation<Result, ApplicationOutcome>({
       query: updateApplicationOutcomeMutation,
       invalidatesTags: ["ApplicationOutcomes"],
@@ -73,6 +79,7 @@ export const applicationOutcomesApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetApplicationOutcomesQuery,
+  useGenerateApplicationOutcomeWithoutPendingMutation,
   useGenerateApplicationOutcomeMutation,
   useUpdateApplicationOutcomeMutation,
   useGetApplicationOutcomeQuery,

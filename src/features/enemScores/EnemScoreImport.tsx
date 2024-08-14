@@ -20,7 +20,8 @@ const EnemScoreImport = () => {
                 header: false,
                 delimiter: ";",
                 complete: (results) => {
-                    setParsedData(results.data as string[][]);
+                    const filteredData = (results.data as string[][]).filter(row => row.some(cell => cell.trim() !== ""));
+                    setParsedData(filteredData);
                 },
             });
         }
@@ -46,7 +47,6 @@ const EnemScoreImport = () => {
             for (let i = 0; i < parsedData.length; i++) {
                 const row = parsedData[i];
 
-                // Verifica se a linha contém "Candidato não encontrado"
                 const isNotFound = row[1] === "Candidato não encontrado";
 
                 const enemScore = {
@@ -55,7 +55,7 @@ const EnemScoreImport = () => {
                     scores: {
                         name: isNotFound ? "N/A" : row[2],
                         cpf: isNotFound ? "N/A" : row[1],
-                        birthdate: isNotFound ? "N/A" : row[13], // Agora, row[13] é o índice da data de nascimento no CSV
+                        birthdate: isNotFound ? "N/A" : row[13],
                         science_score: isNotFound ? "0" : row[3],
                         humanities_score: isNotFound ? "0" : row[4],
                         language_score: isNotFound ? "0" : row[5],
@@ -73,7 +73,6 @@ const EnemScoreImport = () => {
 
                 setProgress(i + 1);
 
-                // Pausa entre as requisições
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
 
@@ -85,7 +84,7 @@ const EnemScoreImport = () => {
             }
 
             setIsLoading(false);
-            resetForm(); // Reseta o formulário para permitir uma nova inserção
+            resetForm();
         }
     };
 
@@ -100,25 +99,6 @@ const EnemScoreImport = () => {
                 </Box>
                 {parsedData && (
                     <Box mb={2}>
-                        {/* <Typography variant="h6">Pré-visualização dos Dados</Typography>
-                        <Box overflow="auto">
-                            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                                <thead>
-                                    <tr>
-                                        <th>ENEM</th>
-                                        <th>Nome</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {parsedData.map((row, index) => (
-                                        <tr key={index}>
-                                            <td>{row[0]}</td>
-                                            <td>{row[2] || "Candidato não encontrado"}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </Box> */}
                         <Box mt={2} display="flex" justifyContent="center" gap={2}>
                             <Button variant="contained" color="primary" onClick={handleConfirm} disabled={isLoading}>
                                 Confirmar Importação

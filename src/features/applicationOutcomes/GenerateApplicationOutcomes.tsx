@@ -1,6 +1,6 @@
 import { Box, Paper, Typography, Button, CircularProgress } from '@mui/material';
 import React from 'react';
-import { useGenerateApplicationOutcomeMutation, useGetApplicationOutcomesQuery } from "./applicationOutcomeSlice";
+import { useGenerateApplicationOutcomeMutation, useGenerateApplicationOutcomeWithoutPendingMutation, useGetApplicationOutcomesQuery } from "./applicationOutcomeSlice";
 import { useGetEnemScoresQuery } from "../enemScores/enemScoreSlice";
 import { useSnackbar } from "notistack";
 import { Link } from 'react-router-dom';
@@ -9,6 +9,8 @@ import { CategoryCards } from './CategoryCards';
 const GenerateApplicationOutcomes = () => {
     const { enqueueSnackbar } = useSnackbar();
     const [generateApplications, { isLoading }] = useGenerateApplicationOutcomeMutation();
+    const [generateApplicationsWithoutPending, { isLoading: isGeneratingWithoutPending }] = useGenerateApplicationOutcomeWithoutPendingMutation();
+
     const { data: outcomesData, isFetching: isFetchingOutcomeData } = useGetApplicationOutcomesQuery({});
     const { data: enemScoresData, isFetching: isFetchingEnemScore } = useGetEnemScoresQuery({});
 
@@ -19,6 +21,15 @@ const GenerateApplicationOutcomes = () => {
         e.preventDefault();
         try {
             await generateApplications().unwrap();
+            enqueueSnackbar("Resultados processados com sucesso!", { variant: "success" });
+        } catch (error) {
+            enqueueSnackbar("Erro ao processar os resultados!", { variant: "error" });
+        }
+    }
+    async function handleSubmitWithoutPending(e: React.MouseEvent<HTMLButtonElement>) {
+        e.preventDefault();
+        try {
+            await generateApplicationsWithoutPending().unwrap();
             enqueueSnackbar("Resultados processados com sucesso!", { variant: "success" });
         } catch (error) {
             enqueueSnackbar("Erro ao processar os resultados!", { variant: "error" });
@@ -88,6 +99,15 @@ const GenerateApplicationOutcomes = () => {
                                 >
                                     {isLoading ? "Processando..." : "Gerar Resultados"}
                                 </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleSubmitWithoutPending}
+                                    disabled={isGeneratingWithoutPending}
+                                    sx={{ fontSize: '12px' }}
+                                >
+                                    {isGeneratingWithoutPending ? "Processando..." : "Gerar Resultados - Sem Pêndencias"}
+                                </Button>
 
                                 {hasApplicationOutcomes && (
                                     <>
@@ -98,9 +118,9 @@ const GenerateApplicationOutcomes = () => {
                                             color="secondary"
                                             sx={{ fontSize: '12px' }}
                                         >
-                                            Lista de Deferidos e Indeferidos
+                                            Ver Resultado
                                         </Button>
-                                        <Button
+                                        {/* <Button
                                             component={Link}
                                             to="/application-outcomes"
                                             variant="outlined"
@@ -108,14 +128,14 @@ const GenerateApplicationOutcomes = () => {
                                             sx={{ fontSize: '12px' }}
                                         >
                                             Pendências
-                                        </Button>
+                                        </Button> */}
                                     </>
                                 )}
                             </Box>
                         </>
                     )}
                 </Box>
-                {hasApplicationOutcomes && <CategoryCards />}
+                {/* {hasApplicationOutcomes && <CategoryCards />} */}
             </Paper>
         </Box>
     );
