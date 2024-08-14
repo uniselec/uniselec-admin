@@ -48,7 +48,7 @@ export function ApplicationOutcomeForm({
           {applicationOutcome.application && (
             <Grid item xs={12}>
               <Typography variant="h6">Informações da Inscrição</Typography>
-              <ApplicationCard isLoading={false} application={applicationOutcome.application}/>
+              <ApplicationCard isLoading={false} application={applicationOutcome.application} />
               <hr></hr>
             </Grid>
           )}
@@ -120,7 +120,10 @@ export function ApplicationOutcomeForm({
           {/* Botões de ação */}
           <Grid item xs={12}>
             <Box display="flex" gap={2}>
-              <Button variant="contained" component={Link} to="/application-outcomes">
+              <Button
+                variant="contained"
+                onClick={() => window.history.back()}
+              >
                 Voltar
               </Button>
               <Button
