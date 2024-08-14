@@ -6,7 +6,6 @@ import { ApplicationOutcome as OriginalApplicationOutcome } from "../../types/Ap
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 
-// Estender o tipo para incluir a classificação
 interface ApplicationOutcome extends OriginalApplicationOutcome {
   classification?: string;
 }
@@ -79,25 +78,28 @@ export const ApplicationOutcomeGenerateDocuments = () => {
   const generatePDF = () => {
     const doc = new jsPDF("p", "pt", "a4");
 
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const title1 = "EDITAL PROGRAD Nº 12/2024, DE 31 DE JULHO DE 2024";
-    const title2 = "PROCESSO SELETIVO UNILAB – (MODELO SISU)";
-    const title3 = "Curso de Medicina - Baturité";
-    const title4 = `Classificação Geral: ${selectedCategory}`;
 
-    doc.text(title1, pageWidth / 2, 40, { align: "center" });
-    doc.text(title2, pageWidth / 2, 60, { align: "center" });
-    doc.text(title3, pageWidth / 2, 80, { align: "center" });
-    doc.text(title4, pageWidth / 2, 100, { align: "center" });
+    const margin = 42.52;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const availableWidth = pageWidth - 2 * margin;
+
+    doc.setFontSize(10);
+    doc.text("EDITAL PROGRAD Nº 12/2024, DE 31 DE JULHO DE 2024", pageWidth / 2, margin, { align: "center" });
+    doc.text("PROCESSO SELETIVO UNILAB – (MODELO SISU)", pageWidth / 2, margin + 20, { align: "center" });
+    doc.text("Curso de Medicina - Baturité", pageWidth / 2, margin + 40, { align: "center" });
+
+
+    const wrappedTitle = doc.splitTextToSize(`Classificação Geral: ${selectedCategory}`, availableWidth);
+    doc.text(wrappedTitle, margin, margin + 70);
 
     doc.autoTable({
-      startY: 120,
+      startY: margin + 100,
       html: "#outcomes-table",
       styles: { overflow: "linebreak", cellWidth: "wrap", halign: "center" },
-      bodyStyles: { valign: "top" },
+      bodyStyles: { valign: "top", fontSize: 8 }, // Diminui o tamanho da letra na tabela
       columnStyles: { text: { cellWidth: "auto" } },
-      margin: { top: 10, left: 20, right: 20, bottom: 10 },
       theme: "grid",
+      margin: { top: margin, left: margin, right: margin, bottom: margin }, // Aplica a margem em todos os lados
     });
 
     doc.save("application_outcomes.pdf");
@@ -111,11 +113,11 @@ export const ApplicationOutcomeGenerateDocuments = () => {
     <Box sx={{ mt: 0, mb: 0 }}>
       {selectedCategory && (
         <>
-          <Typography variant="h5" sx={{ mt: 4 }}>
+          <Typography variant="h6" sx={{ mt: 4, fontSize: "14px" }}>
             Resultados para: {selectedCategory}
           </Typography>
 
-          {/* Switch para exibir com ou sem pendentes */}
+
           <FormControlLabel
             control={
               <Switch
@@ -135,23 +137,23 @@ export const ApplicationOutcomeGenerateDocuments = () => {
           <table id="outcomes-table" style={{ borderCollapse: "collapse", width: "100%", marginTop: "20px", color: "black" }}>
             <thead>
               <tr style={{ border: "1px solid black" }}>
-                <th style={{ border: "1px solid black", padding: "8px", color: "black" }}>Classificação</th>
-                <th style={{ border: "1px solid black", padding: "8px", color: "black" }}>Nome</th>
-                <th style={{ border: "1px solid black", padding: "8px", color: "black" }}>CPF</th>
-                <th style={{ border: "1px solid black", padding: "8px", color: "black" }}>Situação</th>
-                <th style={{ border: "1px solid black", padding: "8px", color: "black" }}>Nota Final</th>
-                <th style={{ border: "1px solid black", padding: "8px", color: "black" }}>Bonificação</th>
+                <th style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>Classificação</th>
+                <th style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>Nome</th>
+                <th style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>CPF</th>
+                <th style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>Situação</th>
+                <th style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>Nota Final</th>
+                <th style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>Bonificação</th>
               </tr>
             </thead>
             <tbody>
               {outcomesByCategory?.map((outcome: ApplicationOutcome, index: number) => (
                 <tr key={outcome.id} style={{ border: "1px solid black", color: "black" }}>
-                  <td style={{ border: "1px solid black", padding: "8px", color: "black" }}>{index + 1}</td>
-                  <td style={{ border: "1px solid black", padding: "8px", color: "black" }}>{outcome.application?.data?.name}</td>
-                  <td style={{ border: "1px solid black", padding: "8px", color: "black" }}>{maskCPF(outcome.application?.data?.cpf || "")}</td>
-                  <td style={{ border: "1px solid black", padding: "8px", color: "black" }}>{outcome.classification}</td>
-                  <td style={{ border: "1px solid black", padding: "8px", color: "black" }}>{outcome.final_score}</td>
-                  <td style={{ border: "1px solid black", padding: "8px", color: "black" }}>
+                  <td style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>{index + 1}</td>
+                  <td style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>{outcome.application?.data?.name}</td>
+                  <td style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>{maskCPF(outcome.application?.data?.cpf || "")}</td>
+                  <td style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>{outcome.classification}</td>
+                  <td style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>{outcome.final_score}</td>
+                  <td style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>
                     {outcome.application?.data?.bonus?.map((bonus: string) => bonus.split(":")[0])}
                   </td>
                 </tr>
