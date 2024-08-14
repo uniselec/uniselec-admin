@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { useGetEnemScoreQuery, useUpdateEnemScoreMutation } from "./enemScoreSlice";
 import { EnemScore } from "../../types/EnemScore";
 import { EnemScoreCard } from "./components/EnemScoreCard";
+import { ApplicationCard } from "../applications/components/ApplicationCard";
 
 export const EnemScoreSelected = () => {
   const id = useParams().id as string;
@@ -38,6 +39,16 @@ export const EnemScoreSelected = () => {
           </Box>
         </Box>
         <EnemScoreCard enemScore={enemScoreState} isLoading={isFetching} />
+
+        {enemScoreState.application && enemScoreState.application.data && (
+          <>
+            <Box mb={2}>
+              <Typography variant="h4">Informações da Inscrição</Typography>
+            </Box>
+
+            <ApplicationCard application={enemScoreState.application} isLoading={false} />
+          </>
+        )}
       </Paper>
     </Box>
   );

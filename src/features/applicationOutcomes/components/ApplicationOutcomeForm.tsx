@@ -12,6 +12,8 @@ import {
 import { Link } from "react-router-dom";
 import { ApplicationOutcome } from "../../../types/ApplicationOutcome";
 import useTranslate from '../../polyglot/useTranslate';
+import { ApplicationCard } from "../../applications/components/ApplicationCard";
+import { EnemScoreCard } from "../../enemScores/components/EnemScoreCard";
 
 type Props = {
   applicationOutcome: ApplicationOutcome;
@@ -46,28 +48,15 @@ export function ApplicationOutcomeForm({
           {applicationOutcome.application && (
             <Grid item xs={12}>
               <Typography variant="h6">Informações da Inscrição</Typography>
-              <Typography>Nome: {applicationOutcome.application.data.name}</Typography>
-              <Typography>CPF: {applicationOutcome.application.data.cpf}</Typography>
-              <Typography>Email: {applicationOutcome.application.data.email}</Typography>
-              <Typography>Curso: {applicationOutcome.application.data.position}</Typography>
-              <Typography>Local do Curso: {applicationOutcome.application.data.location_position}</Typography>
-              <Typography>Data de Nascimento: {formatDateToBR(applicationOutcome.application.data.birtdate)}</Typography>
+              <ApplicationCard isLoading={false} application={applicationOutcome.application}/>
+              <hr></hr>
             </Grid>
           )}
 
           {/* Exibição das informações do EnemScore */}
           {applicationOutcome.application?.enem_score && (
             <Grid item xs={12}>
-              <Typography variant="h6">Informações do INEP </Typography>
-
-              <Typography>ENEM: {applicationOutcome.application.enem_score.enem}</Typography>
-              <Typography>Nome: {applicationOutcome.application.enem_score.scores?.name}</Typography>
-              <Typography>Nota Ciências da Natureza: {applicationOutcome.application.enem_score.scores?.science_score}</Typography>
-              <Typography>Nota Ciências Humanas: {applicationOutcome.application.enem_score.scores?.humanities_score}</Typography>
-              <Typography>Nota Linguagens: {applicationOutcome.application.enem_score.scores?.language_score}</Typography>
-              <Typography>Nota Matemática: {applicationOutcome.application.enem_score.scores?.math_score}</Typography>
-              <Typography>Nota Redação: {applicationOutcome.application.enem_score.scores?.writing_score}</Typography>
-              <Typography>Dado Original: {applicationOutcome.application.enem_score.original_scores}</Typography>
+              <EnemScoreCard enemScore={applicationOutcome.application?.enem_score} isLoading={false} />
             </Grid>
           )}
 

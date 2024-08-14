@@ -16,7 +16,7 @@ const categories = [
 ];
 
 export const CategoryCards = () => {
-  const [showPending, setShowPending] = useState(true); // Estado para o switch
+  const [showPending, setShowPending] = useState(true);
   const [options, setOptions] = useState({
     page: 1,
     search: "",
@@ -53,7 +53,6 @@ export const CategoryCards = () => {
 
   return (
     <Box sx={{ padding: 2 }}>
-      {/* Switch para exibir com ou sem pendentes */}
       <FormControlLabel
         control={
           <Switch

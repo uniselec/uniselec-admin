@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Typography, Button, Switch, FormControlLabel } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useGetApplicationOutcomesQuery } from "./applicationOutcomeSlice";
 import { ApplicationOutcome as OriginalApplicationOutcome } from "../../types/ApplicationOutcome";
 import { jsPDF } from "jspdf";
@@ -47,7 +47,7 @@ export const ApplicationOutcomeGenerateDocuments = () => {
     rowsPerPage: [10, 20, 30],
   });
 
-  const [showPending, setShowPending] = useState(true); // Estado para o switch
+  const [showPending, setShowPending] = useState(true);
 
   const { data, isFetching, error } = useGetApplicationOutcomesQuery(options);
 
@@ -78,7 +78,6 @@ export const ApplicationOutcomeGenerateDocuments = () => {
   const generatePDF = () => {
     const doc = new jsPDF("p", "pt", "a4");
 
-
     const margin = 42.52;
     const pageWidth = doc.internal.pageSize.getWidth();
     const availableWidth = pageWidth - 2 * margin;
@@ -88,7 +87,6 @@ export const ApplicationOutcomeGenerateDocuments = () => {
     doc.text("PROCESSO SELETIVO UNILAB – (MODELO SISU)", pageWidth / 2, margin + 20, { align: "center" });
     doc.text("Curso de Medicina - Baturité", pageWidth / 2, margin + 40, { align: "center" });
 
-
     const wrappedTitle = doc.splitTextToSize(`Classificação Geral: ${selectedCategory}`, availableWidth);
     doc.text(wrappedTitle, margin, margin + 70);
 
@@ -96,10 +94,10 @@ export const ApplicationOutcomeGenerateDocuments = () => {
       startY: margin + 100,
       html: "#outcomes-table",
       styles: { overflow: "linebreak", cellWidth: "wrap", halign: "center" },
-      bodyStyles: { valign: "top", fontSize: 8 }, // Diminui o tamanho da letra na tabela
+      bodyStyles: { valign: "top", fontSize: 8 },
       columnStyles: { text: { cellWidth: "auto" } },
       theme: "grid",
-      margin: { top: margin, left: margin, right: margin, bottom: margin }, // Aplica a margem em todos os lados
+      margin: { top: margin, left: margin, right: margin, bottom: margin },
     });
 
     doc.save("application_outcomes.pdf");
@@ -116,7 +114,6 @@ export const ApplicationOutcomeGenerateDocuments = () => {
           <Typography variant="h6" sx={{ mt: 4, fontSize: "14px" }}>
             Resultados para: {selectedCategory}
           </Typography>
-
 
           <FormControlLabel
             control={
@@ -149,7 +146,11 @@ export const ApplicationOutcomeGenerateDocuments = () => {
               {outcomesByCategory?.map((outcome: ApplicationOutcome, index: number) => (
                 <tr key={outcome.id} style={{ border: "1px solid black", color: "black" }}>
                   <td style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>{index + 1}</td>
-                  <td style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>{outcome.application?.data?.name}</td>
+                  <td style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>
+                    <Link to={`/application-outcomes/edit/${outcome.id}`} style={{ textDecoration: 'none', color: 'blue' }}>
+                      {outcome.application?.data?.name}
+                    </Link>
+                  </td>
                   <td style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>{maskCPF(outcome.application?.data?.cpf || "")}</td>
                   <td style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>{outcome.classification}</td>
                   <td style={{ border: "1px solid black", padding: "8px", color: "black", fontSize: "10px" }}>{outcome.final_score}</td>

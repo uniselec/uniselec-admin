@@ -89,7 +89,7 @@ const DeferidosIndeferidosList = () => {
     const deferidosIndeferidos: ProcessedApplicationOutcome[] = [...(data?.data || [])]
         .map((outcome) => ({
             ...outcome,
-            displayStatus: outcome.status === "approved" || (outcome.status === "pending" && showPendingAsApproved) ? "Deferido" : "Indeferido",
+            displayStatus: outcome.status === "approved" || (outcome.status === "pending" && showPendingAsApproved) ? "Deferido" : "Pendente",
             displayReason: outcome.status === "rejected" || (!showPendingAsApproved && outcome.status === "pending") ? outcome.reason || "-" : "",
         }))
         .sort((a, b) => (a.application?.data?.name || "").localeCompare(b.application?.data?.name || ""));
