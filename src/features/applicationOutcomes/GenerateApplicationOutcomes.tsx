@@ -3,6 +3,7 @@ import React from 'react';
 import { useGenerateApplicationOutcomeMutation } from "./applicationOutcomeSlice";
 import { useSnackbar } from "notistack";
 import { Link } from 'react-router-dom';
+import { ApplicationOutcomeGenerateDocuments } from './ApplicationOutcomeGenerateDocuments';
 
 const GenerateApplicationOutcomes = () => {
     const { enqueueSnackbar } = useSnackbar();
@@ -35,42 +36,43 @@ const GenerateApplicationOutcomes = () => {
                     <Typography variant="body1" gutterBottom>
                         Apenas Clique no Botão e Aguarde a Mensagem de Sucesso!
                     </Typography>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleSubmit}
-                        disabled={isLoading}
-                        sx={{ mb: 2 }}
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            gap: 2, // Espaçamento entre os botões
+                            flexWrap: 'wrap',
+                            justifyContent: 'center', // Centraliza os botões
+                            mt: 2, // Margem superior para afastar dos textos
+                        }}
                     >
-                        {isLoading ? "Processando..." : "Gerar Resultados"}
-                    </Button>
-                    <Button
-                        component={Link}
-                        to="/listas-resultado"
-                        variant="outlined"
-                        color="primary"
-                        sx={{ mb: 1 }}
-                    >
-                        Listas Resultado
-                    </Button>
-                    <Button
-                        component={Link}
-                        to="/deferidos-indeferidos"
-                        variant="outlined"
-                        color="secondary"
-                        sx={{ mb: 1 }}
-                    >
-                        Lista de Deferidos e Indeferidos
-                    </Button>
-                    <Button
-                        component={Link}
-                        to="/application-outcomes"
-                        variant="outlined"
-                        color="error"
-                    >
-                        Pendências
-                    </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleSubmit}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? "Processando..." : "Gerar Resultados"}
+                        </Button>
+
+                        <Button
+                            component={Link}
+                            to="/deferidos-indeferidos"
+                            variant="outlined"
+                            color="secondary"
+                        >
+                            Lista de Deferidos e Indeferidos
+                        </Button>
+                        <Button
+                            component={Link}
+                            to="/application-outcomes"
+                            variant="outlined"
+                            color="error"
+                        >
+                            Pendências
+                        </Button>
+                    </Box>
                 </Box>
+                <ApplicationOutcomeGenerateDocuments/>
             </Paper>
         </Box>
     );

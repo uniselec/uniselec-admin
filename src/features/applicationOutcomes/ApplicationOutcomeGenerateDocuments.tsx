@@ -82,7 +82,6 @@ export const ApplicationOutcomeGenerateDocuments = () => {
 
   return (
     <Box sx={{ mt: 0, mb: 0 }}>
-      <h3 className="pb-4 mb-2 fst-italic border-bottom">Usuários</h3>
       <Grid container spacing={2}>
         {categories.map((category) => (
           <Grid item xs={12} sm={6} md={4} key={category.value}>

@@ -5,8 +5,9 @@ import {
   Grid,
   TextField,
   Typography,
-  Switch,
+  RadioGroup,
   FormControlLabel,
+  Radio,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { ApplicationOutcome } from "../../../types/ApplicationOutcome";
@@ -30,7 +31,6 @@ export function ApplicationOutcomeForm({
   handleStatusChange,
 }: Props) {
   const translate = useTranslate('status');
-
 
   const formatDateToBR = (dateStr: string) => {
     const [year, month, day] = dateStr.split("-");
@@ -80,18 +80,36 @@ export function ApplicationOutcomeForm({
             <Typography>Ranking: {applicationOutcome.ranking || "N/A"}</Typography>
           </Grid>
 
-          {/* Switch para definir deferido ou indeferido */}
+          {/* RadioGroup para definir deferido, indeferido ou pendente */}
           <Grid item xs={12}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={applicationOutcome.status === "approved"}
-                  onChange={handleStatusChange}
+            <FormControl component="fieldset">
+              <Typography variant="h6">Status</Typography>
+              <RadioGroup
+                name="status"
+                value={applicationOutcome.status || ""}
+                onChange={handleStatusChange}
+                row
+              >
+                <FormControlLabel
+                  value="approved"
+                  control={<Radio />}
+                  label={translate("approved")}
                   disabled={isdisabled}
                 />
-              }
-              label={translate(applicationOutcome.status)}
-            />
+                <FormControlLabel
+                  value="rejected"
+                  control={<Radio />}
+                  label={translate("rejected")}
+                  disabled={isdisabled}
+                />
+                <FormControlLabel
+                  value="pending"
+                  control={<Radio />}
+                  label={translate("pending")}
+                  disabled={isdisabled}
+                />
+              </RadioGroup>
+            </FormControl>
           </Grid>
 
           {/* Campo para Motivo de Indeferimento */}

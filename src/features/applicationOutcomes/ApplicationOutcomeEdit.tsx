@@ -26,7 +26,7 @@ export const ApplicationOutcomeEdit = () => {
     } else {
         console.error("ID não encontrado no applicationOutcomeState");
     }
-}
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -34,8 +34,8 @@ export const ApplicationOutcomeEdit = () => {
   };
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const status = e.target.checked ? 'approved' : 'rejected';
-    setApplicationOutcomeState({ ...applicationOutcomeState, status });
+    const { value } = e.target;
+    setApplicationOutcomeState({ ...applicationOutcomeState, status: value });
   };
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export const ApplicationOutcomeEdit = () => {
           </Box>
         </Box>
         <ApplicationOutcomeForm
-          isLoading={false}
+          isLoading={isFetching || status.isLoading}
           applicationOutcome={applicationOutcomeState}
           isdisabled={isFetching || isdisabled}
           handleSubmit={handleSubmit}
