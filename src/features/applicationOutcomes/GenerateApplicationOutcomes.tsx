@@ -1,13 +1,16 @@
 import { Box, Paper, Typography, Button } from '@mui/material';
 import React from 'react';
-import { useGenerateApplicationOutcomeMutation } from "./applicationOutcomeSlice";
+import { useGenerateApplicationOutcomeMutation, useGetApplicationOutcomesQuery } from "./applicationOutcomeSlice";
 import { useSnackbar } from "notistack";
 import { Link } from 'react-router-dom';
-import { ApplicationOutcomeGenerateDocuments } from './ApplicationOutcomeGenerateDocuments';
+import { CategoryCards } from './CategoryCards';
 
 const GenerateApplicationOutcomes = () => {
     const { enqueueSnackbar } = useSnackbar();
     const [generateApplications, { isLoading }] = useGenerateApplicationOutcomeMutation();
+    const { data: outcomesData } = useGetApplicationOutcomesQuery({});
+
+    const hasApplicationOutcomes = outcomesData?.data && outcomesData.data.length > 0;
 
     async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
@@ -27,13 +30,13 @@ const GenerateApplicationOutcomes = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
+                        padding: '1.5cm', // Adiciona margem de 1.5 cm ao redor
                     }}
-                    p={5}
                 >
-                    <Typography variant="h4" gutterBottom>
+                    <Typography variant="h4" gutterBottom sx={{ fontSize: '24px' }}>
                         Processar Resultados
                     </Typography>
-                    <Typography variant="body1" gutterBottom>
+                    <Typography variant="body1" gutterBottom sx={{ fontSize: '14px' }}>
                         Apenas Clique no Botão e Aguarde a Mensagem de Sucesso!
                     </Typography>
                     <Box
@@ -50,29 +53,36 @@ const GenerateApplicationOutcomes = () => {
                             color="primary"
                             onClick={handleSubmit}
                             disabled={isLoading}
+                            sx={{ fontSize: '12px' }} // Ajusta o tamanho da fonte dos botões
                         >
                             {isLoading ? "Processando..." : "Gerar Resultados"}
                         </Button>
 
-                        <Button
-                            component={Link}
-                            to="/deferidos-indeferidos"
-                            variant="outlined"
-                            color="secondary"
-                        >
-                            Lista de Deferidos e Indeferidos
-                        </Button>
-                        <Button
-                            component={Link}
-                            to="/application-outcomes"
-                            variant="outlined"
-                            color="error"
-                        >
-                            Pendências
-                        </Button>
+                        {hasApplicationOutcomes && (
+                            <>
+                                <Button
+                                    component={Link}
+                                    to="/deferidos-indeferidos"
+                                    variant="outlined"
+                                    color="secondary"
+                                    sx={{ fontSize: '12px' }} // Ajusta o tamanho da fonte dos botões
+                                >
+                                    Lista de Deferidos e Indeferidos
+                                </Button>
+                                <Button
+                                    component={Link}
+                                    to="/application-outcomes"
+                                    variant="outlined"
+                                    color="error"
+                                    sx={{ fontSize: '12px' }} // Ajusta o tamanho da fonte dos botões
+                                >
+                                    Pendências
+                                </Button>
+                            </>
+                        )}
                     </Box>
                 </Box>
-                <ApplicationOutcomeGenerateDocuments/>
+                {hasApplicationOutcomes && <CategoryCards />}
             </Paper>
         </Box>
     );

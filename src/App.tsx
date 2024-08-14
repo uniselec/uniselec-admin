@@ -34,7 +34,7 @@ function App() {
     >
       <Layout>
         <Routes>
-          <Route path="/" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} />
+          <Route path="/" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
           <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} />
           <Route path="/listas-resultado" element={<ProtectedRoute><ApplicationOutcomeGenerateDocuments /></ProtectedRoute>} />
           <Route path="/import-enem-score" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
@@ -43,7 +43,7 @@ function App() {
           <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
           <Route path="/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
           <Route path="/applications/:id" element={<ProtectedRoute><ApplicationSelected /></ProtectedRoute>} />
-
+          <Route path="/applications-results/:categoryId" element={<ProtectedRoute><ApplicationOutcomeGenerateDocuments /></ProtectedRoute>} />
           <Route path="/charts" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
 
 

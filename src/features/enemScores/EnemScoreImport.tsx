@@ -100,7 +100,7 @@ const EnemScoreImport = () => {
                 </Box>
                 {parsedData && (
                     <Box mb={2}>
-                        <Typography variant="h6">Pré-visualização dos Dados</Typography>
+                        {/* <Typography variant="h6">Pré-visualização dos Dados</Typography>
                         <Box overflow="auto">
                             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                 <thead>
@@ -118,7 +118,7 @@ const EnemScoreImport = () => {
                                     ))}
                                 </tbody>
                             </table>
-                        </Box>
+                        </Box> */}
                         <Box mt={2} display="flex" justifyContent="center" gap={2}>
                             <Button variant="contained" color="primary" onClick={handleConfirm} disabled={isLoading}>
                                 Confirmar Importação

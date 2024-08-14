@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { Bar, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, ArcElement, Tooltip, Legend } from 'chart.js';
 import { ApplicationCSVDownload } from './ApplicationCSVDownload';
+import { ApplicationChartsUF } from './ApplicationChartsUF';
+import ApplicationsChart from './ApplicationChart';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
@@ -49,12 +51,10 @@ const DashboardApplications: React.FC = () => {
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" gutterBottom>
-                                        Passo 1
+                                        Inscrições Por Período
                                     </Typography>
                                     <Box display="flex" flexDirection="column">
-                                        <Link to="/export-csv" style={{ marginBottom: 8 }}>
-                                            Exportar Inscrições
-                                        </Link>
+                                        <ApplicationsChart />
 
                                     </Box>
                                 </CardContent>
