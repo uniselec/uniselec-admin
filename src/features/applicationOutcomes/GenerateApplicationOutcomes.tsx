@@ -9,7 +9,6 @@ import { CategoryCards } from './CategoryCards';
 const GenerateApplicationOutcomes = () => {
     const { enqueueSnackbar } = useSnackbar();
     const [generateApplications, { isLoading }] = useGenerateApplicationOutcomeMutation();
-    const [generateApplicationsWithoutPending, { isLoading: isGeneratingWithoutPending }] = useGenerateApplicationOutcomeWithoutPendingMutation();
 
     const { data: outcomesData, isFetching: isFetchingOutcomeData } = useGetApplicationOutcomesQuery({});
     const { data: enemScoresData, isFetching: isFetchingEnemScore } = useGetEnemScoresQuery({});
@@ -26,15 +25,7 @@ const GenerateApplicationOutcomes = () => {
             enqueueSnackbar("Erro ao processar os resultados!", { variant: "error" });
         }
     }
-    async function handleSubmitWithoutPending(e: React.MouseEvent<HTMLButtonElement>) {
-        e.preventDefault();
-        try {
-            await generateApplicationsWithoutPending().unwrap();
-            enqueueSnackbar("Resultados processados com sucesso!", { variant: "success" });
-        } catch (error) {
-            enqueueSnackbar("Erro ao processar os resultados!", { variant: "error" });
-        }
-    }
+
 
     if (isFetchingOutcomeData || isFetchingEnemScore) {
         return (
@@ -94,20 +85,12 @@ const GenerateApplicationOutcomes = () => {
                                     variant="contained"
                                     color="primary"
                                     onClick={handleSubmit}
-                                    disabled={isLoading}
+                                    disabled={true}
                                     sx={{ fontSize: '12px' }}
                                 >
                                     {isLoading ? "Processando..." : "Gerar Resultados"}
                                 </Button>
-                                {/* <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={handleSubmitWithoutPending}
-                                    disabled={isGeneratingWithoutPending}
-                                    sx={{ fontSize: '12px' }}
-                                >
-                                    {isGeneratingWithoutPending ? "Processando..." : "Gerar Resultados - Sem Pêndencias"}
-                                </Button> */}
+
 
                                 {hasApplicationOutcomes && (
                                     <>
@@ -120,15 +103,6 @@ const GenerateApplicationOutcomes = () => {
                                         >
                                             Ver Resultado
                                         </Button>
-                                        {/* <Button
-                                            component={Link}
-                                            to="/application-outcomes"
-                                            variant="outlined"
-                                            color="error"
-                                            sx={{ fontSize: '12px' }}
-                                        >
-                                            Pendências
-                                        </Button> */}
                                     </>
                                 )}
                             </Box>

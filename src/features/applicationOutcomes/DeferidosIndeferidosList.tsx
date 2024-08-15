@@ -22,6 +22,7 @@ const DeferidosIndeferidosList = () => {
     });
 
     const [showOnlyPending, setShowOnlyPending] = useState(false);
+    const [showOnlyRejected, setShowOnlyRejected] = useState(false);
 
     const { data: outcomesData, isFetching, error } = useGetApplicationOutcomesQuery(options);
 
@@ -100,7 +101,11 @@ const DeferidosIndeferidosList = () => {
     }
 
     const deferidosIndeferidos: ProcessedApplicationOutcome[] = [...(outcomesData?.data || [])]
-        .filter((outcome) => !showOnlyPending || outcome.status === "pending")
+        .filter((outcome) => {
+            if (showOnlyPending) return outcome.status === "pending";
+            if (showOnlyRejected) return outcome.status === "rejected";
+            return true;
+        })
         .map((outcome) => ({
             ...outcome,
             displayStatus: outcome.status === "approved" ? "Deferido" : outcome.status === "rejected" ? "Indeferido" : "Pendente",
@@ -128,6 +133,17 @@ const DeferidosIndeferidosList = () => {
                     />
                 }
                 label="Mostrar apenas pendentes"
+            />
+
+            <FormControlLabel
+                control={
+                    <Switch
+                        checked={showOnlyRejected}
+                        onChange={(e) => setShowOnlyRejected(e.target.checked)}
+                        color="primary"
+                    />
+                }
+                label="Mostrar apenas indeferidos"
             />
 
             <Button variant="contained" color="primary" onClick={generatePDF}>
