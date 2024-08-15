@@ -47,7 +47,7 @@ const DeferidosIndeferidosList = () => {
         doc.text("Inscrições Deferidas ou Indeferidas", pageWidth / 2, topMargin + 60, { align: "center" });
 
         const rows = deferidosIndeferidos?.map((outcome) => [
-            outcome.application?.data?.name || "",
+            outcome?.status === 'approved' ? toUpperCase(outcome?.application?.enem_score?.scores?.name || "") : toUpperCase(outcome.application?.data?.name || ""),
             maskCPF(outcome.application?.data?.cpf || ""),
             outcome.displayStatus,
             outcome.displayReason
@@ -107,7 +107,7 @@ const DeferidosIndeferidosList = () => {
         })
         .map((outcome) => ({
             ...outcome,
-            displayStatus: outcome.status === "approved" ? "Deferido" : outcome.status === "rejected" ? "Indeferido" : "Pendente",
+            displayStatus: translate(outcome.status),
             displayReason: outcome.status === "rejected" || outcome.status === "pending" ? outcome.reason || "-" : "",
         }))
         .sort((a, b) => (a.application?.data?.name || "").localeCompare(b.application?.data?.name || ""));
