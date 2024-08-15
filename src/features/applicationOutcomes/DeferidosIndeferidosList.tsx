@@ -26,7 +26,8 @@ const DeferidosIndeferidosList = () => {
     const { data, isFetching, error } = useGetApplicationOutcomesQuery(options);
 
     const maskCPF = (cpf: string): string => {
-        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "***.$2.$3-**");
+        const cleanCPF = cpf.replace(/\D/g, '');
+        return cleanCPF.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "***.$2.$3-**");
     };
 
     const generatePDF = () => {
