@@ -11,6 +11,7 @@ interface ProcessedApplicationOutcome extends ApplicationOutcome {
     displayStatus: string;
     displayReason: string;
 }
+const capitalizeName = (name: string): string => name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
 
 const DeferidosIndeferidosList = () => {
     const translate = useTranslate('status');
@@ -163,6 +164,7 @@ const DeferidosIndeferidosList = () => {
                     whiteSpace: "nowrap",
                 }}
             >
+
                 <table
                     id="outcomes-table"
                     style={{
@@ -184,18 +186,19 @@ const DeferidosIndeferidosList = () => {
                         </tr>
                     </thead>
                     <tbody>
+
                         {deferidosIndeferidos?.map((outcome) => (
                             <tr key={outcome.id} style={{ border: "1px solid black", color: "black" }}>
                                 <td style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>
                                     <Link to={`/application-outcomes/edit/${outcome.id}`} style={{ textDecoration: 'none', color: 'blue' }}>
-                                        {outcome.application?.data?.name}
+                                        {(outcome?.status === 'approved' ? capitalizeName(outcome?.application?.enem_score?.scores?.name || "") : capitalizeName(outcome.application?.data?.name || ""))}
                                     </Link>
                                 </td>
                                 <td style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>
                                     {maskCPF(outcome.application?.data?.cpf || "")}
                                 </td>
                                 <td style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>
-                                    {outcome.displayStatus}
+                                    {translate(outcome?.status)}
                                 </td>
                                 <td style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>
                                     {outcome.displayReason}
