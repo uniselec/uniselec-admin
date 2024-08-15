@@ -3,49 +3,34 @@ import { Box } from "@mui/system";
 import {
   DataGrid,
   GridColDef,
-  GridFilterModel,
   GridRenderCellParams,
-  GridToolbar,
   GridToolbarContainer,
   GridToolbarExport,
+  GridToolbarQuickFilter,
   ptBR,
 } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { Results } from "../../../types/EnemScore";
-import { useDemoData } from '@mui/x-data-grid-generator';
 
 type Props = {
   enemScores: Results | undefined;
   isFetching: boolean;
 };
 
-
 function CustomToolbar() {
   return (
-    <GridToolbarContainer>
+    <GridToolbarContainer sx={{ justifyContent: 'space-between' }}>
       <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
+      <GridToolbarQuickFilter />
     </GridToolbarContainer>
   );
 }
 
 export function EnemScoreTable({
   enemScores,
-  // paginationModel,
   isFetching,
-  // handleSetPaginationModel,
-  // handleFilterChange,
-
 }: Props) {
-  // const { data  } = useDemoData({
-  //   dataSet: 'Commodity',
-  //   rowLength: 100,
-  //   maxColumns: 6,
-  // });
-
-
-
   const columns: GridColDef[] = [
-
     {
       field: "id",
       headerName: "Id",
@@ -62,14 +47,12 @@ export function EnemScoreTable({
     const { data: enemScores } = data;
     return enemScores.map((enemScore) => ({
       id: enemScore.id,
-      id2: enemScore.id,
       enem: enemScore.enem,
       name: enemScore?.scores?.name,
       original_score: enemScore.original_scores,
       created_at: enemScore.created_at,
     }));
   }
-
 
   function renderNameCell(rowData: GridRenderCellParams) {
     return (
@@ -81,7 +64,6 @@ export function EnemScoreTable({
       </Link>
     );
   }
-
 
   const rows = enemScores ? mapDataToGridRows(enemScores) : [];
   const rowCount = enemScores?.meta.total || 0;
@@ -100,11 +82,6 @@ export function EnemScoreTable({
         disableColumnSelector={true}
         disableDensitySelector={true}
         slots={{ toolbar: CustomToolbar }}
-        slotProps={{
-          toolbar: {
-            showQuickFilter: true,
-          },
-        }}
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
       />
     </Box>

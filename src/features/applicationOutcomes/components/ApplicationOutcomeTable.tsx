@@ -3,38 +3,37 @@ import { Box } from "@mui/system";
 import {
   DataGrid,
   GridColDef,
-  GridFilterModel,
   GridRenderCellParams,
-  GridToolbar,
+  GridToolbarContainer,
+  GridToolbarExport,
+  GridToolbarQuickFilter,
   ptBR,
 } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { Results } from "../../../types/ApplicationOutcome";
-import { useDemoData } from '@mui/x-data-grid-generator';
 import useTranslate from '../../polyglot/useTranslate';
-import { useState } from "react";
 
 type Props = {
   applicationOutcomes: Results | undefined;
   isFetching: boolean;
 };
 
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer sx={{ justifyContent: 'space-between' }}>
+      <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
+      <GridToolbarQuickFilter />
+    </GridToolbarContainer>
+  );
+}
+
 export function ApplicationOutcomeTable({
   applicationOutcomes,
-
   isFetching,
-
-
 }: Props) {
-
-
   const translate = useTranslate('status');
 
-
-
-
   const columns: GridColDef[] = [
-
     {
       field: "id",
       headerName: "Id",
@@ -47,14 +46,12 @@ export function ApplicationOutcomeTable({
     { field: "reason", headerName: "Motivo de Indeferimento", flex: 1, renderCell: renderNameCell },
     { field: "status", headerName: "Estado", flex: 1, renderCell: renderNameCell },
     { field: "classification_status", headerName: "Classificação", flex: 1, renderCell: renderNameCell },
-
   ];
 
   function mapDataToGridRows(data: Results) {
     const { data: applicationOutcomes } = data;
     return applicationOutcomes.map((applicationOutcome) => ({
       id: applicationOutcome.id,
-      id2: applicationOutcome.id,
       reason: applicationOutcome.reason,
       enem: applicationOutcome?.application?.data?.enem,
       name: applicationOutcome?.application?.data?.name,
@@ -63,7 +60,6 @@ export function ApplicationOutcomeTable({
       created_at: applicationOutcome.created_at,
     }));
   }
-
 
   function renderNameCell(rowData: GridRenderCellParams) {
     return (
@@ -75,7 +71,6 @@ export function ApplicationOutcomeTable({
       </Link>
     );
   }
-
 
   const rows = applicationOutcomes ? mapDataToGridRows(applicationOutcomes) : [];
   const rowCount = applicationOutcomes?.meta.total || 0;
@@ -93,12 +88,7 @@ export function ApplicationOutcomeTable({
         disableColumnFilter={false}
         disableColumnSelector={true}
         disableDensitySelector={true}
-        slots={{ toolbar: GridToolbar }}
-        slotProps={{
-          toolbar: {
-            showQuickFilter: true,
-          },
-        }}
+        slots={{ toolbar: CustomToolbar }}
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
       />
     </Box>

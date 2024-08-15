@@ -1,29 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import {
   DataGrid,
   GridColDef,
   GridRenderCellParams,
-  GridToolbar,
   GridToolbarContainer,
   GridToolbarExport,
+  GridToolbarQuickFilter,
   ptBR,
 } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
-import { Application, Results } from "../../../types/Application";
+import { Results } from "../../../types/Application";
 
 type Props = {
   applications: Results | undefined;
   isFetching: boolean;
 };
+
 function CustomToolbar() {
   return (
-    <GridToolbarContainer>
+    <GridToolbarContainer sx={{ justifyContent: 'space-between' }}>
       <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
+      <GridToolbarQuickFilter />
     </GridToolbarContainer>
   );
 }
+
 export function ApplicationTable({
   applications,
   isFetching,
@@ -45,18 +48,16 @@ export function ApplicationTable({
   function mapDataToGridRows(data: Results) {
     const { data: applications } = data;
 
-    return applications.map((application) => {
-      return {
-        id: application.id,
-        user_name: application?.user?.name,
-        email: application?.user?.email,
-        cpf: application?.user?.cpf,
-        enem: application?.data?.enem,
-        updated_at: application.updated_at,
-        data: application.data,
-        created_at: application.created_at,
-      };
-    });
+    return applications.map((application) => ({
+      id: application.id,
+      user_name: application?.user?.name,
+      email: application?.user?.email,
+      cpf: application?.user?.cpf,
+      enem: application?.data?.enem,
+      updated_at: application.updated_at,
+      data: application.data,
+      created_at: application.created_at,
+    }));
   }
 
   function renderNameCell(rowData: GridRenderCellParams) {
@@ -77,7 +78,6 @@ export function ApplicationTable({
     <Box sx={{ display: "flex", height: "60vh", width: '100%' }}>
       <DataGrid
         columns={columns}
-
         rows={rows}
         filterMode="client"
         rowCount={rowCount}
@@ -88,11 +88,6 @@ export function ApplicationTable({
         disableColumnSelector={true}
         disableDensitySelector={true}
         slots={{ toolbar: CustomToolbar }}
-        slotProps={{
-          toolbar: {
-            showQuickFilter: true,
-          },
-        }}
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
       />
     </Box>
