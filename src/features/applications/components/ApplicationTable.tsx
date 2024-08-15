@@ -1,43 +1,34 @@
+import React, { useState } from "react";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import {
   DataGrid,
   GridColDef,
-  GridFilterModel,
   GridRenderCellParams,
   GridToolbar,
+  GridToolbarContainer,
+  GridToolbarExport,
   ptBR,
 } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { Application, Results } from "../../../types/Application";
-import { useDemoData } from '@mui/x-data-grid-generator';
 
 type Props = {
   applications: Results | undefined;
-  // paginationModel: object;
   isFetching: boolean;
-  // handleSetPaginationModel: (paginateModel: { page: number, pageSize: number }) => void;
-  // handleFilterChange: (filterModel: GridFilterModel) => void;
 };
-
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
+    </GridToolbarContainer>
+  );
+}
 export function ApplicationTable({
   applications,
-  // paginationModel,
   isFetching,
-  // handleSetPaginationModel,
-  // handleFilterChange,
-
 }: Props) {
-  // const { data  } = useDemoData({
-  //   dataSet: 'Commodity',
-  //   rowLength: 100,
-  //   maxColumns: 6,
-  // });
-
-
-
   const columns: GridColDef[] = [
-
     {
       field: "id",
       headerName: "Id",
@@ -54,12 +45,9 @@ export function ApplicationTable({
   function mapDataToGridRows(data: Results) {
     const { data: applications } = data;
 
-
     return applications.map((application) => {
-
-      const applicationShow = {
+      return {
         id: application.id,
-        id2: application.id,
         user_name: application?.user?.name,
         email: application?.user?.email,
         cpf: application?.user?.cpf,
@@ -67,12 +55,9 @@ export function ApplicationTable({
         updated_at: application.updated_at,
         data: application.data,
         created_at: application.created_at,
-
       };
-      return applicationShow;
     });
   }
-
 
   function renderNameCell(rowData: GridRenderCellParams) {
     return (
@@ -85,23 +70,14 @@ export function ApplicationTable({
     );
   }
 
-
   const rows = applications ? mapDataToGridRows(applications) : [];
   const rowCount = applications?.meta.total || 0;
 
   return (
     <Box sx={{ display: "flex", height: "60vh", width: '100%' }}>
       <DataGrid
-        // {...data}
-        // initialState={{
-        //   ...data.initialState,
-        //   pagination: {
-        //     ...data.initialState?.pagination,
-        //     paginationModel: paginationModel,
-        //   },
-        // }}
-        // onPaginationModelChange={handleSetPaginationModel}
         columns={columns}
+
         rows={rows}
         filterMode="client"
         rowCount={rowCount}
@@ -111,13 +87,12 @@ export function ApplicationTable({
         disableColumnFilter={true}
         disableColumnSelector={true}
         disableDensitySelector={true}
-        slots={{ toolbar: GridToolbar }}
+        slots={{ toolbar: CustomToolbar }}
         slotProps={{
           toolbar: {
             showQuickFilter: true,
           },
         }}
-        // onFilterModelChange={handleFilterChange}
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
       />
     </Box>
