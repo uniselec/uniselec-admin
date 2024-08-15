@@ -13,6 +13,7 @@ interface ProcessedApplicationOutcome extends ApplicationOutcome {
 }
 
 const toUpperCase = (text: string): string => text.toUpperCase();
+
 const DeferidosIndeferidosList = () => {
     const translate = useTranslate('status');
     const [options, setOptions] = useState({
@@ -100,9 +101,10 @@ const DeferidosIndeferidosList = () => {
         return <Typography>Error fetching applicationOutcomes</Typography>;
     }
 
-    const deferidosIndeferidos: ProcessedApplicationOutcome[] = [...(outcomesData?.data || [])]
+    const deferidosIndeferidos: ProcessedApplicationOutcome[] = (outcomesData?.data || [])
         .filter((outcome) => {
             if (filterStatus === 'all') return true;
+            if (filterStatus === 'without_duplicates') return outcome.reason !== "Inscrição duplicada";
             return outcome.status === filterStatus;
         })
         .map((outcome) => ({
@@ -122,7 +124,6 @@ const DeferidosIndeferidosList = () => {
             <Typography variant="h5" sx={{ mt: 4, mb: 4 }}>
                 Inscrições Deferidas ou Indeferidas
             </Typography>
-
 
             <Box
                 sx={{
@@ -145,6 +146,7 @@ const DeferidosIndeferidosList = () => {
                             onChange={(e) => setFilterStatus(e.target.value)}
                         >
                             <MenuItem value="all">Todos</MenuItem>
+                            <MenuItem value="without_duplicates">Todos exceto duplicados</MenuItem>
                             <MenuItem value="approved">Deferidos</MenuItem>
                             <MenuItem value="pending">Pendentes</MenuItem>
                             <MenuItem value="rejected">Indeferidos</MenuItem>
@@ -165,7 +167,6 @@ const DeferidosIndeferidosList = () => {
                     whiteSpace: "nowrap",
                 }}
             >
-
                 <table
                     id="outcomes-table"
                     style={{
