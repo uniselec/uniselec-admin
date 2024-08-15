@@ -11,8 +11,8 @@ interface ProcessedApplicationOutcome extends ApplicationOutcome {
     displayStatus: string;
     displayReason: string;
 }
-const capitalizeName = (name: string): string => name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
 
+const toUpperCase = (text: string): string => text.toUpperCase();
 const DeferidosIndeferidosList = () => {
     const translate = useTranslate('status');
     const [options, setOptions] = useState({
@@ -123,6 +123,7 @@ const DeferidosIndeferidosList = () => {
                 Inscrições Deferidas ou Indeferidas
             </Typography>
 
+
             <Box
                 sx={{
                     display: 'flex',
@@ -191,7 +192,7 @@ const DeferidosIndeferidosList = () => {
                             <tr key={outcome.id} style={{ border: "1px solid black", color: "black" }}>
                                 <td style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>
                                     <Link to={`/application-outcomes/edit/${outcome.id}`} style={{ textDecoration: 'none', color: 'blue' }}>
-                                        {(outcome?.status === 'approved' ? capitalizeName(outcome?.application?.enem_score?.scores?.name || "") : capitalizeName(outcome.application?.data?.name || ""))}
+                                        {(outcome?.status === 'approved' ? toUpperCase(outcome?.application?.enem_score?.scores?.name || "") : toUpperCase(outcome.application?.data?.name || ""))}
                                     </Link>
                                 </td>
                                 <td style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>

@@ -27,9 +27,8 @@ function App() {
     <Box
       component="main"
       sx={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
+        height: "100vh",
+        overflow: "auto"
       }}
     >
       <Layout>
