@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useCreateEnemScoreMutation } from '../enemScores/enemScoreSlice';
 import Papa from 'papaparse';
-import { Box, Paper, Typography, Button, CircularProgress } from '@mui/material';
+import { Box, Paper, Typography, Button, CircularProgress, Alert } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
 const EnemScoreImport = () => {
@@ -12,6 +12,7 @@ const EnemScoreImport = () => {
     const [parsedData, setParsedData] = useState<string[][] | null>(null);
     const [errors, setErrors] = useState<string[]>([]);
     const [progress, setProgress] = useState(0);
+    const [importSummary, setImportSummary] = useState<{ success: number; failed: number } | null>(null);
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -33,6 +34,7 @@ const EnemScoreImport = () => {
         setProgress(0);
         setErrors([]);
         setError(null);
+        setImportSummary(null);
     };
 
     const handleConfirm = async () => {
@@ -41,7 +43,7 @@ const EnemScoreImport = () => {
             setError(null);
             setErrors([]);
             setProgress(0);
-
+            let successCount = 0;
             const errorMessages: string[] = [];
 
             for (let i = 0; i < parsedData.length; i++) {
@@ -66,6 +68,7 @@ const EnemScoreImport = () => {
 
                 try {
                     await createEnemScore(enemScore).unwrap();
+                    successCount++;
                 } catch (err) {
                     const message = `Erro ao importar a linha ${i + 1}: ${row[0]}`;
                     errorMessages.push(message);
@@ -76,6 +79,11 @@ const EnemScoreImport = () => {
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
 
+            setImportSummary({
+                success: successCount,
+                failed: errorMessages.length,
+            });
+
             if (errorMessages.length > 0) {
                 setErrors(errorMessages);
                 enqueueSnackbar("Erro ao importar algumas linhas.", { variant: "error" });
@@ -84,7 +92,6 @@ const EnemScoreImport = () => {
             }
 
             setIsLoading(false);
-            resetForm();
         }
     };
 
@@ -127,6 +134,15 @@ const EnemScoreImport = () => {
                                 <li key={idx}>{errMsg}</li>
                             ))}
                         </ul>
+                    </Box>
+                )}
+                {importSummary && (
+                    <Box mt={2}>
+                        <Alert severity="info">
+                            <Typography variant="body1">
+                                Importação concluída! Sucesso: {importSummary.success}, Falhas: {importSummary.failed}
+                            </Typography>
+                        </Alert>
                     </Box>
                 )}
             </Paper>
