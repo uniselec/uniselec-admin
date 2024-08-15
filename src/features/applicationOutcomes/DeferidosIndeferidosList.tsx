@@ -23,7 +23,7 @@ const DeferidosIndeferidosList = () => {
 
     const [showOnlyPending, setShowOnlyPending] = useState(false);
 
-    const { data, isFetching, error } = useGetApplicationOutcomesQuery(options);
+    const { data: outcomesData, isFetching, error } = useGetApplicationOutcomesQuery(options);
 
     const maskCPF = (cpf: string): string => {
         const cleanCPF = cpf.replace(/\D/g, '');
@@ -33,14 +33,17 @@ const DeferidosIndeferidosList = () => {
     const generatePDF = () => {
         const doc = new jsPDF("p", "pt", "a4");
 
-        const margin = 42.52; // 1.5 cm em pontos (1 cm = 28.35 pontos)
+        const topMargin = 56.7; // 2 cm em pontos (1 cm = 28.35 pontos)
+        const bottomMargin = 56.7; // 2 cm em pontos
         const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const currentDateTime = new Date().toLocaleString('pt-BR');
 
         doc.setFontSize(10);
-        doc.text("EDITAL PROGRAD Nº 12/2024, DE 31 DE JULHO DE 2024", pageWidth / 2, margin, { align: "center" });
-        doc.text("PROCESSO SELETIVO UNILAB – (MODELO SISU) - INGRESSO NO PERÍODO LETIVO 2024.1", pageWidth / 2, margin + 20, { align: "center" });
-        doc.text("Medicina - Baturité", pageWidth / 2, margin + 40, { align: "center" });
-        doc.text("Inscrições Deferidas ou Indeferidas", pageWidth / 2, margin + 60, { align: "center" });
+        doc.text("EDITAL PROGRAD Nº 12/2024, DE 31 DE JULHO DE 2024", pageWidth / 2, topMargin, { align: "center" });
+        doc.text("PROCESSO SELETIVO UNILAB – (MODELO SISU) - INGRESSO NO PERÍODO LETIVO 2024.1", pageWidth / 2, topMargin + 20, { align: "center" });
+        doc.text("Medicina - Baturité", pageWidth / 2, topMargin + 40, { align: "center" });
+        doc.text("Inscrições Deferidas ou Indeferidas", pageWidth / 2, topMargin + 60, { align: "center" });
 
         const rows = deferidosIndeferidos?.map((outcome) => [
             outcome.application?.data?.name || "",
@@ -52,7 +55,7 @@ const DeferidosIndeferidosList = () => {
         doc.autoTable({
             head: [["Nome", "CPF", "Situação", "Motivo"]],
             body: rows || [],
-            startY: margin + 80,
+            startY: topMargin + 80,
             styles: {
                 overflow: "linebreak",
                 cellWidth: "wrap",
@@ -68,11 +71,20 @@ const DeferidosIndeferidosList = () => {
                 3: { cellWidth: 150 },
             },
             theme: "grid",
-            margin: { top: margin, left: margin, right: margin },
-            didDrawCell: (data: any) => {
-                if (data.cell.section === 'body' && data.column.index === 3) {
-                    data.cell.text = data.cell.text.map((text: string) => doc.splitTextToSize(text, 200));
+            margin: { top: topMargin, left: topMargin, right: topMargin, bottom: bottomMargin },
+            didDrawCell: (cellData: any) => {
+                if (cellData.cell.section === 'body' && cellData.column.index === 3) {
+                    cellData.cell.text = cellData.cell.text.map((text: string) => doc.splitTextToSize(text, 200));
                 }
+            },
+            didDrawPage: (pageData: any) => {
+                doc.setFontSize(8);
+                doc.text(`Data e hora de geração: ${currentDateTime}`, topMargin, pageHeight - bottomMargin + 16, {
+                    align: 'left',
+                });
+                doc.text(`Página ${(doc.internal as any).getNumberOfPages()}`, pageWidth - topMargin, pageHeight - bottomMargin + 16, {
+                    align: 'right',
+                });
             }
         });
 
@@ -87,7 +99,7 @@ const DeferidosIndeferidosList = () => {
         return <Typography>Error fetching applicationOutcomes</Typography>;
     }
 
-    const deferidosIndeferidos: ProcessedApplicationOutcome[] = [...(data?.data || [])]
+    const deferidosIndeferidos: ProcessedApplicationOutcome[] = [...(outcomesData?.data || [])]
         .filter((outcome) => !showOnlyPending || outcome.status === "pending")
         .map((outcome) => ({
             ...outcome,
