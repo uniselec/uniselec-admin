@@ -11,21 +11,24 @@ import {
 import { Link } from "react-router-dom";
 import { Results } from "../../../types/User";
 import { useDemoData } from '@mui/x-data-grid-generator';
+import { GridToolbarContainer } from "@mui/x-data-grid";
+import { GridToolbarExport } from "@mui/x-data-grid";
 
 type Props = {
   users: Results | undefined;
-  // paginationModel: object;
   isFetching: boolean;
-  // handleSetPaginationModel: (paginateModel: { page: number, pageSize: number }) => void;
-  // handleFilterChange: (filterModel: GridFilterModel) => void;
-};
 
+};
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
+    </GridToolbarContainer>
+  );
+}
 export function UserTable({
   users,
-  // paginationModel,
   isFetching,
-  // handleSetPaginationModel,
-  // handleFilterChange,
 
 }: Props) {
   const { data  } = useDemoData({
@@ -61,16 +64,6 @@ export function UserTable({
   }
 
 
-  // function renderNameCell(rowData: GridRenderCellParams) {
-  //   return (
-  //     <Link
-  //       style={{ textDecoration: "none" }}
-  //       to={`/users/edit/${rowData.id}`}
-  //     >
-  //       <Typography color="primary">{rowData.value}</Typography>
-  //     </Link>
-  //   );
-  // }
 
 
   const rows = users ? mapDataToGridRows(users) : [];
@@ -79,15 +72,6 @@ export function UserTable({
   return (
     <Box sx={{ display: "flex", height: 450, width: '100%' }}>
       <DataGrid
-        // {...data}
-        // initialState={{
-        //   ...data.initialState,
-        //   pagination: {
-        //     ...data.initialState?.pagination,
-        //     paginationModel: paginationModel,
-        //   },
-        // }}
-        // onPaginationModelChange={handleSetPaginationModel}
         columns={columns}
         rows={rows}
         filterMode="client"
@@ -98,13 +82,12 @@ export function UserTable({
         disableColumnFilter={true}
         disableColumnSelector={true}
         disableDensitySelector={true}
-        slots={{ toolbar: GridToolbar }}
+        slots={{ toolbar: CustomToolbar }}
         slotProps={{
           toolbar: {
             showQuickFilter: true,
           },
         }}
-        // onFilterModelChange={handleFilterChange}
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
       />
     </Box>

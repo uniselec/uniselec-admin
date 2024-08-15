@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography, Button, Switch, FormControlLabel, Card, CardContent, Grid } from "@mui/material";
+import { Box, Typography, Button, FormControl, InputLabel, Select, MenuItem, Card, CardContent, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useGetApplicationOutcomesQuery } from "./applicationOutcomeSlice";
 import { ApplicationOutcome } from "../../types/ApplicationOutcome";
@@ -21,8 +21,7 @@ const DeferidosIndeferidosList = () => {
         rowsPerPage: [10, 20, 30],
     });
 
-    const [showOnlyPending, setShowOnlyPending] = useState(false);
-    const [showOnlyRejected, setShowOnlyRejected] = useState(false);
+    const [filterStatus, setFilterStatus] = useState<string>('all');
 
     const { data: outcomesData, isFetching, error } = useGetApplicationOutcomesQuery(options);
 
@@ -102,14 +101,13 @@ const DeferidosIndeferidosList = () => {
 
     const deferidosIndeferidos: ProcessedApplicationOutcome[] = [...(outcomesData?.data || [])]
         .filter((outcome) => {
-            if (showOnlyPending) return outcome.status === "pending";
-            if (showOnlyRejected) return outcome.status === "rejected";
-            return true;
+            if (filterStatus === 'all') return true;
+            return outcome.status === filterStatus;
         })
         .map((outcome) => ({
             ...outcome,
             displayStatus: outcome.status === "approved" ? "Deferido" : outcome.status === "rejected" ? "Indeferido" : "Pendente",
-            displayReason: outcome.status === "rejected" || outcome.status === "pending"  ? outcome.reason || "-" : "",
+            displayReason: outcome.status === "rejected" || outcome.status === "pending" ? outcome.reason || "-" : "",
         }))
         .sort((a, b) => (a.application?.data?.name || "").localeCompare(b.application?.data?.name || ""));
 
@@ -124,31 +122,41 @@ const DeferidosIndeferidosList = () => {
                 Inscrições Deferidas ou Indeferidas
             </Typography>
 
-            <FormControlLabel
-                control={
-                    <Switch
-                        checked={showOnlyPending}
-                        onChange={(e) => setShowOnlyPending(e.target.checked)}
-                        color="primary"
-                    />
-                }
-                label="Mostrar apenas pendentes"
-            />
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', md: 'row' },
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 2,
+                    mb: 4,
+                }}
+            >
+                <Box sx={{ flexBasis: { xs: '100%', md: '50%' } }}>
+                    <FormControl fullWidth>
+                        <InputLabel id="status-filter-label">Filtrar por Status</InputLabel>
+                        <Select
+                            labelId="status-filter-label"
+                            id="status-filter"
+                            value={filterStatus}
+                            label="Filtrar por Status"
+                            onChange={(e) => setFilterStatus(e.target.value)}
+                        >
+                            <MenuItem value="all">Todos</MenuItem>
+                            <MenuItem value="approved">Deferidos</MenuItem>
+                            <MenuItem value="pending">Pendentes</MenuItem>
+                            <MenuItem value="rejected">Indeferidos</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Box>
 
-            <FormControlLabel
-                control={
-                    <Switch
-                        checked={showOnlyRejected}
-                        onChange={(e) => setShowOnlyRejected(e.target.checked)}
-                        color="primary"
-                    />
-                }
-                label="Mostrar apenas indeferidos"
-            />
+                <Box sx={{ flexBasis: { xs: '100%', md: '50%' }, textAlign: { xs: 'center', md: 'right' } }}>
+                    <Button variant="contained" color="primary" onClick={generatePDF} fullWidth={false}>
+                        Gerar PDF
+                    </Button>
+                </Box>
+            </Box>
 
-            <Button variant="contained" color="primary" onClick={generatePDF}>
-                Gerar PDF
-            </Button>
             <Box
                 sx={{
                     overflowX: "auto",

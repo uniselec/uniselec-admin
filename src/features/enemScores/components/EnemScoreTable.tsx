@@ -6,6 +6,8 @@ import {
   GridFilterModel,
   GridRenderCellParams,
   GridToolbar,
+  GridToolbarContainer,
+  GridToolbarExport,
   ptBR,
 } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
@@ -14,11 +16,17 @@ import { useDemoData } from '@mui/x-data-grid-generator';
 
 type Props = {
   enemScores: Results | undefined;
-  // paginationModel: object;
   isFetching: boolean;
-  // handleSetPaginationModel: (paginateModel: { page: number, pageSize: number }) => void;
-  // handleFilterChange: (filterModel: GridFilterModel) => void;
 };
+
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
+    </GridToolbarContainer>
+  );
+}
 
 export function EnemScoreTable({
   enemScores,
@@ -81,15 +89,6 @@ export function EnemScoreTable({
   return (
     <Box sx={{ display: "flex", height: "60vh", width: '100%' }}>
       <DataGrid
-        // {...data}
-        // initialState={{
-        //   ...data.initialState,
-        //   pagination: {
-        //     ...data.initialState?.pagination,
-        //     paginationModel: paginationModel,
-        //   },
-        // }}
-        // onPaginationModelChange={handleSetPaginationModel}
         columns={columns}
         rows={rows}
         filterMode="client"
@@ -100,13 +99,12 @@ export function EnemScoreTable({
         disableColumnFilter={true}
         disableColumnSelector={true}
         disableDensitySelector={true}
-        slots={{ toolbar: GridToolbar }}
+        slots={{ toolbar: CustomToolbar }}
         slotProps={{
           toolbar: {
             showQuickFilter: true,
           },
         }}
-        // onFilterModelChange={handleFilterChange}
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
       />
     </Box>
