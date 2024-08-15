@@ -99,7 +99,7 @@ const GenerateApplicationOutcomes = () => {
                                 >
                                     {isLoading ? "Processando..." : "Gerar Resultados"}
                                 </Button>
-                                <Button
+                                {/* <Button
                                     variant="contained"
                                     color="primary"
                                     onClick={handleSubmitWithoutPending}
@@ -107,7 +107,7 @@ const GenerateApplicationOutcomes = () => {
                                     sx={{ fontSize: '12px' }}
                                 >
                                     {isGeneratingWithoutPending ? "Processando..." : "Gerar Resultados - Sem Pêndencias"}
-                                </Button>
+                                </Button> */}
 
                                 {hasApplicationOutcomes && (
                                     <>
