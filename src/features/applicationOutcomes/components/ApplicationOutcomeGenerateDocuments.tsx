@@ -172,6 +172,7 @@ export function ApplicationOutcomeGenerateDocuments({
     return bonuses.map((bonus: string) => bonus.split(":")[0]).join(", ");
   };
 
+
   const generatePDF = () => {
     const doc = new jsPDF("p", "pt", "a4");
 
@@ -182,22 +183,27 @@ export function ApplicationOutcomeGenerateDocuments({
     const currentDateTime = new Date().toLocaleString("pt-BR");
 
     doc.setFontSize(10);
+    doc.text(
+      "EDITAL PROGRAD Nº 12/2024, DE 31 DE JULHO DE 2024",
+      pageWidth / 2,
+      margin,
+      { align: "center" }
+    );
+    doc.text(
+      "PROCESSO SELETIVO UNILAB – (MODELO SISU)",
+      pageWidth / 2,
+      margin + 20,
+      { align: "center" }
+    );
+    doc.text("Curso de Medicina - Baturité", pageWidth / 2, margin + 40, {
+      align: "center",
+    });
 
-    // Centraliza o texto
-    const title1 = "EDITAL PROGRAD Nº 12/2024, DE 31 DE JULHO DE 2024";
-    const title2 = "PROCESSO SELETIVO UNILAB – (MODELO SISU)";
-    const title3 = "Curso de Medicina - Baturité";
-    const title4 = `Classificação Geral: ${selectedCategory}`;
-
-    // Dividir o texto que pode ultrapassar a largura da página
-    const title4Lines = doc.splitTextToSize(title4, availableWidth);
-
-    doc.text(title1, pageWidth / 2, margin, { align: "center" });
-    doc.text(title2, pageWidth / 2, margin + 20, { align: "center" });
-    doc.text(title3, pageWidth / 2, margin + 40, { align: "center" });
-
-    // Adiciona o texto quebrado em múltiplas linhas
-    doc.text(title4Lines, pageWidth / 2, margin + 60, { align: "center" });
+    const wrappedTitle = doc.splitTextToSize(
+      `Classificação Geral: ${selectedCategory}`,
+      availableWidth
+    );
+    doc.text(wrappedTitle, margin, margin + 70);
 
     const rows = outcomesByCategory.map((outcome, index) => [
       index + 1,
@@ -220,7 +226,7 @@ export function ApplicationOutcomeGenerateDocuments({
         ],
       ],
       body: rows,
-      startY: margin + 100 + title4Lines.length * 10, // Ajusta a posição inicial para a tabela
+      startY: margin + 100,
       styles: {
         overflow: "linebreak",
         cellWidth: "wrap",
