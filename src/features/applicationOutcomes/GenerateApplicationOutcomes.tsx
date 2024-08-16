@@ -4,7 +4,8 @@ import { useGenerateApplicationOutcomeMutation, useGenerateApplicationOutcomeWit
 import { useGetEnemScoresQuery } from "../enemScores/enemScoreSlice";
 import { useSnackbar } from "notistack";
 import { Link } from 'react-router-dom';
-import { CategoryCards } from './CategoryCards';
+import { CategoryCards } from './components/CategoryCards';
+
 
 const GenerateApplicationOutcomes = () => {
     const { enqueueSnackbar } = useSnackbar();
@@ -109,7 +110,7 @@ const GenerateApplicationOutcomes = () => {
                         </>
                     )}
                 </Box>
-                {/* {hasApplicationOutcomes && <CategoryCards />} */}
+                {hasApplicationOutcomes && <CategoryCards applicationOutcomes={outcomesData} isFetching={isFetchingOutcomeData}/>}
             </Paper>
         </Box>
     );
