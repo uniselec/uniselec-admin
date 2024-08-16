@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { ApplicationOutcome } from "../../../types/ApplicationOutcome";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
+import { Document, Packer, Paragraph, Table, TableCell, TableRow, TextRun } from "docx";
+import { saveAs } from "file-saver";
 
 const vagaOptions = {
   "LB - PPI: Candidatos autodeclarados pretos, pardos ou indígenas, com renda familiar bruta per capita igual ou inferior a 1 salário mínimo e que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).": 5,
@@ -271,6 +273,126 @@ export function ApplicationOutcomeGenerateDocuments({
     doc.save("application_outcomes.pdf");
   };
 
+  const generateDocx = async () => {
+    const doc = new Document({
+      sections: [
+        {
+          properties: {},
+          children: [
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: "EDITAL PROGRAD Nº 12/2024, DE 31 DE JULHO DE 2024",
+                  bold: true,
+                }),
+              ],
+              alignment: "center",
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: "PROCESSO SELETIVO UNILAB – (MODELO SISU)",
+                  bold: true,
+                }),
+              ],
+              alignment: "center",
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: "Curso de Medicina - Baturité",
+                  bold: true,
+                }),
+              ],
+              alignment: "center",
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `Classificação Geral: ${selectedCategory}`,
+                  bold: true,
+                }),
+              ],
+              alignment: "center",
+            }),
+            new Paragraph({
+              text: "",
+            }),
+            new Table({
+              rows: [
+                new TableRow({
+                  children: [
+                    new TableCell({
+                      children: [new Paragraph("Classificação")],
+                    }),
+                    new TableCell({
+                      children: [new Paragraph("Nome")],
+                    }),
+                    new TableCell({
+                      children: [new Paragraph("CPF")],
+                    }),
+                    new TableCell({
+                      children: [new Paragraph("Situação")],
+                    }),
+                    new TableCell({
+                      children: [new Paragraph("Nota Final")],
+                    }),
+                    new TableCell({
+                      children: [new Paragraph("Bonificação")],
+                    }),
+                  ],
+                }),
+                ...outcomesByCategory.map((outcome, index) =>
+                  new TableRow({
+                    children: [
+                      new TableCell({
+                        children: [new Paragraph((index + 1).toString())],
+                      }),
+                      new TableCell({
+                        children: [
+                          new Paragraph(
+                            outcome.application?.enem_score?.scores?.name || ""
+                          ),
+                        ],
+                      }),
+                      new TableCell({
+                        children: [
+                          new Paragraph(
+                            maskCPF(outcome.application?.data?.cpf || "")
+                          ),
+                        ],
+                      }),
+                      new TableCell({
+                        children: [new Paragraph(outcome.classification || "")],
+                      }),
+                      new TableCell({
+                        children: [
+                          new Paragraph(outcome.final_score.toString()),
+                        ],
+                      }),
+                      new TableCell({
+                        children: [
+                          new Paragraph(
+                            getFormattedBonus(
+                              outcome.application?.data?.bonus
+                            )
+                          ),
+                        ],
+                      }),
+                    ],
+                  })
+                ),
+              ],
+            }),
+          ],
+        },
+      ],
+    });
+
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, "application_outcomes.docx");
+  };
+
   return (
     <Box sx={{ mt: 0, mb: 0 }}>
       {selectedCategory && (
@@ -279,33 +401,14 @@ export function ApplicationOutcomeGenerateDocuments({
             Resultados para: {selectedCategory}
           </Typography>
 
-          <Button variant="contained" color="primary" onClick={generatePDF}>
-            Gerar PDF
-          </Button>
-
-          {/* <Card sx={{ mt: 4 }}>
-            <CardContent>
-              <Typography variant="h6" sx={{ fontSize: "14px" }}>
-                Notas Repetidas
-              </Typography>
-              {duplicateEntries.length > 0 ? (
-                <>
-                  <Typography>
-                    Foram encontradas {duplicateEntries.length} notas repetidas.
-                  </Typography>
-                  <ul>
-                    {duplicateEntries.map(([score, count], index) => (
-                      <li key={index}>
-                        Nota: {score}, Repetições: {count}
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              ) : (
-                <Typography>Não há notas repetidas.</Typography>
-              )}
-            </CardContent>
-          </Card> */}
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Button variant="contained" color="primary" onClick={generatePDF}>
+              Gerar PDF
+            </Button>
+            <Button variant="contained" color="secondary" onClick={generateDocx}>
+              Gerar Word
+            </Button>
+          </Box>
 
           <table
             id="outcomes-table"
