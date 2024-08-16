@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Card, CardContent } from "@mui/material";
 import { Link } from "react-router-dom";
 import { ApplicationOutcome } from "../../../types/ApplicationOutcome";
 import { jsPDF } from "jspdf";
@@ -84,62 +84,65 @@ export function ApplicationOutcomeGenerateDocuments({
     categories.find((category) => category.id === parseInt(categoryId ?? "0"))
       ?.value || "AC: Ampla Concorrência";
 
-
   const filteredOutcomes = applicationOutcomes.filter((outcome: ApplicationOutcome) => {
     const vaga = outcome.application?.data?.vaga;
     return (
-      (outcome.status === "approved") && // Verificação adicional para status "deferido"
+      outcome.status === "approved" &&
       (selectedCategory === "AC: Ampla Concorrência" ||
         (vaga && vaga.includes(selectedCategory)) ||
         (!vaga && selectedCategory === "AC: Ampla Concorrência"))
     );
   });
-  // return (<>{JSON.stringify(vagaOptions[selectedCategory as CategoryKey])}</>);
 
+  const outcomeScores = filteredOutcomes.map(outcome => outcome.final_score);
+  const duplicateScores = outcomeScores.reduce((acc: Record<number, number>, score) => {
+    if (acc[score]) {
+      acc[score]++;
+    } else {
+      acc[score] = 1;
+    }
+    return acc;
+  }, {});
+
+  const duplicateEntries = Object.entries(duplicateScores)
+    .filter(([_, count]) => count > 1);
 
   const outcomesByCategory = filteredOutcomes
     .sort((a: ApplicationOutcome, b: ApplicationOutcome) => {
-      // Primeiro, ordena pela nota final
       if (b.final_score !== a.final_score) {
         return b.final_score - a.final_score;
       }
 
-      // Critério 5.3.a: Maior idade
       const ageA = new Date(a.application?.data?.birtdate || "").getTime();
       const ageB = new Date(b.application?.data?.birtdate || "").getTime();
       if (ageB !== ageA) {
-        return ageB - ageA; // Maior idade primeiro
+        return ageB - ageA;
       }
 
-      // Critério 5.3.b: Maior nota de Redação
       const writingScoreA = Number(a.application?.enem_score?.scores?.writing_score || 0);
       const writingScoreB = Number(b.application?.enem_score?.scores?.writing_score || 0);
       if (writingScoreB !== writingScoreA) {
         return writingScoreB - writingScoreA;
       }
 
-      // Critério 5.3.c: Maior nota na prova de Linguagem, Códigos e suas Tecnologias
       const languageScoreA = Number(a.application?.enem_score?.scores?.language_score || 0);
       const languageScoreB = Number(b.application?.enem_score?.scores?.language_score || 0);
       if (languageScoreB !== languageScoreA) {
         return languageScoreB - languageScoreA;
       }
 
-      // Critério 5.3.d: Maior nota na prova de Matemática e suas Tecnologias
       const mathScoreA = Number(a.application?.enem_score?.scores?.math_score || 0);
       const mathScoreB = Number(b.application?.enem_score?.scores?.math_score || 0);
       if (mathScoreB !== mathScoreA) {
         return mathScoreB - mathScoreA;
       }
 
-      // Critério 5.3.e: Maior nota na prova de Ciências da Natureza e suas Tecnologias
       const scienceScoreA = Number(a.application?.enem_score?.scores?.science_score || 0);
       const scienceScoreB = Number(b.application?.enem_score?.scores?.science_score || 0);
       if (scienceScoreB !== scienceScoreA) {
         return scienceScoreB - scienceScoreA;
       }
 
-      // Critério 5.3.f: Maior nota na prova de Ciências Humanas e suas Tecnologias
       const humanitiesScoreA = Number(a.application?.enem_score?.scores?.humanities_score || 0);
       const humanitiesScoreB = Number(b.application?.enem_score?.scores?.humanities_score || 0);
       return humanitiesScoreB - humanitiesScoreA;
@@ -200,12 +203,12 @@ export function ApplicationOutcomeGenerateDocuments({
     doc.text(wrappedTitle, margin, margin + 70);
 
     const rows = outcomesByCategory.map((outcome, index) => [
-      index + 1, // Classificação
+      index + 1,
       outcome.application?.enem_score?.scores?.name || "",
       maskCPF(outcome.application?.data?.cpf || ""),
       outcome.classification || "",
       outcome.final_score || "",
-      getFormattedBonus(outcome.application?.data?.bonus), // Bonificação
+      getFormattedBonus(outcome.application?.data?.bonus),
     ]);
 
     doc.autoTable({
@@ -284,6 +287,30 @@ export function ApplicationOutcomeGenerateDocuments({
           <Button variant="contained" color="primary" onClick={generatePDF}>
             Gerar PDF
           </Button>
+
+          <Card sx={{ mt: 4 }}>
+            <CardContent>
+              <Typography variant="h6" sx={{ fontSize: "14px" }}>
+                Notas Repetidas
+              </Typography>
+              {duplicateEntries.length > 0 ? (
+                <>
+                  <Typography>
+                    Foram encontradas {duplicateEntries.length} notas repetidas.
+                  </Typography>
+                  <ul>
+                    {duplicateEntries.map(([score, count], index) => (
+                      <li key={index}>
+                        Nota: {score}, Repetições: {count}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <Typography>Não há notas repetidas.</Typography>
+              )}
+            </CardContent>
+          </Card>
 
           <table
             id="outcomes-table"
