@@ -16,6 +16,7 @@ export interface ApplicationOutcome {
     application_id: number;
     application?: Application;
     status: string;
+    classification?: string;
     classification_status: string;
     average_score: number;
     final_score: number;

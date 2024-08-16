@@ -16,8 +16,8 @@ import { ApplicationOutcomeEdit } from "./features/applicationOutcomes/Applicati
 import { EnemScoreImport } from "./features/enemScores/EnemScoreImport";
 import { EnemScoreSelected } from "./features/enemScores/EnemScoreSelected";
 import { GenerateApplicationOutcomes } from "./features/applicationOutcomes/GenerateApplicationOutcomes";
-import { ApplicationOutcomeGenerateDocuments } from "./features/applicationOutcomes/ApplicationOutcomeGenerateDocuments";
 import { DeferidosIndeferidosList } from "./features/applicationOutcomes/DeferidosIndeferidosList";
+import { ApplicationResults } from "./features/applicationOutcomes/ApplicationResults";
 
 
 
@@ -35,14 +35,13 @@ function App() {
         <Routes>
           <Route path="/" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
           <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} />
-          <Route path="/listas-resultado" element={<ProtectedRoute><ApplicationOutcomeGenerateDocuments /></ProtectedRoute>} />
           <Route path="/import-enem-score" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
           <Route path="/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
           <Route path="/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} />
           <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
           <Route path="/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
           <Route path="/applications/:id" element={<ProtectedRoute><ApplicationSelected /></ProtectedRoute>} />
-          <Route path="/applications-results/:categoryId" element={<ProtectedRoute><ApplicationOutcomeGenerateDocuments /></ProtectedRoute>} />
+          <Route path="/applications-results/:categoryId" element={<ProtectedRoute><ApplicationResults /></ProtectedRoute>} />
           <Route path="/charts" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
 
 
