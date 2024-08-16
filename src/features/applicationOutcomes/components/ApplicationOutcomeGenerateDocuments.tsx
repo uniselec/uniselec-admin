@@ -116,7 +116,7 @@ export function ApplicationOutcomeGenerateDocuments({
       const ageA = new Date(a.application?.data?.birtdate || "").getTime();
       const ageB = new Date(b.application?.data?.birtdate || "").getTime();
       if (ageB !== ageA) {
-        return ageB - ageA;
+        return ageA - ageB;
       }
 
       const writingScoreA = Number(a.application?.enem_score?.scores?.writing_score || 0);
