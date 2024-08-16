@@ -180,27 +180,28 @@ export function ApplicationOutcomeGenerateDocuments({
     const currentDateTime = new Date().toLocaleString("pt-BR");
 
     doc.setFontSize(10);
-    doc.text(
-      "EDITAL PROGRAD Nº 12/2024, DE 31 DE JULHO DE 2024",
-      pageWidth / 2,
-      margin,
-      { align: "center" }
-    );
-    doc.text(
-      "PROCESSO SELETIVO UNILAB – (MODELO SISU)",
-      pageWidth / 2,
-      margin + 20,
-      { align: "center" }
-    );
-    doc.text("Curso de Medicina - Baturité", pageWidth / 2, margin + 40, {
-      align: "center",
-    });
 
-    const wrappedTitle = doc.splitTextToSize(
-      `Classificação Geral: ${selectedCategory}`,
-      availableWidth
-    );
-    doc.text(wrappedTitle, margin, margin + 70);
+    // Centraliza o texto
+    const title1 = "EDITAL PROGRAD Nº 12/2024, DE 31 DE JULHO DE 2024";
+    const title2 = "PROCESSO SELETIVO UNILAB – (MODELO SISU)";
+    const title3 = "Curso de Medicina - Baturité";
+    const title4 = `Classificação Geral: ${selectedCategory}`;
+
+    // Cálculo da posição X para centralizar
+    const title1Width = doc.getTextWidth(title1);
+    const title2Width = doc.getTextWidth(title2);
+    const title3Width = doc.getTextWidth(title3);
+    const title4Width = doc.getTextWidth(title4);
+
+    const centerX1 = (pageWidth - title1Width) / 2;
+    const centerX2 = (pageWidth - title2Width) / 2;
+    const centerX3 = (pageWidth - title3Width) / 2;
+    const centerX4 = (pageWidth - title4Width) / 2;
+
+    doc.text(title1, centerX1, margin);
+    doc.text(title2, centerX2, margin + 20);
+    doc.text(title3, centerX3, margin + 40);
+    doc.text(title4, centerX4, margin + 70);
 
     const rows = outcomesByCategory.map((outcome, index) => [
       index + 1,
@@ -287,30 +288,6 @@ export function ApplicationOutcomeGenerateDocuments({
           <Button variant="contained" color="primary" onClick={generatePDF}>
             Gerar PDF
           </Button>
-
-          {/* <Card sx={{ mt: 4 }}>
-            <CardContent>
-              <Typography variant="h6" sx={{ fontSize: "14px" }}>
-                Notas Repetidas
-              </Typography>
-              {duplicateEntries.length > 0 ? (
-                <>
-                  <Typography>
-                    Foram encontradas {duplicateEntries.length} notas repetidas.
-                  </Typography>
-                  <ul>
-                    {duplicateEntries.map(([score, count], index) => (
-                      <li key={index}>
-                        Nota: {score}, Repetições: {count}
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              ) : (
-                <Typography>Não há notas repetidas.</Typography>
-              )}
-            </CardContent>
-          </Card> */}
 
           <table
             id="outcomes-table"
