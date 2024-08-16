@@ -187,21 +187,15 @@ export function ApplicationOutcomeGenerateDocuments({
     const title3 = "Curso de Medicina - Baturité";
     const title4 = `Classificação Geral: ${selectedCategory}`;
 
-    // Cálculo da posição X para centralizar
-    const title1Width = doc.getTextWidth(title1);
-    const title2Width = doc.getTextWidth(title2);
-    const title3Width = doc.getTextWidth(title3);
-    const title4Width = doc.getTextWidth(title4);
+    // Dividir o texto que pode ultrapassar a largura da página
+    const title4Lines = doc.splitTextToSize(title4, availableWidth);
 
-    const centerX1 = (pageWidth - title1Width) / 2;
-    const centerX2 = (pageWidth - title2Width) / 2;
-    const centerX3 = (pageWidth - title3Width) / 2;
-    const centerX4 = (pageWidth - title4Width) / 2;
+    doc.text(title1, pageWidth / 2, margin, { align: "center" });
+    doc.text(title2, pageWidth / 2, margin + 20, { align: "center" });
+    doc.text(title3, pageWidth / 2, margin + 40, { align: "center" });
 
-    doc.text(title1, centerX1, margin);
-    doc.text(title2, centerX2, margin + 20);
-    doc.text(title3, centerX3, margin + 40);
-    doc.text(title4, centerX4, margin + 70);
+    // Adiciona o texto quebrado em múltiplas linhas
+    doc.text(title4Lines, pageWidth / 2, margin + 60, { align: "center" });
 
     const rows = outcomesByCategory.map((outcome, index) => [
       index + 1,
@@ -224,7 +218,7 @@ export function ApplicationOutcomeGenerateDocuments({
         ],
       ],
       body: rows,
-      startY: margin + 100,
+      startY: margin + 100 + title4Lines.length * 10, // Ajusta a posição inicial para a tabela
       styles: {
         overflow: "linebreak",
         cellWidth: "wrap",
@@ -288,6 +282,30 @@ export function ApplicationOutcomeGenerateDocuments({
           <Button variant="contained" color="primary" onClick={generatePDF}>
             Gerar PDF
           </Button>
+
+          {/* <Card sx={{ mt: 4 }}>
+            <CardContent>
+              <Typography variant="h6" sx={{ fontSize: "14px" }}>
+                Notas Repetidas
+              </Typography>
+              {duplicateEntries.length > 0 ? (
+                <>
+                  <Typography>
+                    Foram encontradas {duplicateEntries.length} notas repetidas.
+                  </Typography>
+                  <ul>
+                    {duplicateEntries.map(([score, count], index) => (
+                      <li key={index}>
+                        Nota: {score}, Repetições: {count}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <Typography>Não há notas repetidas.</Typography>
+              )}
+            </CardContent>
+          </Card> */}
 
           <table
             id="outcomes-table"
