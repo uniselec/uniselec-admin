@@ -288,7 +288,7 @@ export function ApplicationOutcomeGenerateDocuments({
             Gerar PDF
           </Button>
 
-          <Card sx={{ mt: 4 }}>
+          {/* <Card sx={{ mt: 4 }}>
             <CardContent>
               <Typography variant="h6" sx={{ fontSize: "14px" }}>
                 Notas Repetidas
@@ -310,7 +310,7 @@ export function ApplicationOutcomeGenerateDocuments({
                 <Typography>Não há notas repetidas.</Typography>
               )}
             </CardContent>
-          </Card>
+          </Card> */}
 
           <table
             id="outcomes-table"
