@@ -6,28 +6,68 @@ import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 
 const vagaOptions = {
-  "LB - PPI": 5,
-  "LB - Q": 1,
-  "LB - PCD": 1,
-  "LB - EP": 1,
-  "LI - PPI": 5,
-  "LI - Q": 0,
-  "LI - PCD": 1,
-  "LI - EP": 1,
+  "LB - PPI: Candidatos autodeclarados pretos, pardos ou indígenas, com renda familiar bruta per capita igual ou inferior a 1 salário mínimo e que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).": 5,
+  "LB - Q: Candidatos autodeclarados quilombolas, com renda familiar bruta per capita igual ou inferior a  1 salário mínimo e que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).": 1,
+  "LB - PCD: Candidatos com deficiência, que tenham renda familiar bruta per capita igual ou inferior a 1 salário mínimo e que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).": 1,
+  "LB - EP: Candidatos com renda familiar bruta per capita igual ou inferior a 1 salário mínimo que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).": 1,
+  "LI - PPI: Candidatos autodeclarados pretos, pardos ou indígenas, independentemente da renda, que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).": 5,
+  "LI - Q: Candidatos autodeclarados quilombolas, independentemente da renda, tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).": 0,
+  "LI - PCD: Candidatos com deficiência, independentemente da renda, que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).": 1,
+  "LI - EP: Candidatos que, independentemente da renda, tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).": 1,
   "AC: Ampla Concorrência": 8,
 } as const;
 
 type CategoryKey = keyof typeof vagaOptions;
 
 const categories = [
-  { id: 1, label: "LB - PPI", value: "LB - PPI: Candidatos autodeclarados pretos, pardos ou indígenas, com renda familiar bruta per capita igual ou inferior a 1 salário mínimo e que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012)." },
-  { id: 2, label: "LB - Q", value: "LB - Q: Candidatos autodeclarados quilombolas, com renda familiar bruta per capita igual ou inferior a  1 salário mínimo e que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012)." },
-  { id: 3, label: "LB - PCD", value: "LB - PCD: Candidatos com deficiência, que tenham renda familiar bruta per capita igual ou inferior a 1 salário mínimo e que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012)." },
-  { id: 4, label: "LB - EP", value: "LB - EP: Candidatos com renda familiar bruta per capita igual ou inferior a 1 salário mínimo que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012)." },
-  { id: 5, label: "LI - PPI", value: "LI - PPI: Candidatos autodeclarados pretos, pardos ou indígenas, independentemente da renda, que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012)." },
-  { id: 6, label: "LI - Q", value: "LI - Q: Candidatos autodeclarados quilombolas, independentemente da renda, tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012)." },
-  { id: 7, label: "LI - PCD", value: "LI - PCD: Candidatos com deficiência, independentemente da renda, que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012)." },
-  { id: 8, label: "LI - EP", value: "LI - EP: Candidatos que, independentemente da renda, tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012)." },
+  {
+    id: 1,
+    label: "LB - PPI",
+    value:
+      "LB - PPI: Candidatos autodeclarados pretos, pardos ou indígenas, com renda familiar bruta per capita igual ou inferior a 1 salário mínimo e que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).",
+  },
+  {
+    id: 2,
+    label: "LB - Q",
+    value:
+      "LB - Q: Candidatos autodeclarados quilombolas, com renda familiar bruta per capita igual ou inferior a  1 salário mínimo e que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).",
+  },
+  {
+    id: 3,
+    label: "LB - PCD",
+    value:
+      "LB - PCD: Candidatos com deficiência, que tenham renda familiar bruta per capita igual ou inferior a 1 salário mínimo e que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).",
+  },
+  {
+    id: 4,
+    label: "LB - EP",
+    value:
+      "LB - EP: Candidatos com renda familiar bruta per capita igual ou inferior a 1 salário mínimo que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).",
+  },
+  {
+    id: 5,
+    label: "LI - PPI",
+    value:
+      "LI - PPI: Candidatos autodeclarados pretos, pardos ou indígenas, independentemente da renda, que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).",
+  },
+  {
+    id: 6,
+    label: "LI - Q",
+    value:
+      "LI - Q: Candidatos autodeclarados quilombolas, independentemente da renda, tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).",
+  },
+  {
+    id: 7,
+    label: "LI - PCD",
+    value:
+      "LI - PCD: Candidatos com deficiência, independentemente da renda, que tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).",
+  },
+  {
+    id: 8,
+    label: "LI - EP",
+    value:
+      "LI - EP: Candidatos que, independentemente da renda, tenham cursado integralmente o ensino médio em escolas públicas (Lei nº 12.711/2012).",
+  },
   { id: 9, label: "AC: Ampla Concorrência", value: "AC: Ampla Concorrência" },
 ];
 
@@ -44,16 +84,66 @@ export function ApplicationOutcomeGenerateDocuments({
     categories.find((category) => category.id === parseInt(categoryId ?? "0"))
       ?.value || "AC: Ampla Concorrência";
 
-  const outcomesByCategory = applicationOutcomes
-    .filter((outcome: ApplicationOutcome) => {
-      const vaga = outcome.application?.data?.vaga;
-      return (
-        selectedCategory === "AC: Ampla Concorrência" ||
+
+  const filteredOutcomes = applicationOutcomes.filter((outcome: ApplicationOutcome) => {
+    const vaga = outcome.application?.data?.vaga;
+    return (
+      (outcome.status === "approved") && // Verificação adicional para status "deferido"
+      (selectedCategory === "AC: Ampla Concorrência" ||
         (vaga && vaga.includes(selectedCategory)) ||
-        (!vaga && selectedCategory === "AC: Ampla Concorrência")
-      );
+        (!vaga && selectedCategory === "AC: Ampla Concorrência"))
+    );
+  });
+  // return (<>{JSON.stringify(vagaOptions[selectedCategory as CategoryKey])}</>);
+
+
+  const outcomesByCategory = filteredOutcomes
+    .sort((a: ApplicationOutcome, b: ApplicationOutcome) => {
+      // Primeiro, ordena pela nota final
+      if (b.final_score !== a.final_score) {
+        return b.final_score - a.final_score;
+      }
+
+      // Critério 5.3.a: Maior idade
+      const ageA = new Date(a.application?.data?.birtdate || "").getTime();
+      const ageB = new Date(b.application?.data?.birtdate || "").getTime();
+      if (ageB !== ageA) {
+        return ageB - ageA; // Maior idade primeiro
+      }
+
+      // Critério 5.3.b: Maior nota de Redação
+      const writingScoreA = Number(a.application?.enem_score?.scores?.writing_score || 0);
+      const writingScoreB = Number(b.application?.enem_score?.scores?.writing_score || 0);
+      if (writingScoreB !== writingScoreA) {
+        return writingScoreB - writingScoreA;
+      }
+
+      // Critério 5.3.c: Maior nota na prova de Linguagem, Códigos e suas Tecnologias
+      const languageScoreA = Number(a.application?.enem_score?.scores?.language_score || 0);
+      const languageScoreB = Number(b.application?.enem_score?.scores?.language_score || 0);
+      if (languageScoreB !== languageScoreA) {
+        return languageScoreB - languageScoreA;
+      }
+
+      // Critério 5.3.d: Maior nota na prova de Matemática e suas Tecnologias
+      const mathScoreA = Number(a.application?.enem_score?.scores?.math_score || 0);
+      const mathScoreB = Number(b.application?.enem_score?.scores?.math_score || 0);
+      if (mathScoreB !== mathScoreA) {
+        return mathScoreB - mathScoreA;
+      }
+
+      // Critério 5.3.e: Maior nota na prova de Ciências da Natureza e suas Tecnologias
+      const scienceScoreA = Number(a.application?.enem_score?.scores?.science_score || 0);
+      const scienceScoreB = Number(b.application?.enem_score?.scores?.science_score || 0);
+      if (scienceScoreB !== scienceScoreA) {
+        return scienceScoreB - scienceScoreA;
+      }
+
+      // Critério 5.3.f: Maior nota na prova de Ciências Humanas e suas Tecnologias
+      const humanitiesScoreA = Number(a.application?.enem_score?.scores?.humanities_score || 0);
+      const humanitiesScoreB = Number(b.application?.enem_score?.scores?.humanities_score || 0);
+      return humanitiesScoreB - humanitiesScoreA;
     })
-    .sort((a: ApplicationOutcome, b: ApplicationOutcome) => b.final_score - a.final_score)
     .map((outcome: ApplicationOutcome, index: number) => ({
       ...outcome,
       classification:
@@ -64,6 +154,17 @@ export function ApplicationOutcomeGenerateDocuments({
 
   const maskCPF = (cpf: string) => {
     return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "XXX.$2.$3-XX");
+  };
+
+  const getFormattedBonus = (bonuses?: string[]) => {
+    if (
+      !bonuses ||
+      bonuses.includes("Nenhuma das anteriores") ||
+      bonuses.length === 0
+    ) {
+      return "-";
+    }
+    return bonuses.map((bonus: string) => bonus.split(":")[0]).join(", ");
   };
 
   const generatePDF = () => {
@@ -104,9 +205,7 @@ export function ApplicationOutcomeGenerateDocuments({
       maskCPF(outcome.application?.data?.cpf || ""),
       outcome.classification || "",
       outcome.final_score || "",
-      outcome.application?.data?.bonus
-        ?.map((bonus: string) => bonus.split(":")[0])
-        .join(", ") || "", // Bonificação
+      getFormattedBonus(outcome.application?.data?.bonus), // Bonificação
     ]);
 
     doc.autoTable({
@@ -338,9 +437,7 @@ export function ApplicationOutcomeGenerateDocuments({
                       whiteSpace: "normal",
                     }}
                   >
-                    {outcome.application?.data?.bonus
-                      ?.map((bonus: string) => bonus.split(":")[0])
-                      .join(", ")}
+                    {getFormattedBonus(outcome.application?.data?.bonus)}
                   </td>
                 </tr>
               ))}
