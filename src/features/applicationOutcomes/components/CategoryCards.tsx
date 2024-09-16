@@ -54,18 +54,32 @@ export function CategoryCards({
                 <Card sx={{ cursor: "pointer", height: "100%" }}>
                   <CardContent>
                     <Typography variant="h6">{category.label}</Typography>
+
                     <Typography variant="body2">
+
                       Vagas: {category.vagas}
                     </Typography>
-                    {/* <Typography variant="body2">
-                      Candidatos: {filteredOutcomes?.length || 0}
-                    </Typography> */}
                   </CardContent>
                 </Card>
               </Link>
             </Grid>
           );
         })}
+        <Grid item xs={12} sm={6} md={4} key={9}>
+          <Link to={`/applications-results/no20/${9}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Card sx={{ cursor: "pointer", height: "100%" }}>
+              <CardContent>
+                <Typography variant="h6">{"AC: Ampla Concorrência - Sem Bonificação de 20%"}</Typography>
+                <Typography variant="body2">
+                  Vagas: 8
+                </Typography>
+                {/* <Typography variant="body2">
+                      Candidatos: {filteredOutcomes?.length || 0}
+                    </Typography> */}
+              </CardContent>
+            </Card>
+          </Link>
+        </Grid>
       </Grid>
     </Box>
   );

@@ -18,6 +18,7 @@ import { EnemScoreSelected } from "./features/enemScores/EnemScoreSelected";
 import { GenerateApplicationOutcomes } from "./features/applicationOutcomes/GenerateApplicationOutcomes";
 import { DeferidosIndeferidosList } from "./features/applicationOutcomes/DeferidosIndeferidosList";
 import { ApplicationResults } from "./features/applicationOutcomes/ApplicationResults";
+import { ApplicationResultsNo20 } from "./features/applicationOutcomes/ApplicationResultsNo20";
 
 
 
@@ -42,6 +43,7 @@ function App() {
           <Route path="/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
           <Route path="/applications/:id" element={<ProtectedRoute><ApplicationSelected /></ProtectedRoute>} />
           <Route path="/applications-results/:categoryId" element={<ProtectedRoute><ApplicationResults /></ProtectedRoute>} />
+          <Route path="/applications-results/no20/:categoryId" element={<ProtectedRoute><ApplicationResultsNo20 /></ProtectedRoute>} />
           <Route path="/charts" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
 
 
