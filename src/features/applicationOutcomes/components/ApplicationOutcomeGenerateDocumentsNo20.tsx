@@ -218,7 +218,7 @@ export function ApplicationOutcomeGenerateDocumentsNo20({
     });
 
     const wrappedTitle = doc.splitTextToSize(
-      `Classificação Geral: ${selectedCategory}`,
+      `Classificação Geral: ${selectedCategory} - Sem a bonificação de 20%`,
       availableWidth
     );
     doc.text(wrappedTitle, margin, margin + 70);
