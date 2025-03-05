@@ -20,7 +20,6 @@ import {
 import { Results } from "../../../types/ProcessSelection";
 import { Link } from "react-router-dom";
 import { useDeleteProcessSelectionMutation } from "../processSelectionSlice";
-import useTranslate from "../../polyglot/useTranslate";
 
 type Props = {
   processSelections: Results | undefined;
@@ -37,12 +36,10 @@ export function ProcessSelectionTable({
   handleSetPaginationModel,
   handleFilterChange,
 }: Props) {
-  const translate = useTranslate("processSelections");
   const [deleteProcessSelection, { isLoading }] = useDeleteProcessSelectionMutation();
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState<"success" | "error">("success");
   const [alertMessage, setAlertMessage] = useState("");
-
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedProcessSelectionId, setSelectedProcessSelectionId] = useState<string | null>(null);
 
@@ -67,7 +64,6 @@ export function ProcessSelectionTable({
       setAlertSeverity("success");
       setAlertMessage("Processo seletivo apagado com sucesso.");
     } catch (error) {
-      console.error("Falha ao tentar apagar o processo seletivo.");
       setAlertSeverity("error");
       setAlertMessage("Falha ao tentar apagar o processo seletivo.");
     } finally {
@@ -76,40 +72,17 @@ export function ProcessSelectionTable({
     }
   };
 
-  // Função para formatar a data no padrão PT-BR (DD/MM/YYYY)
   const formatDate = (dateString: string | null) => {
     if (!dateString) return "-";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR");
+    return new Date(dateString).toLocaleDateString("pt-BR");
   };
 
   const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "ID",
-      type: "string",
-      width: 100,
-    },
-    {
-      field: "name",
-      headerName: "Nome",
-      flex: 1,
-    },
-    {
-      field: "description",
-      headerName: "Descrição",
-      flex: 2,
-    },
-    {
-      field: "type",
-      headerName: "Tipo",
-      flex: 1,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-    },
+    { field: "id", headerName: "ID", type: "string", width: 100 },
+    { field: "name", headerName: "Nome", flex: 1 },
+    { field: "description", headerName: "Descrição", flex: 2 },
+    { field: "type", headerName: "Tipo", flex: 1 },
+    { field: "status", headerName: "Status", flex: 1 },
     {
       field: "start_date",
       headerName: "Data de Início",
@@ -133,9 +106,9 @@ export function ProcessSelectionTable({
             size="small"
             color="primary"
             component={Link}
-            to={`/process-selections/edit/${params.row.id}`}
+            to={`/process-selections/details/${params.row.id}`}
           >
-            Editar
+            Selecionar
           </Button>
           <Button
             variant="contained"
@@ -152,8 +125,7 @@ export function ProcessSelectionTable({
   ];
 
   function mapDataToGridRows(data: Results) {
-    const { data: processSelections } = data;
-    return processSelections.map((processSelection) => ({
+    return data.data.map((processSelection) => ({
       id: processSelection.id,
       name: processSelection.name,
       description: processSelection.description,
@@ -168,18 +140,7 @@ export function ProcessSelectionTable({
   const rowCount = processSelections?.meta.total || 0;
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: 500,
-        width: "100%",
-        boxShadow: 3,
-        borderRadius: 2,
-        bgcolor: "background.paper",
-        overflow: "hidden",
-      }}
-    >
+    <Box sx={{ display: "flex", flexDirection: "column", height: 500, width: "100%", boxShadow: 3, borderRadius: 2, bgcolor: "background.paper", overflow: "hidden" }}>
       <DataGrid
         columns={columns}
         rows={rows}
@@ -188,12 +149,10 @@ export function ProcessSelectionTable({
         loading={isFetching}
         paginationMode="server"
         checkboxSelection={false}
-        disableColumnFilter={true}
-        disableColumnSelector={true}
-        disableDensitySelector={true}
-        slots={{
-          toolbar: GridToolbar,
-        }}
+        disableColumnFilter
+        disableColumnSelector
+        disableDensitySelector
+        slots={{ toolbar: GridToolbar }}
         slotProps={{
           toolbar: {
             showQuickFilter: true,
@@ -207,41 +166,20 @@ export function ProcessSelectionTable({
         localeText={ptPT.components.MuiDataGrid.defaultProps.localeText}
         sx={{
           border: "none",
-          "& .MuiDataGrid-columnHeaders": {
-            bgcolor: "primary.main",
-            color: "#FFFFFF",
-            fontWeight: "bold",
-          },
-          "& .MuiDataGrid-row": {
-            "&:hover": {
-              bgcolor: "grey.100",
-            },
-          },
-          "& .MuiDataGrid-cell": {
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          },
+          "& .MuiDataGrid-columnHeaders": { bgcolor: "primary.main", color: "#FFFFFF", fontWeight: "bold" },
+          "& .MuiDataGrid-row:hover": { bgcolor: "grey.100" },
+          "& .MuiDataGrid-cell": { overflow: "hidden", textOverflow: "ellipsis" },
         }}
       />
 
-      <Snackbar
-        open={alertOpen}
-        autoHideDuration={3000}
-        onClose={handleAlertClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
+      <Snackbar open={alertOpen} autoHideDuration={3000} onClose={handleAlertClose} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
         <Alert onClose={handleAlertClose} severity={alertSeverity} sx={{ width: "100%" }}>
           {alertMessage}
         </Alert>
       </Snackbar>
 
       {/* Modal de Confirmação */}
-      <Dialog
-        open={confirmOpen}
-        onClose={handleCloseConfirm}
-        aria-labelledby="confirm-dialog-title"
-        aria-describedby="confirm-dialog-description"
-      >
+      <Dialog open={confirmOpen} onClose={handleCloseConfirm} aria-labelledby="confirm-dialog-title" aria-describedby="confirm-dialog-description">
         <DialogTitle id="confirm-dialog-title">Confirmação</DialogTitle>
         <DialogContent>
           <DialogContentText id="confirm-dialog-description">

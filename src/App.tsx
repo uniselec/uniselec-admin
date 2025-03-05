@@ -25,6 +25,7 @@ import { ProcessSelectionCreate } from "./features/processSelections/ProcessSele
 import { CourseList } from "./features/courses/CourseList";
 import { CourseEdit } from "./features/courses/CourseEdit";
 import { CourseCreate } from "./features/courses/CourseCreate";
+import { ProcessSelectionDetails } from "./features/processSelections/ProcessSelectionDetails";
 
 
 
@@ -45,6 +46,7 @@ function App() {
 
           <Route path="/process-selections" element={<ProtectedRoute><ProcessSelectionList /></ProtectedRoute>} />
           <Route path="/process-selections/edit/:id" element={<ProtectedRoute><ProcessSelectionEdit /></ProtectedRoute>} />
+          <Route path="/process-selections/details/:id" element={<ProtectedRoute><ProcessSelectionDetails /></ProtectedRoute>} />
           <Route path="/process-selections/create" element={<ProtectedRoute><ProcessSelectionCreate /></ProtectedRoute>} />
 
           <Route path="/courses" element={<ProtectedRoute><CourseList /></ProtectedRoute>} />
