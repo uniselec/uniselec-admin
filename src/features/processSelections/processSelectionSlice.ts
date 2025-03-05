@@ -73,13 +73,7 @@ export const processSelectionsApiSlice = apiSlice.injectEndpoints({
       query: deleteProcessSelectionMutation,
       invalidatesTags: ["ProcessSelections"],
     }),
-    resendPasswordLink: mutation<void, { email: string }>({
-      query: (body) => ({
-        url: "/resend-password-link",
-        method: "POST",
-        body,
-      }),
-    }),
+
   }),
 });
 
@@ -91,5 +85,4 @@ export const {
   useUpdateProcessSelectionMutation,
   useGetProcessSelectionQuery,
   useDeleteProcessSelectionMutation,
-  useResendPasswordLinkMutation
 } = processSelectionsApiSlice;
