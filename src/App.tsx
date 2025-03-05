@@ -19,6 +19,9 @@ import { GenerateApplicationOutcomes } from "./features/applicationOutcomes/Gene
 import { DeferidosIndeferidosList } from "./features/applicationOutcomes/DeferidosIndeferidosList";
 import { ApplicationResults } from "./features/applicationOutcomes/ApplicationResults";
 import { ApplicationResultsNo20 } from "./features/applicationOutcomes/ApplicationResultsNo20";
+import { ProcessSelectionList } from "./features/ProcessSelections/ProcessSelectionList";
+import { ProcessSelectionEdit } from "./features/ProcessSelections/ProcessSelectionEdit";
+import { ProcessSelectionCreate } from "./features/ProcessSelections/ProcessSelectionCreate";
 
 
 
@@ -35,6 +38,13 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
+
+
+          <Route path="/process-selections" element={<ProtectedRoute><ProcessSelectionList /></ProtectedRoute>} />
+          <Route path="/process-selections/edit/:id" element={<ProtectedRoute><ProcessSelectionEdit /></ProtectedRoute>} />
+          <Route path="/process-selections/create" element={<ProtectedRoute><ProcessSelectionCreate /></ProtectedRoute>} />
+
+
           <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} />
           <Route path="/import-enem-score" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
           <Route path="/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />

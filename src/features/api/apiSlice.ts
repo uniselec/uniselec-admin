@@ -1,7 +1,7 @@
 import { RootState } from './../../app/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseUrl = import.meta.env.VITE_API_URL + '/api/backoffice';
+const baseUrl = import.meta.env.VITE_API_URL + '/api/admin';
 
 const fetchWithTimeout = async (url: RequestInfo, options: RequestInit = {}) => {
     const timeout = 480000; // Define o tempo limite como 480000ms (8 minutos)
@@ -22,7 +22,7 @@ const fetchWithTimeout = async (url: RequestInfo, options: RequestInit = {}) => 
 
 export const apiSlice = createApi({
     reducerPath: "api",
-    tagTypes: ["Applications", "Users", "Admins", "EnemScores", "ApplicationOutcomes"],
+    tagTypes: ["Applications", "Users", "Admins", "EnemScores", "ApplicationOutcomes", "ProcessSelections"],
     baseQuery: fetchBaseQuery({
         baseUrl: baseUrl,
         prepareHeaders: (headers, { getState }) => {

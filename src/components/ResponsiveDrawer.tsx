@@ -30,6 +30,7 @@ export default function ResponsiveDrawer({ open, onClose, isDark }: Props) {
 
   const routes = [
     { path: "/", name: "Início" },
+    { path: "/process-selections", name: "Seleções" },
     { path: "/applications", name: "Inscrições" },
     { path: "/export-csv", name: "Exportar Inscrições" },
     { path: "/import-enem-score", name: "Importar Notas" },
