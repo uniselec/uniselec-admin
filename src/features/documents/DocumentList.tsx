@@ -23,6 +23,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useGetDocumentsByProcessSelectionQuery, useUpdateDocumentStatusMutation, useDeleteDocumentMutation } from "./documentSlice";
 import { Document } from "../../types/Document";
 import { DocumentUploadModal } from "./DocumentUploadModal";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export const DocumentList = ({ processSelectionId }: { processSelectionId: string }) => {
   const { data: documentsData, isFetching, refetch } = useGetDocumentsByProcessSelectionQuery({ processSelectionId });
@@ -38,7 +39,7 @@ export const DocumentList = ({ processSelectionId }: { processSelectionId: strin
   const [uploadOpen, setUploadOpen] = useState(false);
 
   const handleDownload = (docPath: string) => {
-    const url = `http://localhost:8000/storage/${docPath}`;
+    const url = `${apiUrl}/storage/${docPath}`;
     window.open(url, "_blank");
   };
 
