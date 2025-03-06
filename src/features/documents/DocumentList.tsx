@@ -22,6 +22,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useGetDocumentsByProcessSelectionQuery, useUpdateDocumentStatusMutation, useDeleteDocumentMutation } from "./documentSlice";
 import { Document } from "../../types/Document";
+import { DocumentUploadModal } from "./DocumentUploadModal";
 
 export const DocumentList = ({ processSelectionId }: { processSelectionId: string }) => {
   const { data: documentsData, isFetching, refetch } = useGetDocumentsByProcessSelectionQuery({ processSelectionId });
@@ -33,6 +34,8 @@ export const DocumentList = ({ processSelectionId }: { processSelectionId: strin
 
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+
+  const [uploadOpen, setUploadOpen] = useState(false);
 
   const handleDownload = (docPath: string) => {
     const url = `http://localhost:8000/storage/${docPath}`;
@@ -80,6 +83,10 @@ export const DocumentList = ({ processSelectionId }: { processSelectionId: strin
   return (
     <Paper sx={{ p: 3, mb: 2 }}>
       <Typography variant="h5" sx={{ mb: 2 }}>Documentos</Typography>
+      <Button variant="contained" sx={{ mb: 2 }} onClick={() => setUploadOpen(true)}>
+        Adicionar Documento
+      </Button>
+      <DocumentUploadModal open={uploadOpen} onClose={() => setUploadOpen(false)} processSelectionId={processSelectionId} />
       {documentsData && documentsData.data.length > 0 ? (
         documentsData.data.map((doc: Document) => (
           <Card key={doc.id} sx={{ mb: 2 }}>
