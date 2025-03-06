@@ -1,3 +1,4 @@
+import { Course } from "./Course";
 
 
 export interface Results {
@@ -17,6 +18,7 @@ export interface ProcessSelection {
     start_date:           string;
     end_date:           string;
     type:           string;
+    courses: Course[];
     created_at?: null | string;
     updated_at?: null | string;
 }
