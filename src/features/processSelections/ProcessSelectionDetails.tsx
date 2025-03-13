@@ -10,7 +10,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  Grid
 } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGetProcessSelectionQuery, useAttachCoursesMutation, useRemoveCourseFromProcessSelectionMutation } from "./processSelectionSlice";
@@ -83,6 +84,26 @@ export const ProcessSelectionDetails = () => {
 
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
+
+      {/* 🚀 Novo Card com Ações */}
+      <Paper sx={{ p: 3, mb: 2, display: "flex", justifyContent: "center", gap: 2 }}>
+        <Button variant="contained" onClick={() => navigate(`/applications`)}>
+          Inscrições
+        </Button>
+        <Button variant="contained" color="success"  onClick={() => navigate(`/export-csv`)}>
+          Exportar Inscrições
+        </Button>
+        <Button variant="contained" color="warning" onClick={() => navigate(`/import-enem-score`)}>
+          Importar Notas
+        </Button>
+        <Button variant="contained" color="info" onClick={() => navigate(`/enem-scores`)}>
+          Notas do Enem
+        </Button>
+        <Button variant="contained" color="error" onClick={() => navigate(`/generate-results`)}>
+          Processar Resultados
+        </Button>
+      </Paper>
+
       <Paper sx={{ p: 3, mb: 2 }}>
         <Typography variant="h4">{processSelection.data.name}</Typography>
         <Typography>{processSelection.data.description}</Typography>
@@ -94,6 +115,7 @@ export const ProcessSelectionDetails = () => {
           Editar Processo Seletivo
         </Button>
       </Paper>
+
       <Paper sx={{ p: 3, mb: 2 }}>
         <Typography variant="h5">Cursos Vinculados</Typography>
         {attachedCourses.length > 0
@@ -130,7 +152,9 @@ export const ProcessSelectionDetails = () => {
           </Button>
         </Box>
       </Paper>
+
       <DocumentList processSelectionId={id!} />
+
       <Dialog open={confirmRemoveOpen} onClose={() => setConfirmRemoveOpen(false)}>
         <DialogTitle>Remover Curso</DialogTitle>
         <DialogContent>
