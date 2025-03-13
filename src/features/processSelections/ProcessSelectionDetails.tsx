@@ -87,12 +87,12 @@ export const ProcessSelectionDetails = () => {
 
       {/* 🚀 Novo Card com Ações */}
       <Paper sx={{ p: 3, mb: 2, display: "flex", justifyContent: "center", gap: 2 }}>
-        <Button variant="contained" onClick={() => navigate(`/applications`)}>
+        {/* <Button variant="contained" onClick={() => navigate(`/applications`)}>
           Inscrições
-        </Button>
-        <Button variant="contained" color="success"  onClick={() => navigate(`/export-csv`)}>
+        </Button> */}
+        {/* <Button variant="contained" color="success"  onClick={() => navigate(`/export-csv`)}>
           Exportar Inscrições
-        </Button>
+        </Button> */}
         <Button variant="contained" color="warning" onClick={() => navigate(`/import-enem-score`)}>
           Importar Notas
         </Button>
