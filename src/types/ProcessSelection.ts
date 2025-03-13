@@ -1,4 +1,5 @@
 import { Course } from "./Course";
+import { Document } from "./Document";
 
 
 export interface Results {
@@ -19,6 +20,7 @@ export interface ProcessSelection {
     end_date:           string;
     type:           string;
     courses: Course[];
+    documents?: Document[];
     created_at?: null | string;
     updated_at?: null | string;
 }

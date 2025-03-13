@@ -26,6 +26,8 @@ import { CourseList } from "./features/courses/CourseList";
 import { CourseEdit } from "./features/courses/CourseEdit";
 import { CourseCreate } from "./features/courses/CourseCreate";
 import { ProcessSelectionDetails } from "./features/processSelections/ProcessSelectionDetails";
+import { ProcessSelectionResume } from "./features/processSelections/components/ProcessSelectionResume";
+
 
 
 
@@ -41,7 +43,7 @@ function App() {
     >
       <Layout>
         <Routes>
-          <Route path="/" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
+          <Route path="/" element={<ProtectedRoute><ProcessSelectionResume /></ProtectedRoute>} />
 
 
           <Route path="/process-selections" element={<ProtectedRoute><ProcessSelectionList /></ProtectedRoute>} />
