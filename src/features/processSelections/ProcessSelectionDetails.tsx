@@ -121,7 +121,7 @@ export const ProcessSelectionDetails = () => {
       <Paper sx={{ p: 3, mb: 2 }}>
         <Typography variant="h4">{processSelection.data.name}</Typography>
         <Typography>{processSelection.data.description}</Typography>
-        <Typography>Tipo: {processSelection.data.type}</Typography>
+        <Typography>Tipo: {processSelection.data.type === 'enem_score' ? 'Notas do Enem' : 'SISU'}</Typography>
         <Typography>Status: {processSelection.data.status}</Typography>
         <Typography>Início: {processSelection.data.start_date}</Typography>
         <Typography>Fim: {processSelection.data.end_date}</Typography>
