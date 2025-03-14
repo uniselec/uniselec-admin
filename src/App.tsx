@@ -19,6 +19,15 @@ import { GenerateApplicationOutcomes } from "./features/applicationOutcomes/Gene
 import { DeferidosIndeferidosList } from "./features/applicationOutcomes/DeferidosIndeferidosList";
 import { ApplicationResults } from "./features/applicationOutcomes/ApplicationResults";
 import { ApplicationResultsNo20 } from "./features/applicationOutcomes/ApplicationResultsNo20";
+import { ProcessSelectionList } from "./features/processSelections/ProcessSelectionList";
+import { ProcessSelectionEdit } from "./features/processSelections/ProcessSelectionEdit";
+import { ProcessSelectionCreate } from "./features/processSelections/ProcessSelectionCreate";
+import { CourseList } from "./features/courses/CourseList";
+import { CourseEdit } from "./features/courses/CourseEdit";
+import { CourseCreate } from "./features/courses/CourseCreate";
+import { ProcessSelectionDetails } from "./features/processSelections/ProcessSelectionDetails";
+import { ProcessSelectionResume } from "./features/processSelections/components/ProcessSelectionResume";
+
 
 
 
@@ -34,7 +43,21 @@ function App() {
     >
       <Layout>
         <Routes>
-          <Route path="/" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
+          <Route path="/" element={<ProtectedRoute><ProcessSelectionResume /></ProtectedRoute>} />
+
+
+          <Route path="/process-selections" element={<ProtectedRoute><ProcessSelectionList /></ProtectedRoute>} />
+          <Route path="/process-selections/edit/:id" element={<ProtectedRoute><ProcessSelectionEdit /></ProtectedRoute>} />
+          <Route path="/process-selections/details/:id" element={<ProtectedRoute><ProcessSelectionDetails /></ProtectedRoute>} />
+          <Route path="/process-selections/create" element={<ProtectedRoute><ProcessSelectionCreate /></ProtectedRoute>} />
+
+          <Route path="/courses" element={<ProtectedRoute><CourseList /></ProtectedRoute>} />
+          <Route path="/courses/edit/:id" element={<ProtectedRoute><CourseEdit /></ProtectedRoute>} />
+          <Route path="/courses/create" element={<ProtectedRoute><CourseCreate /></ProtectedRoute>} />
+
+
+
+
           <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} />
           <Route path="/import-enem-score" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
           <Route path="/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
