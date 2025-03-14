@@ -82,26 +82,40 @@ export const ProcessSelectionDetails = () => {
   if (isFetching) return <Typography>Carregando...</Typography>;
   if (!processSelection) return <Typography>Processo Seletivo não encontrado.</Typography>;
 
+  const processType = processSelection.data.type;
+
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
-
       {/* 🚀 Novo Card com Ações */}
       <Paper sx={{ p: 3, mb: 2, display: "flex", justifyContent: "center", gap: 2 }}>
-        {/* <Button variant="contained" onClick={() => navigate(`/applications`)}>
-          Inscrições
-        </Button> */}
-        {/* <Button variant="contained" color="success"  onClick={() => navigate(`/export-csv`)}>
-          Exportar Inscrições
-        </Button> */}
-        <Button variant="contained" color="warning" onClick={() => navigate(`/import-enem-score`)}>
-          Importar Notas
-        </Button>
-        <Button variant="contained" color="info" onClick={() => navigate(`/enem-scores`)}>
-          Notas do Enem
-        </Button>
-        <Button variant="contained" color="error" onClick={() => navigate(`/generate-results`)}>
-          Processar Resultados
-        </Button>
+        {processType === "sisu" ? (
+          <>
+            <Button variant="contained" color="warning" onClick={() => navigate(`/${id}/import-enem-score`)}>
+              Notas do SISU
+            </Button>
+            <Button variant="contained" color="error" onClick={() => navigate(`/${id}/generate-results`)}>
+              Processar Resultados
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button variant="contained" color="primary" onClick={() => navigate(`/${id}/applications`)}>
+              Visualizar Inscrições
+            </Button>
+            <Button variant="contained" color="success" onClick={() => navigate(`/${id}/export-csv`)}>
+              Exportar Inscrições
+            </Button>
+            <Button variant="contained" color="warning" onClick={() => navigate(`/${id}/import-enem-score`)}>
+              Importar Notas
+            </Button>
+            <Button variant="contained" color="info" onClick={() => navigate(`/${id}/enem-scores`)}>
+              Listar Notas do Enem
+            </Button>
+            <Button variant="contained" color="error" onClick={() => navigate(`/${id}/generate-results`)}>
+              Processar Resultados
+            </Button>
+          </>
+        )}
       </Paper>
 
       <Paper sx={{ p: 3, mb: 2 }}>
