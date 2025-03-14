@@ -59,12 +59,12 @@ function App() {
 
 
           <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} />
-          <Route path="/import-enem-score/:processSelectionId" element={<ProtectedRoute><EnemScoreImport /><EnemScoreList /></ProtectedRoute>} />
-          <Route path="/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
-          <Route path="/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/import-enem-score/" element={<ProtectedRoute><EnemScoreImport /><EnemScoreList /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} />
           <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
-          <Route path="/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
-          <Route path="/applications/:id" element={<ProtectedRoute><ApplicationSelected /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/applications/:id" element={<ProtectedRoute><ApplicationSelected /></ProtectedRoute>} />
           <Route path="/applications-results/:categoryId" element={<ProtectedRoute><ApplicationResults /></ProtectedRoute>} />
           <Route path="/applications-results/no20/:categoryId" element={<ProtectedRoute><ApplicationResultsNo20 /></ProtectedRoute>} />
           <Route path="/charts" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
@@ -74,9 +74,9 @@ function App() {
 
 
           <Route path="/profile" element={<ProtectedRoute><AuthProfile /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/enem-scores" element={<ProtectedRoute><EnemScoreList /></ProtectedRoute>} />
 
-
-          <Route path="/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} />
 
           <Route path="/application-outcomes/:processSelectionId" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} />
           <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} />

@@ -90,28 +90,28 @@ export const ProcessSelectionDetails = () => {
       <Paper sx={{ p: 3, mb: 2, display: "flex", justifyContent: "center", gap: 2 }}>
         {processType === "sisu" ? (
           <>
-            <Button variant="contained" color="warning" onClick={() => navigate(`/import-enem-score/${id}/`)}>
+            <Button variant="contained" color="warning" onClick={() => navigate(`/${id}/import-enem-score/`)}>
               Notas do SISU
             </Button>
-            <Button variant="contained" color="error" onClick={() => navigate(`/generate-results/${id}/`)}>
+            <Button variant="contained" color="error" onClick={() => navigate(`/${id}/generate-results/`)}>
               Processar Resultados
             </Button>
           </>
         ) : (
           <>
-            <Button variant="contained" color="primary" onClick={() => navigate(`/${id}/applications`)}>
+            <Button variant="contained" color="primary" onClick={() => navigate(`/${id}/applications/`)}>
               Visualizar Inscrições
             </Button>
-            <Button variant="contained" color="success" onClick={() => navigate(`/${id}/export-csv`)}>
+            <Button variant="contained" color="success" onClick={() => navigate(`/${id}/export-csv/`)}>
               Exportar Inscrições
             </Button>
-            <Button variant="contained" color="warning" onClick={() => navigate(`/${id}/import-enem-score`)}>
+            <Button variant="contained" color="warning" onClick={() => navigate(`/${id}/import-enem-score/`)}>
               Importar Notas
             </Button>
-            <Button variant="contained" color="info" onClick={() => navigate(`/${id}/enem-scores`)}>
+            <Button variant="contained" color="info" onClick={() => navigate(`/${id}/enem-scores/`)}>
               Listar Notas do Enem
             </Button>
-            <Button variant="contained" color="error" onClick={() => navigate(`/${id}/generate-results`)}>
+            <Button variant="contained" color="error" onClick={() => navigate(`/${id}/generate-results/`)}>
               Processar Resultados
             </Button>
           </>
