@@ -90,10 +90,10 @@ export const ProcessSelectionDetails = () => {
       <Paper sx={{ p: 3, mb: 2, display: "flex", justifyContent: "center", gap: 2 }}>
         {processType === "sisu" ? (
           <>
-            <Button variant="contained" color="warning" onClick={() => navigate(`/${id}/import-enem-score`)}>
+            <Button variant="contained" color="warning" onClick={() => navigate(`/import-enem-score/${id}/`)}>
               Notas do SISU
             </Button>
-            <Button variant="contained" color="error" onClick={() => navigate(`/${id}/generate-results`)}>
+            <Button variant="contained" color="error" onClick={() => navigate(`/generate-results/${id}/`)}>
               Processar Resultados
             </Button>
           </>

@@ -59,7 +59,7 @@ function App() {
 
 
           <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} />
-          <Route path="/import-enem-score" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
+          <Route path="/import-enem-score/:processSelectionId" element={<ProtectedRoute><EnemScoreImport /><EnemScoreList /></ProtectedRoute>} />
           <Route path="/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
           <Route path="/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} />
           <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
@@ -75,10 +75,10 @@ function App() {
 
           <Route path="/profile" element={<ProtectedRoute><AuthProfile /></ProtectedRoute>} />
 
-          <Route path="/enem-scores" element={<ProtectedRoute><EnemScoreList /></ProtectedRoute>} />
+
           <Route path="/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} />
 
-          <Route path="/application-outcomes" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} />
+          <Route path="/application-outcomes/:processSelectionId" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} />
           <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} />
 
 
