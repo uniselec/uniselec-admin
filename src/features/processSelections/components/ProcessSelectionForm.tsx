@@ -41,7 +41,10 @@ export function ProcessSelectionForm({
   handleStatusChange,
   setProcessSelection,
 }: Props) {
-  const typeOptions = [{ value: "sisu", label: "SISU" }];
+  const typeOptions = [
+    { value: "sisu", label: "SISU" },
+    { value: "enem_score", label: "Notas do Enem" },
+  ];
   const statusOptions = [
     { value: "draft", label: "Rascunho" },
     { value: "active", label: "Ativo" },

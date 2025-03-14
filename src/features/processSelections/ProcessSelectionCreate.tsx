@@ -15,7 +15,8 @@ export const ProcessSelectionCreate = () => {
     type: "sisu",
     status: "draft",
     start_date: "",
-    end_date: ""
+    end_date: "",
+    courses: []
   });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

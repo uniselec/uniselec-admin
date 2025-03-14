@@ -19,7 +19,8 @@ export const ProcessSelectionEdit = () => {
     type: "sisu",
     status: "draft",
     start_date: "",
-    end_date: ""
+    end_date: "",
+    courses: []
   });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -68,6 +69,7 @@ export const ProcessSelectionEdit = () => {
         end_date: processSelectionData.data.end_date,
         type: processSelectionData.data.type,
         status: processSelectionData.data.status,
+        courses: processSelectionData.data.courses || [],
         created_at: processSelectionData.data.created_at,
         updated_at: processSelectionData.data.updated_at
       });
