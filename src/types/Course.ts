@@ -14,6 +14,7 @@ export interface Course {
   id?: number;
   name: string;
   modality: string;
+  vacancies?: number;
   academic_unit: AcademicUnit;
   created_at?: null | string;
   updated_at?: null | string;

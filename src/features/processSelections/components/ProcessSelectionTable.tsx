@@ -80,8 +80,6 @@ export function ProcessSelectionTable({
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", type: "string", width: 100 },
     { field: "name", headerName: "Nome", flex: 1 },
-    { field: "description", headerName: "Descrição", flex: 2 },
-    { field: "type", headerName: "Tipo", flex: 1 },
     { field: "status", headerName: "Status", flex: 1 },
     {
       field: "start_date",

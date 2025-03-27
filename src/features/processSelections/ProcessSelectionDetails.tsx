@@ -87,7 +87,7 @@ export const ProcessSelectionDetails = () => {
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
       {/* 🚀 Novo Card com Ações */}
-      <Paper sx={{ p: 3, mb: 2, display: "flex", justifyContent: "center", gap: 2 }}>
+      {/* <Paper sx={{ p: 3, mb: 2, display: "flex", justifyContent: "center", gap: 2 }}>
         {processType === "sisu" ? (
           <>
             <Button variant="contained" color="warning" onClick={() => navigate(`/${id}/import-enem-score/`)}>
@@ -116,7 +116,7 @@ export const ProcessSelectionDetails = () => {
             </Button>
           </>
         )}
-      </Paper>
+      </Paper> */}
 
       <Paper sx={{ p: 3, mb: 2 }}>
         <Typography variant="h4">{processSelection.data.name}</Typography>
@@ -130,42 +130,7 @@ export const ProcessSelectionDetails = () => {
         </Button>
       </Paper>
 
-      <Paper sx={{ p: 3, mb: 2 }}>
-        <Typography variant="h5">Cursos Vinculados</Typography>
-        {attachedCourses.length > 0
-          ? attachedCourses.map((course) => (
-            <Box key={course.id} sx={{ display: "flex", justifyContent: "space-between", my: 1 }}>
-              <Typography>
-                {course.name} - {course.campus} ({course.state}) (Vagas: {course.vacancies})
-              </Typography>
-              <Button variant="outlined" color="secondary" onClick={() => handleRemoveCourse(course.id)}>
-                Remover
-              </Button>
-            </Box>
-          ))
-          : <Typography>Nenhum curso vinculado.</Typography>}
-        <Box sx={{ mt: 3, display: "flex", gap: 2, flexWrap: "wrap", alignItems: "center" }}>
-          <Autocomplete
-            sx={{ minWidth: 300 }}
-            options={coursesData ? coursesData.data : []}
-            getOptionLabel={(option: any) => option.name}
-            value={selectedCourse}
-            onChange={(_, newValue) => setSelectedCourse(newValue)}
-            renderInput={(params) => <TextField {...params} label="Selecionar Curso" variant="outlined" />}
-          />
-          <TextField
-            type="number"
-            label="Vagas"
-            value={vacancy}
-            onChange={(e) => setVacancy(Number(e.target.value))}
-            sx={{ width: 100 }}
-            inputProps={{ min: 1 }}
-          />
-          <Button variant="contained" color="primary" onClick={handleAddCourse}>
-            Adicionar Curso
-          </Button>
-        </Box>
-      </Paper>
+
 
       <DocumentList processSelectionId={id!} />
 

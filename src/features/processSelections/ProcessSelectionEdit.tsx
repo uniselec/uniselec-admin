@@ -70,11 +70,13 @@ export const ProcessSelectionEdit = () => {
         type: processSelectionData.data.type,
         status: processSelectionData.data.status,
         courses: processSelectionData.data.courses || [],
+        admission_categories: processSelectionData.data.admission_categories || [],
         created_at: processSelectionData.data.created_at,
         updated_at: processSelectionData.data.updated_at
       });
     }
   }, [processSelectionData]);
+
 
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
