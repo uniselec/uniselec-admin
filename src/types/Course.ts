@@ -1,3 +1,4 @@
+import { AcademicUnit } from "./AcademicUnit";
 
 
 export interface Results {
@@ -10,13 +11,12 @@ export interface Result {
 }
 
 export interface Course {
-    id?:              number;
-    name:            string;
-    modality:            string;
-    campus:           string;
-    state:           string;
-    created_at?: null | string;
-    updated_at?: null | string;
+  id?: number;
+  name: string;
+  modality: string;
+  academic_unit: AcademicUnit;
+  created_at?: null | string;
+  updated_at?: null | string;
 }
 export interface Links {
   prev: string;

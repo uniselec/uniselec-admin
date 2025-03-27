@@ -88,9 +88,7 @@ export function CourseTable({
       valueGetter: (params) => modalityLabels[params.value] || params.value
     },
     { field: "campus", headerName: "Campus", flex: 1 },
-    { field: "state", headerName: "Estado (UF)", flex: 0.5 },
-    { field: "created_at", headerName: "Criado em", flex: 1, valueGetter: (params) => formatDate(params.value) },
-    { field: "updated_at", headerName: "Atualizado em", flex: 1, valueGetter: (params) => formatDate(params.value) },
+
     {
       field: "actions",
       headerName: "Ações",
@@ -113,8 +111,7 @@ export function CourseTable({
       id: course.id,
       name: course.name,
       modality: course.modality,
-      campus: course.campus,
-      state: course.state,
+      campus: course.academic_unit.name,
       created_at: course.created_at,
       updated_at: course.updated_at,
     }));
