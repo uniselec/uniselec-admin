@@ -55,7 +55,7 @@ function App() {
 
           <Route path="/process-selections" element={<ProtectedRoute><ProcessSelectionList /></ProtectedRoute>} />
           <Route path="/process-selections/edit/:id" element={<ProtectedRoute><ProcessSelectionEdit /></ProtectedRoute>} />
-          <Route path="/process-selections/details/:id" element={<ProtectedRoute><ProcessSelectionDetails /></ProtectedRoute>} />
+          <Route path="/process-selections/details/:id" element={<ProtectedRoute><ProcessSelectionDetailStepper /></ProtectedRoute>} />
           <Route path="/process-selections/create" element={<ProtectedRoute><ProcessSelectionCreate /></ProtectedRoute>} />
 
 
