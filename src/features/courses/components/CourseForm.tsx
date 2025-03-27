@@ -1,3 +1,4 @@
+// features/courses/components/CourseForm.tsx
 import React from "react";
 import {
   Box,
@@ -10,6 +11,8 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Course } from "../../../types/Course";
+import { AcademicUnit } from "../../../types/AcademicUnit";
+import { useGetAcademicUnitsQuery } from "../../academicUnits/academicUnitSlice"; // ajuste o caminho se necessário
 
 type Props = {
   course: Course;
@@ -33,40 +36,15 @@ export function CourseForm({
     { value: "in-person", label: "Presencial" },
   ];
 
-  const statesOptions = [
-    { value: "AC", label: "Acre" },
-    { value: "AL", label: "Alagoas" },
-    { value: "AP", label: "Amapá" },
-    { value: "AM", label: "Amazonas" },
-    { value: "BA", label: "Bahia" },
-    { value: "CE", label: "Ceará" },
-    { value: "DF", label: "Distrito Federal" },
-    { value: "ES", label: "Espírito Santo" },
-    { value: "GO", label: "Goiás" },
-    { value: "MA", label: "Maranhão" },
-    { value: "MT", label: "Mato Grosso" },
-    { value: "MS", label: "Mato Grosso do Sul" },
-    { value: "MG", label: "Minas Gerais" },
-    { value: "PA", label: "Pará" },
-    { value: "PB", label: "Paraíba" },
-    { value: "PR", label: "Paraná" },
-    { value: "PE", label: "Pernambuco" },
-    { value: "PI", label: "Piauí" },
-    { value: "RJ", label: "Rio de Janeiro" },
-    { value: "RN", label: "Rio Grande do Norte" },
-    { value: "RS", label: "Rio Grande do Sul" },
-    { value: "RO", label: "Rondônia" },
-    { value: "RR", label: "Roraima" },
-    { value: "SC", label: "Santa Catarina" },
-    { value: "SP", label: "São Paulo" },
-    { value: "SE", label: "Sergipe" },
-    { value: "TO", label: "Tocantins" },
-  ];
+  // Buscando a lista de unidades acadêmicas para preencher o Autocomplete
+  const { data: academicUnitsData } = useGetAcademicUnitsQuery({ page: 1, perPage: 100 });
+  const academicUnitOptions: AcademicUnit[] = academicUnitsData?.data || [];
 
   return (
     <Box p={2}>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
+          {/* Nome do Curso */}
           <Grid item xs={12}>
             <FormControl fullWidth>
               <TextField
@@ -80,46 +58,59 @@ export function CourseForm({
             </FormControl>
           </Grid>
 
+          {/* Modalidade */}
           <Grid item xs={12} md={6}>
             <FormControl fullWidth>
               <Autocomplete
                 options={modalityOptions}
                 getOptionLabel={(option) => option.label}
-                value={modalityOptions.find((option) => option.value === course.modality) || null}
+                value={
+                  modalityOptions.find(
+                    (option) => option.value === course.modality
+                  ) || null
+                }
                 onChange={(_, newValue) =>
-                  setCourse((prev) => ({ ...prev, modality: newValue ? newValue.value : "" }))
+                  setCourse((prev) => ({
+                    ...prev,
+                    modality: newValue ? newValue.value : "",
+                  }))
                 }
                 renderInput={(params) => (
-                  <TextField {...params} required label="Modalidade" disabled={isdisabled} />
+                  <TextField
+                    {...params}
+                    required
+                    label="Modalidade"
+                    disabled={isdisabled}
+                  />
                 )}
               />
             </FormControl>
           </Grid>
 
-          <Grid item xs={12} md={6}>
-            <FormControl fullWidth>
-              <TextField
-                required
-                name="campus"
-                label="Campus"
-                value={course.campus || ""}
-                disabled={isdisabled}
-                onChange={handleChange}
-              />
-            </FormControl>
-          </Grid>
-
+          {/* Unidade Acadêmica */}
           <Grid item xs={12} md={6}>
             <FormControl fullWidth>
               <Autocomplete
-                options={statesOptions}
-                getOptionLabel={(option) => option.label}
-                value={statesOptions.find((option) => option.value === course.state) || null}
+                options={academicUnitOptions}
+                getOptionLabel={(option) => option.name}
+                value={
+                  academicUnitOptions.find(
+                    (option) => option.id === course.academic_unit?.id
+                  ) || null
+                }
                 onChange={(_, newValue) =>
-                  setCourse((prev) => ({ ...prev, state: newValue ? newValue.value : "" }))
+                  setCourse((prev) => ({
+                    ...prev,
+                    academic_unit: newValue ? newValue : ({} as AcademicUnit),
+                  }))
                 }
                 renderInput={(params) => (
-                  <TextField {...params} required label="Estado (UF)" disabled={isdisabled} />
+                  <TextField
+                    {...params}
+                    required
+                    label="Unidade Acadêmica"
+                    disabled={isdisabled}
+                  />
                 )}
               />
             </FormControl>
@@ -130,7 +121,12 @@ export function CourseForm({
               <Button variant="contained" component={Link} to="/courses">
                 Voltar
               </Button>
-              <Button type="submit" variant="contained" color="secondary" disabled={isdisabled || isLoading}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="secondary"
+                disabled={isdisabled || isLoading}
+              >
                 {isLoading ? "Salvando..." : "Guardar"}
               </Button>
             </Box>

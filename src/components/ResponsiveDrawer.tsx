@@ -30,6 +30,8 @@ export default function ResponsiveDrawer({ open, onClose, isDark }: Props) {
 
   const routes = [
     { path: "/", name: "Início" },
+    { path: "/academic-units", name: "Unidades Academicas" },
+    { path: "/admission-categories", name: "Modalidades" },
     { path: "/courses", name: "Cursos" },
     { path: "/process-selections", name: "Seleções" },
   ];

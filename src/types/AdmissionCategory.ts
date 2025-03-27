@@ -1,21 +1,18 @@
-import { AcademicUnit } from "./AcademicUnit";
 
 
 export interface Results {
-    data:  Course[];
-    links: Links;
-    meta:  Meta;
+  data: AdmissionCategory[];
+  links: Links;
+  meta: Meta;
 }
 export interface Result {
-    data:  Course;
+  data: AdmissionCategory;
 }
 
-export interface Course {
+export interface AdmissionCategory {
   id?: number;
   name: string;
-  modality: string;
-  vacancies?: number;
-  academic_unit: AcademicUnit;
+  description: string;
   created_at?: null | string;
   updated_at?: null | string;
 }
@@ -36,7 +33,7 @@ export interface Meta {
   current_page: number;
 }
 
-export interface CourseParams {
+export interface AdmissionCategoryParams {
   page?: number;
   perPage?: number;
   search?: string;

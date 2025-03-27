@@ -7,6 +7,7 @@ import {
   TextField,
   Typography,
   Autocomplete,
+  Chip,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { ProcessSelection } from "../../../types/ProcessSelection";
@@ -16,6 +17,11 @@ import timezone from "dayjs/plugin/timezone";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { useGetCoursesQuery } from "../../courses/courseSlice";
+import { useGetAdmissionCategoriesQuery } from "../../admissionCategories/admissionCategorySlice";
+import { CourseSelector } from "./CourseSelector";
+import { AdmissionCategorySelector } from "./AdmissionCategorySelector";
+import { Course } from "../../../types/Course";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -42,7 +48,7 @@ export function ProcessSelectionForm({
   setProcessSelection,
 }: Props) {
   const typeOptions = [
-    { value: "sisu", label: "SISU" },
+    // { value: "sisu", label: "SISU" },
     { value: "enem_score", label: "Notas do Enem" },
   ];
   const statusOptions = [
@@ -52,7 +58,13 @@ export function ProcessSelectionForm({
     { value: "archived", label: "Arquivado" },
   ];
 
-  // ✅ Ajuste para armazenar corretamente a data em UTC
+  // Buscando as opções de cursos e admission categories
+  const { data: coursesData } = useGetCoursesQuery({ page: 1, perPage: 100, search: "" });
+  const { data: admissionCategoriesData } = useGetAdmissionCategoriesQuery({ page: 1, perPage: 100, search: "" });
+  const coursesOptions = coursesData?.data || [];
+  const admissionCategoriesOptions = admissionCategoriesData?.data || [];
+
+  // Função para tratar a mudança de datas, garantindo o formato UTC para o SQL.
   const handleDateChange = (field: "start_date" | "end_date") => (newDate: any) => {
     if (newDate) {
       const formattedDate = dayjs(newDate).utc().format("YYYY-MM-DD HH:mm:ss");
@@ -98,9 +110,13 @@ export function ProcessSelectionForm({
               <Autocomplete
                 options={typeOptions}
                 getOptionLabel={(option) => option.label}
-                value={typeOptions.find((option) => option.value === processSelection.type) || null}
+                value={
+                  typeOptions.find((option) => option.value === processSelection.type) || null
+                }
                 onChange={handleTypeChange}
-                renderInput={(params) => <TextField {...params} required label="Tipo de Seleção" disabled={isdisabled} />}
+                renderInput={(params) => (
+                  <TextField {...params} required label="Tipo de Seleção" disabled={isdisabled} />
+                )}
               />
             </FormControl>
           </Grid>
@@ -111,9 +127,13 @@ export function ProcessSelectionForm({
               <Autocomplete
                 options={statusOptions}
                 getOptionLabel={(option) => option.label}
-                value={statusOptions.find((option) => option.value === processSelection.status) || null}
+                value={
+                  statusOptions.find((option) => option.value === processSelection.status) || null
+                }
                 onChange={handleStatusChange}
-                renderInput={(params) => <TextField {...params} required label="Status" disabled={isdisabled} />}
+                renderInput={(params) => (
+                  <TextField {...params} required label="Status" disabled={isdisabled} />
+                )}
               />
             </FormControl>
           </Grid>
@@ -147,6 +167,35 @@ export function ProcessSelectionForm({
                   format="DD/MM/YYYY HH:mm"
                 />
               </LocalizationProvider>
+            </FormControl>
+          </Grid>
+
+          {/* Seleção de Cursos */}
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <CourseSelector
+                coursesOptions={coursesOptions}
+                selectedCourses={processSelection.courses || []}
+                setSelectedCourses={(newCourses) =>
+                  setProcessSelection((prev) => ({ ...prev, courses: newCourses as Course[] }))
+                }
+              />
+            </FormControl>
+          </Grid>
+
+          {/* Seleção de Admission Categories */}
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <AdmissionCategorySelector
+                admissionCategoriesOptions={admissionCategoriesOptions}
+                selectedAdmissionCategories={processSelection.admission_categories || []}
+                setSelectedAdmissionCategories={(newCategories) =>
+                  setProcessSelection((prev) => ({
+                    ...prev,
+                    admission_categories: Array.isArray(newCategories) ? newCategories : [],
+                  }))
+                }
+              />
             </FormControl>
           </Grid>
 

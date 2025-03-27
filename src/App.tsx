@@ -27,6 +27,13 @@ import { CourseEdit } from "./features/courses/CourseEdit";
 import { CourseCreate } from "./features/courses/CourseCreate";
 import { ProcessSelectionDetails } from "./features/processSelections/ProcessSelectionDetails";
 import { ProcessSelectionResume } from "./features/processSelections/components/ProcessSelectionResume";
+import { ProcessSelectionDetailStepper } from "./features/processSelections/ProcessSelectionDetailStepper";
+import { AcademicUnitList } from "./features/academicUnits/AcademicUnitList";
+import { AcademicUnitEdit } from "./features/academicUnits/AcademicUnitEdit";
+import { AcademicUnitCreate } from "./features/academicUnits/AcademicUnitCreate";
+import { AdmissionCategoryList } from "./features/admissionCategories/AdmissionCategoryList";
+import { AdmissionCategoryEdit } from "./features/admissionCategories/AdmissionCategoryEdit";
+import { AdmissionCategoryCreate } from "./features/admissionCategories/AdmissionCategoryCreate";
 
 
 
@@ -48,8 +55,23 @@ function App() {
 
           <Route path="/process-selections" element={<ProtectedRoute><ProcessSelectionList /></ProtectedRoute>} />
           <Route path="/process-selections/edit/:id" element={<ProtectedRoute><ProcessSelectionEdit /></ProtectedRoute>} />
-          <Route path="/process-selections/details/:id" element={<ProtectedRoute><ProcessSelectionDetails /></ProtectedRoute>} />
+          <Route path="/process-selections/details/:id" element={<ProtectedRoute><ProcessSelectionDetailStepper /></ProtectedRoute>} />
           <Route path="/process-selections/create" element={<ProtectedRoute><ProcessSelectionCreate /></ProtectedRoute>} />
+
+
+
+
+          <Route path="/admission-categories" element={<ProtectedRoute><AdmissionCategoryList /></ProtectedRoute>} />
+          <Route path="/admission-categories/edit/:id" element={<ProtectedRoute><AdmissionCategoryEdit /></ProtectedRoute>} />
+          <Route path="/admission-categories/create" element={<ProtectedRoute><AdmissionCategoryCreate /></ProtectedRoute>} />
+
+
+          <Route path="/academic-units" element={<ProtectedRoute><AcademicUnitList /></ProtectedRoute>} />
+          <Route path="/academic-units/edit/:id" element={<ProtectedRoute><AcademicUnitEdit /></ProtectedRoute>} />
+          <Route path="/academic-units/create" element={<ProtectedRoute><AcademicUnitCreate /></ProtectedRoute>} />
+
+
+
 
           <Route path="/courses" element={<ProtectedRoute><CourseList /></ProtectedRoute>} />
           <Route path="/courses/edit/:id" element={<ProtectedRoute><CourseEdit /></ProtectedRoute>} />
@@ -59,12 +81,12 @@ function App() {
 
 
           <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} />
-          <Route path="/import-enem-score" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
-          <Route path="/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
-          <Route path="/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/import-enem-score/" element={<ProtectedRoute><EnemScoreImport /><EnemScoreList /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} />
           <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
-          <Route path="/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
-          <Route path="/applications/:id" element={<ProtectedRoute><ApplicationSelected /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/applications/:id" element={<ProtectedRoute><ApplicationSelected /></ProtectedRoute>} />
           <Route path="/applications-results/:categoryId" element={<ProtectedRoute><ApplicationResults /></ProtectedRoute>} />
           <Route path="/applications-results/no20/:categoryId" element={<ProtectedRoute><ApplicationResultsNo20 /></ProtectedRoute>} />
           <Route path="/charts" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
@@ -74,11 +96,11 @@ function App() {
 
 
           <Route path="/profile" element={<ProtectedRoute><AuthProfile /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/enem-scores" element={<ProtectedRoute><EnemScoreList /></ProtectedRoute>} />
 
-          <Route path="/enem-scores" element={<ProtectedRoute><EnemScoreList /></ProtectedRoute>} />
-          <Route path="/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} />
 
-          <Route path="/application-outcomes" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} />
+          <Route path="/application-outcomes/:processSelectionId" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} />
           <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} />
 
 

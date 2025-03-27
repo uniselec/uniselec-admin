@@ -87,41 +87,41 @@ export const ProcessSelectionDetails = () => {
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
       {/* 🚀 Novo Card com Ações */}
-      <Paper sx={{ p: 3, mb: 2, display: "flex", justifyContent: "center", gap: 2 }}>
+      {/* <Paper sx={{ p: 3, mb: 2, display: "flex", justifyContent: "center", gap: 2 }}>
         {processType === "sisu" ? (
           <>
-            <Button variant="contained" color="warning" onClick={() => navigate(`/${id}/import-enem-score`)}>
+            <Button variant="contained" color="warning" onClick={() => navigate(`/${id}/import-enem-score/`)}>
               Notas do SISU
             </Button>
-            <Button variant="contained" color="error" onClick={() => navigate(`/${id}/generate-results`)}>
+            <Button variant="contained" color="error" onClick={() => navigate(`/${id}/generate-results/`)}>
               Processar Resultados
             </Button>
           </>
         ) : (
           <>
-            <Button variant="contained" color="primary" onClick={() => navigate(`/${id}/applications`)}>
+            <Button variant="contained" color="primary" onClick={() => navigate(`/${id}/applications/`)}>
               Visualizar Inscrições
             </Button>
-            <Button variant="contained" color="success" onClick={() => navigate(`/${id}/export-csv`)}>
+            <Button variant="contained" color="success" onClick={() => navigate(`/${id}/export-csv/`)}>
               Exportar Inscrições
             </Button>
-            <Button variant="contained" color="warning" onClick={() => navigate(`/${id}/import-enem-score`)}>
+            <Button variant="contained" color="warning" onClick={() => navigate(`/${id}/import-enem-score/`)}>
               Importar Notas
             </Button>
-            <Button variant="contained" color="info" onClick={() => navigate(`/${id}/enem-scores`)}>
+            <Button variant="contained" color="info" onClick={() => navigate(`/${id}/enem-scores/`)}>
               Listar Notas do Enem
             </Button>
-            <Button variant="contained" color="error" onClick={() => navigate(`/${id}/generate-results`)}>
+            <Button variant="contained" color="error" onClick={() => navigate(`/${id}/generate-results/`)}>
               Processar Resultados
             </Button>
           </>
         )}
-      </Paper>
+      </Paper> */}
 
       <Paper sx={{ p: 3, mb: 2 }}>
         <Typography variant="h4">{processSelection.data.name}</Typography>
         <Typography>{processSelection.data.description}</Typography>
-        <Typography>Tipo: {processSelection.data.type}</Typography>
+        <Typography>Tipo: {processSelection.data.type === 'enem_score' ? 'Notas do Enem' : 'SISU'}</Typography>
         <Typography>Status: {processSelection.data.status}</Typography>
         <Typography>Início: {processSelection.data.start_date}</Typography>
         <Typography>Fim: {processSelection.data.end_date}</Typography>
@@ -130,42 +130,7 @@ export const ProcessSelectionDetails = () => {
         </Button>
       </Paper>
 
-      <Paper sx={{ p: 3, mb: 2 }}>
-        <Typography variant="h5">Cursos Vinculados</Typography>
-        {attachedCourses.length > 0
-          ? attachedCourses.map((course) => (
-            <Box key={course.id} sx={{ display: "flex", justifyContent: "space-between", my: 1 }}>
-              <Typography>
-                {course.name} - {course.campus} ({course.state}) (Vagas: {course.vacancies})
-              </Typography>
-              <Button variant="outlined" color="secondary" onClick={() => handleRemoveCourse(course.id)}>
-                Remover
-              </Button>
-            </Box>
-          ))
-          : <Typography>Nenhum curso vinculado.</Typography>}
-        <Box sx={{ mt: 3, display: "flex", gap: 2, flexWrap: "wrap", alignItems: "center" }}>
-          <Autocomplete
-            sx={{ minWidth: 300 }}
-            options={coursesData ? coursesData.data : []}
-            getOptionLabel={(option: any) => option.name}
-            value={selectedCourse}
-            onChange={(_, newValue) => setSelectedCourse(newValue)}
-            renderInput={(params) => <TextField {...params} label="Selecionar Curso" variant="outlined" />}
-          />
-          <TextField
-            type="number"
-            label="Vagas"
-            value={vacancy}
-            onChange={(e) => setVacancy(Number(e.target.value))}
-            sx={{ width: 100 }}
-            inputProps={{ min: 1 }}
-          />
-          <Button variant="contained" color="primary" onClick={handleAddCourse}>
-            Adicionar Curso
-          </Button>
-        </Box>
-      </Paper>
+
 
       <DocumentList processSelectionId={id!} />
 

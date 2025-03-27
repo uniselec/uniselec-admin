@@ -17,55 +17,53 @@ import {
   GridToolbar,
   ptPT,
 } from "@mui/x-data-grid";
-import { Results } from "../../../types/ProcessSelection";
+import { Results } from "../../../types/AcademicUnit";
 import { Link } from "react-router-dom";
-import { useDeleteProcessSelectionMutation } from "../processSelectionSlice";
+import { useDeleteAcademicUnitMutation } from "../academicUnitSlice";
+import useTranslate from "../../polyglot/useTranslate";
 
 type Props = {
-  processSelections: Results | undefined;
+  academicUnits: Results | undefined;
   paginationModel: object;
   isFetching: boolean;
   handleSetPaginationModel: (paginateModel: { page: number; pageSize: number }) => void;
   handleFilterChange: (filterModel: GridFilterModel) => void;
 };
 
-export function ProcessSelectionTable({
-  processSelections,
+export function AcademicUnitTable({
+  academicUnits,
   paginationModel,
   isFetching,
   handleSetPaginationModel,
   handleFilterChange,
 }: Props) {
-  const [deleteProcessSelection, { isLoading }] = useDeleteProcessSelectionMutation();
+  const translate = useTranslate("academicUnits");
+  const [deleteAcademicUnit, { isLoading }] = useDeleteAcademicUnitMutation();
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState<"success" | "error">("success");
   const [alertMessage, setAlertMessage] = useState("");
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [selectedProcessSelectionId, setSelectedProcessSelectionId] = useState<string | null>(null);
+  const [selectedAcademicUnitId, setSelectedAcademicUnitId] = useState<string | null>(null);
 
-  const handleAlertClose = () => {
-    setAlertOpen(false);
-  };
-
+  const handleAlertClose = () => setAlertOpen(false);
   const handleOpenConfirm = (id: string) => {
-    setSelectedProcessSelectionId(id);
+    setSelectedAcademicUnitId(id);
     setConfirmOpen(true);
   };
-
   const handleCloseConfirm = () => {
     setConfirmOpen(false);
-    setSelectedProcessSelectionId(null);
+    setSelectedAcademicUnitId(null);
   };
 
   const handleConfirmDelete = async () => {
-    if (!selectedProcessSelectionId) return;
+    if (!selectedAcademicUnitId) return;
     try {
-      await deleteProcessSelection({ id: selectedProcessSelectionId }).unwrap();
+      await deleteAcademicUnit({ id: selectedAcademicUnitId }).unwrap();
       setAlertSeverity("success");
-      setAlertMessage("Processo seletivo apagado com sucesso.");
+      setAlertMessage("Curso apagado com sucesso.");
     } catch (error) {
       setAlertSeverity("error");
-      setAlertMessage("Falha ao tentar apagar o processo seletivo.");
+      setAlertMessage("Falha ao tentar apagar o curso.");
     } finally {
       setAlertOpen(true);
       handleCloseConfirm();
@@ -74,47 +72,31 @@ export function ProcessSelectionTable({
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return "-";
-    return new Date(dateString).toLocaleDateString("pt-BR");
+    const date = new Date(dateString);
+    return date.toLocaleDateString("pt-BR");
+  };
+
+  const modalityLabels: Record<string, string> = {
+    "distance": "EAD",
+    "in-person": "Presencial"
   };
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", type: "string", width: 100 },
+    { field: "id", headerName: "ID", width: 100 },
     { field: "name", headerName: "Nome", flex: 1 },
-    { field: "status", headerName: "Status", flex: 1 },
-    {
-      field: "start_date",
-      headerName: "Data de Início",
-      flex: 1,
-      valueGetter: (params) => formatDate(params.value),
-    },
-    {
-      field: "end_date",
-      headerName: "Data de Fim",
-      flex: 1,
-      valueGetter: (params) => formatDate(params.value),
-    },
+    { field: "state", headerName: "Estado (UF)", flex: 0.5 },
+    // { field: "created_at", headerName: "Criado em", flex: 1, valueGetter: (params) => formatDate(params.value) },
+    // { field: "updated_at", headerName: "Atualizado em", flex: 1, valueGetter: (params) => formatDate(params.value) },
     {
       field: "actions",
       headerName: "Ações",
       width: 250,
       renderCell: (params) => (
         <Box display="flex" gap={2}>
-          <Button
-            variant="contained"
-            size="small"
-            color="primary"
-            component={Link}
-            to={`/process-selections/details/${params.row.id}`}
-          >
-            Selecionar
+          <Button variant="contained" size="small" color="primary" component={Link} to={`/academic-units/edit/${params.row.id}`}>
+            Editar
           </Button>
-          <Button
-            variant="contained"
-            size="small"
-            color="secondary"
-            onClick={() => handleOpenConfirm(params.row.id)}
-            disabled={isLoading}
-          >
+          <Button variant="contained" size="small" color="secondary" onClick={() => handleOpenConfirm(params.row.id)} disabled={isLoading}>
             Apagar
           </Button>
         </Box>
@@ -122,23 +104,33 @@ export function ProcessSelectionTable({
     },
   ];
 
-  function mapDataToGridRows(data: Results) {
-    return data.data.map((processSelection) => ({
-      id: processSelection.id,
-      name: processSelection.name,
-      description: processSelection.description,
-      type: processSelection.type,
-      status: processSelection.status,
-      start_date: processSelection.start_date,
-      end_date: processSelection.end_date,
+  const mapDataToGridRows = (data: Results) => {
+    return data.data.map((academicUnit) => ({
+      id: academicUnit.id,
+      name: academicUnit.name,
+      description: academicUnit.description,
+      state: academicUnit.state,
+      created_at: academicUnit.created_at,
+      updated_at: academicUnit.updated_at,
     }));
-  }
+  };
 
-  const rows = processSelections ? mapDataToGridRows(processSelections) : [];
-  const rowCount = processSelections?.meta.total || 0;
+  const rows = academicUnits ? mapDataToGridRows(academicUnits) : [];
+  const rowCount = academicUnits?.meta.total || 0;
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: 500, width: "100%", boxShadow: 3, borderRadius: 2, bgcolor: "background.paper", overflow: "hidden" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: 500,
+        width: "100%",
+        boxShadow: 3,
+        borderRadius: 2,
+        bgcolor: "background.paper",
+        overflow: "hidden",
+      }}
+    >
       <DataGrid
         columns={columns}
         rows={rows}
@@ -147,9 +139,9 @@ export function ProcessSelectionTable({
         loading={isFetching}
         paginationMode="server"
         checkboxSelection={false}
-        disableColumnFilter
-        disableColumnSelector
-        disableDensitySelector
+        disableColumnFilter={true}
+        disableColumnSelector={true}
+        disableDensitySelector={true}
         slots={{ toolbar: GridToolbar }}
         slotProps={{
           toolbar: {
@@ -176,21 +168,14 @@ export function ProcessSelectionTable({
         </Alert>
       </Snackbar>
 
-      {/* Modal de Confirmação */}
       <Dialog open={confirmOpen} onClose={handleCloseConfirm} aria-labelledby="confirm-dialog-title" aria-describedby="confirm-dialog-description">
         <DialogTitle id="confirm-dialog-title">Confirmação</DialogTitle>
         <DialogContent>
-          <DialogContentText id="confirm-dialog-description">
-            Tem certeza de que deseja apagar este processo seletivo?
-          </DialogContentText>
+          <DialogContentText id="confirm-dialog-description">Tem certeza de que deseja apagar esta Unidade Acadêmica?</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseConfirm} color="primary">
-            Cancelar
-          </Button>
-          <Button onClick={handleConfirmDelete} color="secondary" autoFocus>
-            Confirmar
-          </Button>
+          <Button onClick={handleCloseConfirm} color="primary">Cancelar</Button>
+          <Button onClick={handleConfirmDelete} color="secondary" autoFocus>Confirmar</Button>
         </DialogActions>
       </Dialog>
     </Box>

@@ -1,3 +1,4 @@
+import { AdmissionCategory } from "./AdmissionCategory";
 import { Course } from "./Course";
 import { Document } from "./Document";
 
@@ -21,6 +22,7 @@ export interface ProcessSelection {
     type:           string;
     courses: Course[];
     documents?: Document[];
+    admission_categories?: AdmissionCategory[];
     created_at?: null | string;
     updated_at?: null | string;
 }
