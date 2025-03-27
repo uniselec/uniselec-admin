@@ -48,7 +48,7 @@ export function ProcessSelectionForm({
   setProcessSelection,
 }: Props) {
   const typeOptions = [
-    { value: "sisu", label: "SISU" },
+    // { value: "sisu", label: "SISU" },
     { value: "enem_score", label: "Notas do Enem" },
   ];
   const statusOptions = [
