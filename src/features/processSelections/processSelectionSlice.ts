@@ -11,7 +11,7 @@ function parseQueryParams(params: ProcessSelectionParams) {
   return query.toString();
 }
 
-function getProcessSelections({ page = 1, perPage = 10, search = "" }) {
+function getProcessSelections({ page = 1, perPage = 100, search = "" }) {
   const params = { page, perPage, search };
   return `${endpointUrl}?${parseQueryParams(params)}`;
 }
