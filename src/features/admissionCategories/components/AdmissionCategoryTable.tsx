@@ -84,7 +84,7 @@ export function AdmissionCategoryTable({
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 100 },
     { field: "name", headerName: "Nome", flex: 1 },
-    { field: "state", headerName: "Estado (UF)", flex: 0.5 },
+    { field: "description", headerName: "Descrição", flex: 1 },
     // { field: "created_at", headerName: "Criado em", flex: 1, valueGetter: (params) => formatDate(params.value) },
     // { field: "updated_at", headerName: "Atualizado em", flex: 1, valueGetter: (params) => formatDate(params.value) },
     {
@@ -93,7 +93,7 @@ export function AdmissionCategoryTable({
       width: 250,
       renderCell: (params) => (
         <Box display="flex" gap={2}>
-          <Button variant="contained" size="small" color="primary" component={Link} to={`/academic-units/edit/${params.row.id}`}>
+          <Button variant="contained" size="small" color="primary" component={Link} to={`/admission-categories/edit/${params.row.id}`}>
             Editar
           </Button>
           <Button variant="contained" size="small" color="secondary" onClick={() => handleOpenConfirm(params.row.id)} disabled={isLoading}>

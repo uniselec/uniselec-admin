@@ -65,7 +65,7 @@ export function AdmissionCategoryForm({
 
           <Grid item xs={12}>
             <Box display="flex" gap={2}>
-              <Button variant="contained" component={Link} to="/academic-units">
+              <Button variant="contained" component={Link} to="/admission-categories">
                 Voltar
               </Button>
               <Button type="submit" variant="contained" color="secondary" disabled={isdisabled || isLoading}>

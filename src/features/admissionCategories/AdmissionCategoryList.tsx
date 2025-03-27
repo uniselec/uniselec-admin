@@ -47,13 +47,13 @@ export const AdmissionCategoryList = () => {
     <Box sx={{ mt: 4, mb: 4 }}>
       <Paper sx={{ p: 3, mb: 2 }}>
         <Typography variant="h4" gutterBottom>
-          Unidades Acadêmicas
+          Modalidades de Admissão
         </Typography>
 
           <Button
             variant="contained"
             color="primary"
-            onClick={() => navigate("/academic-units/create")}
+            onClick={() => navigate("/admission-categories/create")}
           >
             Incluir Novo
           </Button>

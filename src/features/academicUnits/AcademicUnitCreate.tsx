@@ -36,7 +36,7 @@ export const AcademicUnitCreate = () => {
     <Box sx={{ mt: 4, mb: 4 }}>
       <Paper>
         <Box p={2}>
-          <Typography variant="h4">Criar Curso</Typography>
+          <Typography variant="h4">Criar Unidade Acadêmica</Typography>
         </Box>
         <AcademicUnitForm
           isLoading={status.isLoading}
