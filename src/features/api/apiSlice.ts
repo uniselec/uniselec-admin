@@ -22,7 +22,7 @@ const fetchWithTimeout = async (url: RequestInfo, options: RequestInit = {}) => 
 
 export const apiSlice = createApi({
     reducerPath: "api",
-    tagTypes: ["Applications", "Users", "Admins", "EnemScores", "ApplicationOutcomes", "ProcessSelections", "Courses", "Documents", "AcademicUnits"],
+    tagTypes: ["Applications", "Users", "Admins", "EnemScores", "ApplicationOutcomes", "ProcessSelections", "Courses", "Documents", "AcademicUnits", "AdmissionCategories"],
     baseQuery: fetchBaseQuery({
         baseUrl: baseUrl,
         prepareHeaders: (headers, { getState }) => {

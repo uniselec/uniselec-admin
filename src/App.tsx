@@ -31,6 +31,9 @@ import { ProcessSelectionDetailStepper } from "./features/processSelections/Proc
 import { AcademicUnitList } from "./features/academicUnits/AcademicUnitList";
 import { AcademicUnitEdit } from "./features/academicUnits/AcademicUnitEdit";
 import { AcademicUnitCreate } from "./features/academicUnits/AcademicUnitCreate";
+import { AdmissionCategoryList } from "./features/admissionCategories/AdmissionCategoryList";
+import { AdmissionCategoryEdit } from "./features/admissionCategories/AdmissionCategoryEdit";
+import { AdmissionCategoryCreate } from "./features/admissionCategories/AdmissionCategoryCreate";
 
 
 
@@ -55,6 +58,12 @@ function App() {
           <Route path="/process-selections/details/:id" element={<ProtectedRoute><ProcessSelectionDetailStepper /></ProtectedRoute>} />
           <Route path="/process-selections/create" element={<ProtectedRoute><ProcessSelectionCreate /></ProtectedRoute>} />
 
+
+
+
+          <Route path="/admission-categories" element={<ProtectedRoute><AdmissionCategoryList /></ProtectedRoute>} />
+          <Route path="/admission-categories/edit/:id" element={<ProtectedRoute><AdmissionCategoryEdit /></ProtectedRoute>} />
+          <Route path="/admission-categories/create" element={<ProtectedRoute><AdmissionCategoryCreate /></ProtectedRoute>} />
 
 
           <Route path="/academic-units" element={<ProtectedRoute><AcademicUnitList /></ProtectedRoute>} />
