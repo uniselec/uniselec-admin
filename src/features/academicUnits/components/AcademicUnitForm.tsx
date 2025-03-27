@@ -111,7 +111,7 @@ export function AcademicUnitForm({
 
           <Grid item xs={12}>
             <Box display="flex" gap={2}>
-              <Button variant="contained" component={Link} to="/academicUnits">
+              <Button variant="contained" component={Link} to="/academic-units">
                 Voltar
               </Button>
               <Button type="submit" variant="contained" color="secondary" disabled={isdisabled || isLoading}>

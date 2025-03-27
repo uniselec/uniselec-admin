@@ -84,20 +84,16 @@ export function AcademicUnitTable({
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 100 },
     { field: "name", headerName: "Nome", flex: 1 },
-    { field: "modality", headerName: "Modalidade", flex: 1,
-      valueGetter: (params) => modalityLabels[params.value] || params.value
-    },
-    { field: "campus", headerName: "Campus", flex: 1 },
     { field: "state", headerName: "Estado (UF)", flex: 0.5 },
-    { field: "created_at", headerName: "Criado em", flex: 1, valueGetter: (params) => formatDate(params.value) },
-    { field: "updated_at", headerName: "Atualizado em", flex: 1, valueGetter: (params) => formatDate(params.value) },
+    // { field: "created_at", headerName: "Criado em", flex: 1, valueGetter: (params) => formatDate(params.value) },
+    // { field: "updated_at", headerName: "Atualizado em", flex: 1, valueGetter: (params) => formatDate(params.value) },
     {
       field: "actions",
       headerName: "Ações",
       width: 250,
       renderCell: (params) => (
         <Box display="flex" gap={2}>
-          <Button variant="contained" size="small" color="primary" component={Link} to={`/academicUnits/edit/${params.row.id}`}>
+          <Button variant="contained" size="small" color="primary" component={Link} to={`/academic-units/edit/${params.row.id}`}>
             Editar
           </Button>
           <Button variant="contained" size="small" color="secondary" onClick={() => handleOpenConfirm(params.row.id)} disabled={isLoading}>
@@ -175,7 +171,7 @@ export function AcademicUnitTable({
       <Dialog open={confirmOpen} onClose={handleCloseConfirm} aria-labelledby="confirm-dialog-title" aria-describedby="confirm-dialog-description">
         <DialogTitle id="confirm-dialog-title">Confirmação</DialogTitle>
         <DialogContent>
-          <DialogContentText id="confirm-dialog-description">Tem certeza de que deseja apagar este curso?</DialogContentText>
+          <DialogContentText id="confirm-dialog-description">Tem certeza de que deseja apagar esta Unidade Acadêmica?</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseConfirm} color="primary">Cancelar</Button>

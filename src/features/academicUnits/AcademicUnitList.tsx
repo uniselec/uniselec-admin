@@ -1,13 +1,13 @@
 import { Box, Typography, Button, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useGetCoursesQuery } from "./courseSlice";
+import { useGetAcademicUnitsQuery } from "./academicUnitSlice";
 import { GridFilterModel } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import { selectAuthUser } from "../auth/authSlice";
-import { CourseTable } from "./components/CourseTable";
+import { AcademicUnitTable } from "./components/AcademicUnitTable";
 
-export const CourseList = () => {
+export const AcademicUnitList = () => {
   const [options, setOptions] = useState({
     page: 1,
     search: "",
@@ -15,7 +15,7 @@ export const CourseList = () => {
     rowsPerPage: [25, 50, 100],
   });
 
-  const { data, isFetching, error } = useGetCoursesQuery(options);
+  const { data, isFetching, error } = useGetAcademicUnitsQuery(options);
   const navigate = useNavigate();
 
 
@@ -47,19 +47,19 @@ export const CourseList = () => {
     <Box sx={{ mt: 4, mb: 4 }}>
       <Paper sx={{ p: 3, mb: 2 }}>
         <Typography variant="h4" gutterBottom>
-          Cursos
+          Unidades Acadêmicas
         </Typography>
 
           <Button
             variant="contained"
             color="primary"
-            onClick={() => navigate("/courses/create")}
+            onClick={() => navigate("/academic-units/create")}
           >
             Incluir Novo
           </Button>
       </Paper>
-      <CourseTable
-        courses={data}
+      <AcademicUnitTable
+        academicUnits={data}
         isFetching={isFetching}
         paginationModel={{
           pageSize: 25,

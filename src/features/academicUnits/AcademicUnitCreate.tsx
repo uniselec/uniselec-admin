@@ -1,25 +1,24 @@
 import { Box, Paper, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
-import { Course } from "../../types/Course";
-import { useCreateCourseMutation } from "./courseSlice";
-import { CourseForm } from "./components/CourseForm";
+import { AcademicUnit } from "../../types/AcademicUnit";
+import { useCreateAcademicUnitMutation } from "./academicUnitSlice";
+import { AcademicUnitForm } from "./components/AcademicUnitForm";
 
-export const CourseCreate = () => {
+export const AcademicUnitCreate = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const [createCourse, status] = useCreateCourseMutation();
+  const [createAcademicUnit, status] = useCreateAcademicUnitMutation();
   const [isDisabled, setIsDisabled] = useState(false);
-  const [courseState, setCourseState] = useState<Course>({
+  const [academicUnitState, setAcademicUnitState] = useState<AcademicUnit>({
     name: "",
-    modality: "",
-    campus: "",
+    description: "",
     state: "",
   });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await createCourse(courseState).unwrap();
+      await createAcademicUnit(academicUnitState).unwrap();
       enqueueSnackbar("Curso criado com sucesso", { variant: "success" });
       setIsDisabled(true);
     } catch (error: any) {
@@ -30,7 +29,7 @@ export const CourseCreate = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setCourseState({ ...courseState, [name]: value });
+    setAcademicUnitState({ ...academicUnitState, [name]: value });
   };
 
   return (
@@ -39,11 +38,11 @@ export const CourseCreate = () => {
         <Box p={2}>
           <Typography variant="h4">Criar Curso</Typography>
         </Box>
-        <CourseForm
+        <AcademicUnitForm
           isLoading={status.isLoading}
           isdisabled={isDisabled}
-          course={courseState}
-          setCourse={setCourseState}
+          academicUnit={academicUnitState}
+          setAcademicUnit={setAcademicUnitState}
           handleSubmit={handleSubmit}
           handleChange={handleChange}
         />

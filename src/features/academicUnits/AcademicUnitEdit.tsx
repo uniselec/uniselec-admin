@@ -2,23 +2,23 @@ import { Box, Paper, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetCourseQuery, useUpdateCourseMutation } from "./courseSlice";
-import { Course } from "../../types/Course";
-import { CourseForm } from "./components/CourseForm";
+import { useGetAcademicUnitQuery, useUpdateAcademicUnitMutation } from "./academicUnitSlice";
+import { AcademicUnit } from "../../types/AcademicUnit";
+import { AcademicUnitForm } from "./components/AcademicUnitForm";
 
-export const CourseEdit = () => {
+export const AcademicUnitEdit = () => {
   const id = useParams().id as string;
-  const { data: courseData, isFetching } = useGetCourseQuery({ id });
+  const { data: academicUnitData, isFetching } = useGetAcademicUnitQuery({ id });
   const [isDisabled, setIsDisabled] = useState(false);
-  const [updateCourse, status] = useUpdateCourseMutation();
+  const [updateAcademicUnit, status] = useUpdateAcademicUnitMutation();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [courseState, setCourseState] = useState<Course>({} as Course);
+  const [academicUnitState, setAcademicUnitState] = useState<AcademicUnit>({} as AcademicUnit);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await updateCourse(courseState).unwrap();
+      await updateAcademicUnit(academicUnitState).unwrap();
       enqueueSnackbar("Curso atualizado com sucesso", { variant: "success" });
       setIsDisabled(false);
     } catch (error: any) {
@@ -29,14 +29,14 @@ export const CourseEdit = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setCourseState({ ...courseState, [name]: value });
+    setAcademicUnitState({ ...academicUnitState, [name]: value });
   };
 
   useEffect(() => {
-    if (courseData) {
-      setCourseState(courseData.data);
+    if (academicUnitData) {
+      setAcademicUnitState(academicUnitData.data);
     }
-  }, [courseData]);
+  }, [academicUnitData]);
 
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
@@ -44,11 +44,11 @@ export const CourseEdit = () => {
         <Box p={2}>
           <Typography variant="h4">Editar Curso</Typography>
         </Box>
-        <CourseForm
+        <AcademicUnitForm
           isLoading={status.isLoading}
-          course={courseState}
+          academicUnit={academicUnitState}
           isdisabled={isFetching || isDisabled}
-          setCourse={setCourseState}
+          setAcademicUnit={setAcademicUnitState}
           handleSubmit={handleSubmit}
           handleChange={handleChange}
         />
