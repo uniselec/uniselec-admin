@@ -10,11 +10,11 @@ export interface Result {
 }
 
 export interface AdmissionCategory {
-  id?: number;
+  id: number; // Alterado de "id?: number" para "id: number"
   name: string;
-  description: string;
-  created_at?: null | string;
-  updated_at?: null | string;
+  description?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 export interface Links {
   prev: string;

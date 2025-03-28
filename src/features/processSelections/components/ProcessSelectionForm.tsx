@@ -169,20 +169,6 @@ export function ProcessSelectionForm({
               </LocalizationProvider>
             </FormControl>
           </Grid>
-
-          {/* Seleção de Cursos */}
-          <Grid item xs={12}>
-            <FormControl fullWidth>
-              <CourseSelector
-                coursesOptions={coursesOptions}
-                selectedCourses={processSelection.courses || []}
-                setSelectedCourses={(newCourses) =>
-                  setProcessSelection((prev) => ({ ...prev, courses: newCourses as Course[] }))
-                }
-              />
-            </FormControl>
-          </Grid>
-
           {/* Seleção de Admission Categories */}
           <Grid item xs={12}>
             <FormControl fullWidth>
@@ -198,6 +184,23 @@ export function ProcessSelectionForm({
               />
             </FormControl>
           </Grid>
+
+
+          {/* Seleção de Cursos */}
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <CourseSelector
+                coursesOptions={coursesOptions}
+                selectedCourses={processSelection.courses || []}
+                setSelectedCourses={(newCourses) =>
+                  setProcessSelection((prev) => ({ ...prev, courses: newCourses as Course[] }))
+                }
+                selectedAdmissionCategories={processSelection.admission_categories || []}
+              />
+            </FormControl>
+          </Grid>
+
+
 
           {/* Ações */}
           <Grid item xs={12}>
