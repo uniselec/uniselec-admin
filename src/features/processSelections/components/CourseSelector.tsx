@@ -73,7 +73,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
         onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
         onChange={handleSelect}
         options={filteredOptions}
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={(option) => `${option.name} - ${option.academic_unit.name}`}
         renderInput={(params) => (
           <TextField {...params} label="Adicionar Curso" variant="outlined" />
         )}
