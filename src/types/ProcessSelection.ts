@@ -22,6 +22,7 @@ export interface ProcessSelection {
     type:           string;
     courses: Course[];
     documents?: Document[];
+    allowed_enem_years?: number[];
     admission_categories?: AdmissionCategory[];
     created_at?: null | string;
     updated_at?: null | string;
