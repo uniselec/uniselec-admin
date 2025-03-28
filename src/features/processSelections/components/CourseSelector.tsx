@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Box, TextField, Chip, Autocomplete } from "@mui/material";
 import { CourseVacancyModal } from "./CourseVacancyModal";
 import { Course } from "../../../types/Course";
+import { AdmissionCategory } from "../../../types/AdmissionCategory";
 
 type CourseSelectorProps = {
   coursesOptions: Course[];
   selectedCourses: Course[];
   setSelectedCourses: React.Dispatch<React.SetStateAction<Course[]>>;
   // We'll need the selected admission categories for default vacancy mapping.
-  selectedAdmissionCategories: { id: number; name: string }[];
+  selectedAdmissionCategories: AdmissionCategory[];
 };
 
 export const CourseSelector: React.FC<CourseSelectorProps> = ({
