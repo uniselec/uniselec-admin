@@ -234,67 +234,67 @@ export function ApplicationOutcomeGenerateDocumentsNo20({
     ]);
 
     // Remove a coluna "Bonificação"
-    doc.autoTable({
-      head: [
-        [
-          "Classificação",
-          "Nome",
-          "CPF",
-          "Situação",
-          "Nota Final",
-          "Bonificação",
-        ],
-      ],
-      body: rows,
-      startY: margin + 100,
-      styles: {
-        overflow: "linebreak",
-        cellWidth: "wrap",
-        fontSize: 8,
-        lineColor: [0, 0, 0],
-        textColor: [0, 0, 0],
-      },
-      bodyStyles: {
-        valign: "top",
-      },
-      columnStyles: {
-        0: { cellWidth: 60 },
-        1: { cellWidth: 160 },
-        2: { cellWidth: 100 },
-        3: { cellWidth: 60 },
-        4: { cellWidth: 60 },
-        5: { cellWidth: 60 },
-      },
-      theme: "grid",
-      margin: { top: margin, left: margin, right: margin, bottom: margin },
-      didParseCell: (data: {
-        row: { index: number };
-        cell: { styles: { fontStyle: string } };
-      }) => {
-        if (data.row.index < vagaOptions[selectedCategory as CategoryKey]) {
-          data.cell.styles.fontStyle = "bold";
-        }
-      },
-      didDrawPage: (pageData: any) => {
-        doc.setFontSize(8);
-        doc.text(
-          `Data e hora de geração: ${currentDateTime}`,
-          margin,
-          pageHeight - 30,
-          {
-            align: "left",
-          }
-        );
-        doc.text(
-          `Página ${pageData.pageNumber}`,
-          pageWidth - margin,
-          pageHeight - 30,
-          {
-            align: "right",
-          }
-        );
-      },
-    });
+    // doc.autoTable({
+    //   head: [
+    //     [
+    //       "Classificação",
+    //       "Nome",
+    //       "CPF",
+    //       "Situação",
+    //       "Nota Final",
+    //       "Bonificação",
+    //     ],
+    //   ],
+    //   body: rows,
+    //   startY: margin + 100,
+    //   styles: {
+    //     overflow: "linebreak",
+    //     cellWidth: "wrap",
+    //     fontSize: 8,
+    //     lineColor: [0, 0, 0],
+    //     textColor: [0, 0, 0],
+    //   },
+    //   bodyStyles: {
+    //     valign: "top",
+    //   },
+    //   columnStyles: {
+    //     0: { cellWidth: 60 },
+    //     1: { cellWidth: 160 },
+    //     2: { cellWidth: 100 },
+    //     3: { cellWidth: 60 },
+    //     4: { cellWidth: 60 },
+    //     5: { cellWidth: 60 },
+    //   },
+    //   theme: "grid",
+    //   margin: { top: margin, left: margin, right: margin, bottom: margin },
+    //   didParseCell: (data: {
+    //     row: { index: number };
+    //     cell: { styles: { fontStyle: string } };
+    //   }) => {
+    //     if (data.row.index < vagaOptions[selectedCategory as CategoryKey]) {
+    //       data.cell.styles.fontStyle = "bold";
+    //     }
+    //   },
+    //   didDrawPage: (pageData: any) => {
+    //     doc.setFontSize(8);
+    //     doc.text(
+    //       `Data e hora de geração: ${currentDateTime}`,
+    //       margin,
+    //       pageHeight - 30,
+    //       {
+    //         align: "left",
+    //       }
+    //     );
+    //     doc.text(
+    //       `Página ${pageData.pageNumber}`,
+    //       pageWidth - margin,
+    //       pageHeight - 30,
+    //       {
+    //         align: "right",
+    //       }
+    //     );
+    //   },
+    // });
 
     doc.save("application_outcomes.pdf");
   };

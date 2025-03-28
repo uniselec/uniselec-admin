@@ -54,41 +54,41 @@ const DeferidosIndeferidosList = () => {
             outcome.displayReason
         ]);
 
-        doc.autoTable({
-            head: [["Nome", "CPF", "Situação", "Motivo"]],
-            body: rows || [],
-            startY: topMargin + 80,
-            styles: {
-                overflow: "linebreak",
-                cellWidth: "wrap",
-                fontSize: 8,
-                lineColor: [0, 0, 0],
-                textColor: [0, 0, 0],
-            },
-            bodyStyles: { valign: "top" },
-            columnStyles: {
-                0: { cellWidth: 150 },
-                1: { cellWidth: 100 },
-                2: { cellWidth: 100 },
-                3: { cellWidth: 150 },
-            },
-            theme: "grid",
-            margin: { top: topMargin, left: topMargin, right: topMargin, bottom: bottomMargin },
-            didDrawCell: (cellData: any) => {
-                if (cellData.cell.section === 'body' && cellData.column.index === 3) {
-                    cellData.cell.text = cellData.cell.text.map((text: string) => doc.splitTextToSize(text, 200));
-                }
-            },
-            didDrawPage: (pageData: any) => {
-                doc.setFontSize(8);
-                doc.text(`Data e hora de geração: ${currentDateTime}`, topMargin, pageHeight - bottomMargin + 16, {
-                    align: 'left',
-                });
-                doc.text(`Página ${(doc.internal as any).getNumberOfPages()}`, pageWidth - topMargin, pageHeight - bottomMargin + 16, {
-                    align: 'right',
-                });
-            }
-        });
+        // doc.autoTable({
+        //     head: [["Nome", "CPF", "Situação", "Motivo"]],
+        //     body: rows || [],
+        //     startY: topMargin + 80,
+        //     styles: {
+        //         overflow: "linebreak",
+        //         cellWidth: "wrap",
+        //         fontSize: 8,
+        //         lineColor: [0, 0, 0],
+        //         textColor: [0, 0, 0],
+        //     },
+        //     bodyStyles: { valign: "top" },
+        //     columnStyles: {
+        //         0: { cellWidth: 150 },
+        //         1: { cellWidth: 100 },
+        //         2: { cellWidth: 100 },
+        //         3: { cellWidth: 150 },
+        //     },
+        //     theme: "grid",
+        //     margin: { top: topMargin, left: topMargin, right: topMargin, bottom: bottomMargin },
+        //     didDrawCell: (cellData: any) => {
+        //         if (cellData.cell.section === 'body' && cellData.column.index === 3) {
+        //             cellData.cell.text = cellData.cell.text.map((text: string) => doc.splitTextToSize(text, 200));
+        //         }
+        //     },
+        //     didDrawPage: (pageData: any) => {
+        //         doc.setFontSize(8);
+        //         doc.text(`Data e hora de geração: ${currentDateTime}`, topMargin, pageHeight - bottomMargin + 16, {
+        //             align: 'left',
+        //         });
+        //         doc.text(`Página ${(doc.internal as any).getNumberOfPages()}`, pageWidth - topMargin, pageHeight - bottomMargin + 16, {
+        //             align: 'right',
+        //         });
+        //     }
+        // });
 
         doc.save("inscricoes_deferidas_indeferidas.pdf");
     };

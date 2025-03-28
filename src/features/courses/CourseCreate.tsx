@@ -9,12 +9,7 @@ export const CourseCreate = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [createCourse, status] = useCreateCourseMutation();
   const [isDisabled, setIsDisabled] = useState(false);
-  const [courseState, setCourseState] = useState<Course>({
-    name: "",
-    modality: "",
-    campus: "",
-    state: "",
-  });
+  const [courseState, setCourseState] = useState<Course>({} as Course);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
