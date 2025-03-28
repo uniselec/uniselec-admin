@@ -22,6 +22,7 @@ import { useGetAdmissionCategoriesQuery } from "../../admissionCategories/admiss
 import { CourseSelector } from "./CourseSelector";
 import { AdmissionCategorySelector } from "./AdmissionCategorySelector";
 import { Course } from "../../../types/Course";
+import { AllowedEnemYearsSelector } from "./AllowedEnemYearsSelector";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -169,6 +170,17 @@ export function ProcessSelectionForm({
               </LocalizationProvider>
             </FormControl>
           </Grid>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <AllowedEnemYearsSelector
+                allowedYears={processSelection.allowed_enem_years || []}
+                setAllowedYears={(newYears) =>
+                  setProcessSelection((prev) => ({ ...prev, allowed_enem_years: newYears as number[] }))
+                }
+              />
+            </FormControl>
+          </Grid>
+
           {/* Seleção de Admission Categories */}
           <Grid item xs={12}>
             <FormControl fullWidth>
