@@ -1,4 +1,5 @@
 import { AdmissionCategory } from "./AdmissionCategory";
+import { BonusOption } from "./BonusOption";
 import { Course } from "./Course";
 import { Document } from "./Document";
 
@@ -22,6 +23,7 @@ export interface ProcessSelection {
     type:           string;
     courses: Course[];
     documents?: Document[];
+    bonus_options?: BonusOption[];
     allowed_enem_years?: number[];
     admission_categories?: AdmissionCategory[];
     created_at?: null | string;

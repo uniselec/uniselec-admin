@@ -47,7 +47,7 @@ export const BonusOptionList = () => {
     <Box sx={{ mt: 4, mb: 4 }}>
       <Paper sx={{ p: 3, mb: 2 }}>
         <Typography variant="h4" gutterBottom>
-          Modalidades de Admissão
+          Critérios de Bonificação
         </Typography>
 
           <Button
