@@ -23,6 +23,8 @@ import { CourseSelector } from "./CourseSelector";
 import { AdmissionCategorySelector } from "./AdmissionCategorySelector";
 import { Course } from "../../../types/Course";
 import { AllowedEnemYearsSelector } from "./AllowedEnemYearsSelector";
+import { BonusOptionSelector } from "./BonusOptionSelector";
+import { useGetBonusOptionsQuery } from "../../bonusOptions/bonusOptionSlice";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -59,11 +61,15 @@ export function ProcessSelectionForm({
     { value: "archived", label: "Arquivado" },
   ];
 
+
   // Buscando as opções de cursos e admission categories
   const { data: coursesData } = useGetCoursesQuery({ page: 1, perPage: 100, search: "" });
   const { data: admissionCategoriesData } = useGetAdmissionCategoriesQuery({ page: 1, perPage: 100, search: "" });
+  const { data: bonusOptionsData } = useGetBonusOptionsQuery({ page: 1, perPage: 100, search: "" });
   const coursesOptions = coursesData?.data || [];
+
   const admissionCategoriesOptions = admissionCategoriesData?.data || [];
+  const availableBonusOptions = bonusOptionsData?.data || [];
 
   // Função para tratar a mudança de datas, garantindo o formato UTC para o SQL.
   const handleDateChange = (field: "start_date" | "end_date") => (newDate: any) => {
@@ -212,7 +218,17 @@ export function ProcessSelectionForm({
             </FormControl>
           </Grid>
 
-
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <BonusOptionSelector
+                bonusOptions={availableBonusOptions} // ou chame sua API para obter as opções
+                selectedBonusOptions={processSelection.bonus_options || []}
+                setSelectedBonusOptions={(newOptions) =>
+                  setProcessSelection((prev: any) => ({ ...prev, bonus_options: newOptions }))
+                }
+              />
+            </FormControl>
+          </Grid>
 
           {/* Ações */}
           <Grid item xs={12}>
@@ -225,6 +241,7 @@ export function ProcessSelectionForm({
               </Button>
             </Box>
           </Grid>
+
         </Grid>
       </form>
     </Box>

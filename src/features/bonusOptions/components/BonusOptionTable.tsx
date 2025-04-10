@@ -93,7 +93,7 @@ export function BonusOptionTable({
       width: 250,
       renderCell: (params) => (
         <Box display="flex" gap={2}>
-          <Button variant="contained" size="small" color="primary" component={Link} to={`/admission-categories/edit/${params.row.id}`}>
+          <Button variant="contained" size="small" color="primary" component={Link} to={`/bonus-options/edit/${params.row.id}`}>
             Editar
           </Button>
           <Button variant="contained" size="small" color="secondary" onClick={() => handleOpenConfirm(params.row.id)} disabled={isLoading}>
