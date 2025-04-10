@@ -34,6 +34,9 @@ import { AcademicUnitCreate } from "./features/academicUnits/AcademicUnitCreate"
 import { AdmissionCategoryList } from "./features/admissionCategories/AdmissionCategoryList";
 import { AdmissionCategoryEdit } from "./features/admissionCategories/AdmissionCategoryEdit";
 import { AdmissionCategoryCreate } from "./features/admissionCategories/AdmissionCategoryCreate";
+import { BonusOptionList } from "./features/bonusOptions/BonusOptionList";
+import { BonusOptionEdit } from "./features/bonusOptions/BonusOptionEdit";
+import { BonusOptionCreate } from "./features/bonusOptions/BonusOptionCreate";
 
 
 
@@ -64,6 +67,11 @@ function App() {
           <Route path="/admission-categories" element={<ProtectedRoute><AdmissionCategoryList /></ProtectedRoute>} />
           <Route path="/admission-categories/edit/:id" element={<ProtectedRoute><AdmissionCategoryEdit /></ProtectedRoute>} />
           <Route path="/admission-categories/create" element={<ProtectedRoute><AdmissionCategoryCreate /></ProtectedRoute>} />
+
+
+          <Route path="/bonus-options" element={<ProtectedRoute><BonusOptionList /></ProtectedRoute>} />
+          <Route path="/bonus-options/edit/:id" element={<ProtectedRoute><BonusOptionEdit /></ProtectedRoute>} />
+          <Route path="/bonus-options/create" element={<ProtectedRoute><BonusOptionCreate /></ProtectedRoute>} />
 
 
           <Route path="/academic-units" element={<ProtectedRoute><AcademicUnitList /></ProtectedRoute>} />
