@@ -30,8 +30,6 @@ export const AuthProfile = () => {
                 <Box p={3} mb={3}>
                     <Typography variant="h5">Nome: {userAuth?.name}</Typography>
                     <Typography variant="h5">E-mail: {userAuth?.email}</Typography>
-                    <Typography variant="h5">Login: {userAuth?.login}</Typography>
-                    <Typography variant="h5">Nível: {userAuth?.role}</Typography>
                 </Box>
 
             </Paper>
