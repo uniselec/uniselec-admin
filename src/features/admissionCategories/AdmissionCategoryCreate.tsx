@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Container, Paper, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { AdmissionCategory } from "../../types/AdmissionCategory";
@@ -19,7 +19,8 @@ export const AdmissionCategoryCreate = () => {
     try {
       await createAdmissionCategory(admissionCategoryState).unwrap();
       enqueueSnackbar("Curso criado com sucesso", { variant: "success" });
-      setIsDisabled(true);
+      setAdmissionCategoryState({} as AdmissionCategory);
+      setIsDisabled(false);
     } catch (error: any) {
       const errorMessage = error?.data?.message || "Erro ao criar o curso";
       enqueueSnackbar(errorMessage, { variant: "error" });
@@ -32,19 +33,21 @@ export const AdmissionCategoryCreate = () => {
   };
 
   return (
-    <Box sx={{ mt: 4, mb: 4 }}>
+    <Box sx={{ mb: 4 }}>
       <Paper>
-        <Box p={2}>
-          <Typography variant="h4">Criar Modalidade de Admissão</Typography>
-        </Box>
-        <AdmissionCategoryForm
-          isLoading={status.isLoading}
-          isdisabled={isDisabled}
-          admissionCategory={admissionCategoryState}
-          setAdmissionCategory={setAdmissionCategoryState}
-          handleSubmit={handleSubmit}
-          handleChange={handleChange}
-        />
+        <Container>
+          <Box p={2}>
+            <Typography variant="h4">Criar Modalidade de Admissão</Typography>
+          </Box>
+          <AdmissionCategoryForm
+            isLoading={status.isLoading}
+            isdisabled={isDisabled}
+            admissionCategory={admissionCategoryState}
+            setAdmissionCategory={setAdmissionCategoryState}
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+          />
+        </Container>
       </Paper>
     </Box>
   );

@@ -7,6 +7,7 @@ import {
   TextField,
   Typography,
   Autocomplete,
+  Container,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { AdmissionCategory } from "../../../types/AdmissionCategory";
@@ -34,8 +35,10 @@ export function AdmissionCategoryForm({
   return (
     <Box p={2}>
       <form onSubmit={handleSubmit}>
+
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+
+          <Grid item xs={12}  md={12}>
             <FormControl fullWidth>
               <TextField
                 required
@@ -48,7 +51,7 @@ export function AdmissionCategoryForm({
             </FormControl>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={12}>
             <FormControl fullWidth>
               <TextField
                 required
@@ -74,6 +77,7 @@ export function AdmissionCategoryForm({
             </Box>
           </Grid>
         </Grid>
+
       </form>
     </Box>
   );
