@@ -71,6 +71,7 @@ export const ProcessSelectionEdit = () => {
         status: processSelectionData.data.status,
         courses: processSelectionData.data.courses || [],
         admission_categories: processSelectionData.data.admission_categories || [],
+        bonus_options: processSelectionData.data.bonus_options || [],
         created_at: processSelectionData.data.created_at,
         updated_at: processSelectionData.data.updated_at
       });
