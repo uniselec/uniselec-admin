@@ -16,6 +16,7 @@ import { ApplicationList } from "../applications/ApplicationList";
 import { ApplicationCSVDownload } from "../applications/ApplicationCSVDownload";
 import { GenerateApplicationOutcomes } from "../applicationOutcomes/GenerateApplicationOutcomes";
 import { useGetProcessSelectionQuery } from "./processSelectionSlice";
+import { CardAdvise } from "./components/CardAdvise";
 
 const steps = {
   sisu: [
@@ -89,13 +90,14 @@ export const ProcessSelectionDetailStepper = () => {
       </Box>
       <Box sx={{ p: 3, mt: 3, minHeight: 300 }}>
         {activeStep === 0 && <ProcessSelectionDetails />}
-        {activeStep === 1 && processType === "sisu" && <EnemScoreImport />}
+        {activeStep != 0 && <CardAdvise/>}
+        {/* {activeStep === 1 && processType === "sisu" && <EnemScoreImport />}
         {activeStep === 1 && processType === "enem_scores" && <ApplicationList />}
         {activeStep === 2 && processType === "enem_scores" && <ApplicationCSVDownload />}
         {activeStep === 3 && processType === "enem_scores" && <EnemScoreImport />}
         {activeStep === 4 && processType === "enem_scores" && <EnemScoreList />}
         {activeStep === 5 && processType === "enem_scores" && <GenerateApplicationOutcomes />}
-        {activeStep === 2 && processType === "sisu" && <GenerateApplicationOutcomes />}
+        {activeStep === 2 && processType === "sisu" && <GenerateApplicationOutcomes />} */}
       </Box>
 
 

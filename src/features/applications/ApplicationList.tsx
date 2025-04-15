@@ -38,7 +38,7 @@ export const ApplicationList = () => {
 
   return (
     <Box>
-
+      O Processamento ainda está em desenvolvimento.
       <ApplicationTable
         applications={data}
         isFetching={isFetching}
