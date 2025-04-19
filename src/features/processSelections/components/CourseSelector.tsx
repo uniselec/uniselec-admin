@@ -33,7 +33,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     if (newValue) {
       const defaultVacancies: { [key: string]: number } = {};
       selectedAdmissionCategories.forEach((cat) => {
-        defaultVacancies[cat.name] = 1;
+        defaultVacancies[cat.name] = 0;
       });
       setSelectedCourses([
         ...selectedCourses,
