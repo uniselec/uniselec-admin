@@ -1,7 +1,7 @@
 import { Box, Paper, Typography, Grid, Card, CardContent, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { ProcessSelection } from "../../../types/ProcessSelection";
-import { useGetProcessSelectionsQuery } from "../processSelectionSlice";
+import { ProcessSelection } from "./../../types/ProcessSelection";
+import { useGetProcessSelectionsQuery } from "./processSelectionSlice";
 
 export const ProcessSelectionResume = () => {
   const { data, isFetching, error } = useGetProcessSelectionsQuery({});
