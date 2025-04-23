@@ -32,7 +32,7 @@ export const CourseVacancyModal: React.FC<CourseVacancyModalProps> = ({
     const initialMap: { [key: string]: number } = {};
     admissionCategories.forEach((cat) => {
       initialMap[cat.name] =
-        currentVacancies && currentVacancies[cat.name] ? currentVacancies[cat.name] : 1;
+        currentVacancies && currentVacancies[cat.name] ? currentVacancies[cat.name] : 0;
     });
     setVacanciesMap(initialMap);
   }, [admissionCategories, currentVacancies]);

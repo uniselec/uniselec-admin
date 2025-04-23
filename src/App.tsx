@@ -26,7 +26,7 @@ import { CourseList } from "./features/courses/CourseList";
 import { CourseEdit } from "./features/courses/CourseEdit";
 import { CourseCreate } from "./features/courses/CourseCreate";
 import { ProcessSelectionDetails } from "./features/processSelections/ProcessSelectionDetails";
-import { ProcessSelectionResume } from "./features/processSelections/components/ProcessSelectionResume";
+import { ProcessSelectionResume } from "./features/processSelections/ProcessSelectionResume";
 import { ProcessSelectionDetailStepper } from "./features/processSelections/ProcessSelectionDetailStepper";
 import { AcademicUnitList } from "./features/academicUnits/AcademicUnitList";
 import { AcademicUnitEdit } from "./features/academicUnits/AcademicUnitEdit";
