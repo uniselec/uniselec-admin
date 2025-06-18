@@ -67,37 +67,74 @@ const ProcessSelectionCard = ({ selection }: { selection: ProcessSelection }) =>
   const truncateText = (text: string, maxLength: number) => {
     return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
   };
+  const truncate = (txt: string, len: number) =>
+    txt.length > len ? `${txt.substring(0, len)}…` : txt;
 
   return (
     <Card
       sx={{
         boxShadow: 4,
         borderRadius: 3,
-        bgcolor: "white",
+        bgcolor: "background.paper",
         cursor: "pointer",
         transition: "transform 0.2s ease-in-out",
-        "&:hover": { transform: "scale(1.03)", bgcolor: "grey.100" },
+        "&:hover": { transform: "scale(1.03)", bgcolor: "action.hover" },
       }}
       onClick={() => navigate(`/process-selections/details/${selection.id}`)}
     >
       <CardContent>
-        <Tooltip title={selection.name.length > maxNameLength ? selection.name : ""} arrow>
-          <Typography variant="h6" color="black" fontWeight="bold" sx={{ height: 28, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            {truncateText(selection.name, maxNameLength)}
+        <Tooltip
+          title={selection.name.length > maxNameLength ? selection.name : ""}
+          arrow
+        >
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            color="text.primary"
+            sx={{
+              height: 28,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {truncate(selection.name, maxNameLength)}
           </Typography>
         </Tooltip>
 
-        <Tooltip title={selection.description.length > maxDescriptionLength ? selection.description : ""} arrow>
-          <Typography variant="body2" color="textSecondary" sx={{ height: 42, overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
-            {truncateText(selection.description, maxDescriptionLength)}
+        <Tooltip
+          title={
+            selection.description.length > maxDescriptionLength
+              ? selection.description
+              : ""
+          }
+          arrow
+        >
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              height: 42,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+            }}
+          >
+            {truncate(selection.description, maxDescriptionLength)}
           </Typography>
         </Tooltip>
 
-        {/* Exibe a quantidade de cursos e documentos */}
-        <Typography variant="subtitle2" sx={{ mt: 2, fontWeight: "bold" }}>
+        {/* cursos e documentos */}
+        <Typography
+          variant="subtitle2"
+          sx={{ mt: 2, fontWeight: "bold" }}
+          color="text.primary"
+        >
           📚 {selection.courses?.length || 0} Cursos
         </Typography>
-        <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
+        <Typography variant="subtitle2" fontWeight="bold" color="text.primary">
           📄 {selection.documents?.length || 0} Documentos
         </Typography>
       </CardContent>
