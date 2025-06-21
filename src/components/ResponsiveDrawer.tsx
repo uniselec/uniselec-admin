@@ -10,9 +10,13 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../app/hooks";
+import { selectAuthUser } from "../features/auth/authSlice";
 
+// import styled from "styled-components";
 
-
+/** @jsxImportSource @emotion/react */
+import { css } from "@emotion/react";
 
 
 
@@ -25,18 +29,18 @@ type Props = {
 };
 
 export default function ResponsiveDrawer({ open, onClose, isDark }: Props) {
-
-
-
+  const userAuth = useAppSelector(selectAuthUser);
   const routes = [
-    { path: "/", name: "Início" },
-    { path: "/academic-units", name: "Unidades Academicas" },
-    { path: "/admission-categories", name: "Modalidades" },
-    { path: "/bonus-options", name: "Bonificação" },
-    { path: "/courses", name: "Cursos" },
-    { path: "/process-selections", name: "Seleções" },
+    { path: "/", name: "Início", roles: ["super_user", "promoter"]  },
+    { path: "/academic-units", name: "Unidades Academicas", roles: ["super_user", "promoter"]  },
+    { path: "/admission-categories", name: "Modalidades", roles: ["super_user", "promoter"]  },
+    { path: "/bonus-options", name: "Bonificação", roles: ["super_user", "promoter"]  },
+    { path: "/courses", name: "Cursos", roles: ["super_user", "promoter"]  },
+    { path: "/process-selections", name: "Seleções", roles: ["super_user", "promoter"]  },
+    { path: "/admins", name: "Admins", roles: ["super_user"] },
+    { path: "/users", name: "Candidatos", roles: ["super_user"]},
+    { path: "/profile", name: "Perfil", roles: ["super_user"] },
   ];
-
 
   const drawer = (
     <div>
@@ -45,20 +49,22 @@ export default function ResponsiveDrawer({ open, onClose, isDark }: Props) {
       </Toolbar>
       <Divider />
       <List>
-        {routes.map((route) => (
-          <Link
-            key={route.path}
-            to={route.path}
-            onClick={onClose}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemText>{route.name}</ListItemText>
-              </ListItemButton>
-            </ListItem>
-          </Link>
-        ))}
+        {routes
+          .filter((route) => route.roles.includes(userAuth.role))
+          .map((route) => (
+            <Link
+              key={route.path}
+              to={route.path}
+              onClick={onClose}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemText>{route.name}</ListItemText>
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          ))}
       </List>
     </div>
   );

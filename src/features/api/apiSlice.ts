@@ -1,38 +1,42 @@
+import { logOut } from '../auth/authSlice';
 import { RootState } from './../../app/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseUrl = import.meta.env.VITE_API_URL + '/api/admin';
 
-const fetchWithTimeout = async (url: RequestInfo, options: RequestInit = {}) => {
-    const timeout = 480000; // Define o tempo limite como 480000ms (8 minutos)
-
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), timeout);
-
-    try {
-        const response = await fetch(url, {
-            ...options,
-            signal: controller.signal,
-        });
-        return response;
-    } finally {
-        clearTimeout(id);
-    }
-};
 
 export const apiSlice = createApi({
-    reducerPath: "api",
-    tagTypes: ["Applications", "Users", "Admins", "EnemScores", "ApplicationOutcomes", "ProcessSelections", "Courses", "Documents", "AcademicUnits", "AdmissionCategories", "BonusOptions"],
-    baseQuery: fetchBaseQuery({
-        baseUrl: baseUrl,
-        prepareHeaders: (headers, { getState }) => {
-            const token = (getState() as RootState).auth.token;
-            if (token) {
-                headers.set("Authorization", `Bearer ${token}`);
+    reducerPath: "api", tagTypes: ["Applications", "Users", "Admins", "EnemScores", "ApplicationOutcomes", "ProcessSelections", "Courses", "Documents", "AcademicUnits", "AdmissionCategories", "BonusOptions"],
+    baseQuery: async (args, api, extraOptions) => {
+        const state = api.getState() as RootState;
+        const role = state.auth?.userDetails?.role;
+        const baseUrl = role
+            ? `${import.meta.env.VITE_API_URL}/api/admin/${role}`
+            : `${import.meta.env.VITE_API_URL}/api/admin`;
+
+        const customFetchBaseQuery = fetchBaseQuery({
+            baseUrl,
+            prepareHeaders: (headers) => {
+                const token = state.auth.token;
+                headers.set("Accept", "application/json");
+                if (token) {
+                    headers.set("Authorization", `Bearer ${token}`);
+                }
+                return headers;
             }
-            return headers;
-        },
-        fetchFn: fetchWithTimeout, // Substitui a função fetch padrão com controle de timeout
-    }),
+        });
+
+        const result = await customFetchBaseQuery(args, api, extraOptions);
+
+        // Se o token não for mais válido (erro 401), faça logout e redirecione para login
+        if (result.error && result.error.status === 401) {
+            api.dispatch(logOut());
+            window.location.href = '/login';
+        }
+
+        return result;
+    },
     endpoints: (builder) => ({}),
 });
+
+
+
