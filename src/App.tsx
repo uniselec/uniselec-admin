@@ -37,6 +37,11 @@ import { AdmissionCategoryCreate } from "./features/admissionCategories/Admissio
 import { BonusOptionList } from "./features/bonusOptions/BonusOptionList";
 import { BonusOptionEdit } from "./features/bonusOptions/BonusOptionEdit";
 import { BonusOptionCreate } from "./features/bonusOptions/BonusOptionCreate";
+import { AdminList } from "./features/admins/AdminList";
+import { AdminEdit } from "./features/admins/AdminEdit";
+import { AdminCreate } from "./features/admins/AdminCreate";
+import { UserDetails } from "./features/users/UserDetails";
+import { PasswordReset } from "./features/auth/PasswordReset";
 
 
 
@@ -92,7 +97,10 @@ function App() {
           <Route path="/:processSelectionId/import-enem-score/" element={<ProtectedRoute><EnemScoreImport /><EnemScoreList /></ProtectedRoute>} />
           <Route path="/:processSelectionId/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
           <Route path="/:processSelectionId/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} />
+
           <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
+          <Route path="/users/detail/:id" element={<ProtectedRoute><UserDetails /></ProtectedRoute>} />
+
           <Route path="/:processSelectionId/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
           <Route path="/:processSelectionId/applications/:id" element={<ProtectedRoute><ApplicationSelected /></ProtectedRoute>} />
           <Route path="/applications-results/:categoryId" element={<ProtectedRoute><ApplicationResults /></ProtectedRoute>} />
@@ -112,7 +120,13 @@ function App() {
           <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} />
 
 
+          <Route path="/admins" element={<ProtectedRoute><AdminList /></ProtectedRoute>} />
+          <Route path="/admins/edit/:id" element={<ProtectedRoute><AdminEdit /></ProtectedRoute>} />
+          <Route path="/admins/create" element={<ProtectedRoute><AdminCreate /></ProtectedRoute>} />
+
+
           <Route path="/login" element={<Login />} />
+          <Route path="/reset-password/:token/:email" element={<PasswordReset />} />
 
           <Route path="*" element={<NotFoundCard />} />
         </Routes>

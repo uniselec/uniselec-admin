@@ -27,7 +27,7 @@ type Props = {
     handleSubmitFormForgot: (e: React.FormEvent<HTMLFormElement>, forgot: Forgot) => void;
 };
 
-export const LoginForm = ({
+export const RecoverForm = ({
     credentials,
     isdisabled = false,
     isLoading = false,
@@ -54,7 +54,6 @@ export const LoginForm = ({
 
 
     const handleConfirmSubmit = (e: SyntheticEvent) => {
-
         e.preventDefault();
         setOpenConfirmDialog(false);
         const formEvent = new Event('submit', { bubbles: true, cancelable: true }) as unknown as FormEvent<HTMLFormElement>;
@@ -152,7 +151,7 @@ export const LoginForm = ({
                                 type="submit"
                                 variant="contained"
                             >
-                                {isLoading ? "Aguarde..." : "Iniciar Sessão"}
+                                {isLoading ? "Aguarde..." : "Logar"}
                             </Button>
                             <Button
                                 onClick={() => {
@@ -160,7 +159,7 @@ export const LoginForm = ({
                                 }}
                                 variant="outlined"
                             >
-                                {isLoading ? "Aguarde..." : "Esqueceu a sua senha?"}
+                                {isLoading ? "Aguarde..." : "Esqueci a Senha"}
                             </Button>
                         </Box>
                     </Grid>
@@ -175,13 +174,13 @@ export const LoginForm = ({
                 <DialogTitle id="confirm-dialog-title">Recuperação da Senha</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="confirm-dialog-description">
-                        Digite o Seu E-mail para recuperar sua senha:
+                        Digite o Seu CPF para recuperar sua senha:
                     </DialogContentText>
                     <Box mt={2}>
                         <FormControl fullWidth>
                             <TextField
                                 required={true}
-                                name="email"
+                                name="cpf"
                                 value={forgotState.email || ""}
                                 onChange={handleChangeForgot}
                                 InputLabelProps={{
@@ -191,7 +190,7 @@ export const LoginForm = ({
                                 // error={!errorPassword.valid}
                                 // onBlur={validatePassword}
                                 // helperText={errorPassword.text}
-                                label="E-mail"
+                                label="CPF"
                                 variant="outlined"
                                 margin="normal"
                                 type="text"
