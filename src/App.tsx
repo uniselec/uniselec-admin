@@ -6,16 +6,8 @@ import { Login } from "./features/auth/Login";
 import { AuthProfile } from "./features/auth/AuthProfile";
 import { NotFoundCard } from "./components/NotFoundCard";
 import { UserList } from "./features/users/UserList";
-// import { DashboardApplications } from "./features/applications_bkp/DashboardApplications";
-// import { ApplicationCSVDownload } from "./features/applications_bkp/ApplicationCSVDownload";
-import { EnemScoreList } from "./features/enemScores/EnemScoreList";
-import { ApplicationOutcomeList } from "./features/applicationOutcomes/ApplicationOutcomeList";
-import { ApplicationOutcomeEdit } from "./features/applicationOutcomes/ApplicationOutcomeEdit";
-// import { EnemScoreImport } from "./features/enemScores/EnemScoreImport";
-import { GenerateApplicationOutcomes } from "./features/applicationOutcomes/GenerateApplicationOutcomes";
-import { DeferidosIndeferidosList } from "./features/applicationOutcomes/DeferidosIndeferidosList";
-import { ApplicationResults } from "./features/applicationOutcomes/ApplicationResults";
-import { ApplicationResultsNo20 } from "./features/applicationOutcomes/ApplicationResultsNo20";
+// import { EnemScoreList } from "./features/enemScores/EnemScoreList";
+
 import { ProcessSelectionList } from "./features/processSelections/ProcessSelectionList";
 import { ProcessSelectionEdit } from "./features/processSelections/ProcessSelectionEdit";
 import { ProcessSelectionCreate } from "./features/processSelections/ProcessSelectionCreate";
@@ -40,8 +32,9 @@ import { AdminCreate } from "./features/admins/AdminCreate";
 import { UserDetails } from "./features/users/UserDetails";
 import { PasswordReset } from "./features/auth/PasswordReset";
 import { AuthProfileEdit } from "./features/auth/AuthProfileEdit";
-// import { ApplicationDetails } from "./features/applications/ApplicationDetails";
-// import { ApplicationList } from "./features/applications/ApplicationList";
+import { ApplicationList } from "./features/applications/ApplicationList";
+import { ApplicationDetail } from "./features/applications/ApplicationDetail";
+
 
 
 
@@ -90,23 +83,25 @@ function App() {
           <Route path="/courses/edit/:id" element={<ProtectedRoute><CourseEdit /></ProtectedRoute>} />
           <Route path="/courses/create" element={<ProtectedRoute><CourseCreate /></ProtectedRoute>} />
 
-          {/* <Route path="/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
-          <Route path="/applications/detail/:id" element={<ProtectedRoute><ApplicationDetails /></ProtectedRoute>} /> */}
+          <Route path="/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
+          <Route path="/applications/detail/:id" element={<ProtectedRoute><ApplicationDetail /></ProtectedRoute>} />
 
 
 
-          <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} />
+
+
+          {/* <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} /> */}
           {/* <Route path="/:processSelectionId/import-enem-score/" element={<ProtectedRoute><EnemScoreImport /><EnemScoreList /></ProtectedRoute>} /> */}
           {/* <Route path="/:processSelectionId/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} /> */}
-          <Route path="/:processSelectionId/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} />
+          {/* <Route path="/:processSelectionId/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} /> */}
 
           <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
           <Route path="/users/detail/:id" element={<ProtectedRoute><UserDetails /></ProtectedRoute>} />
 
           {/* <Route path="/:processSelectionId/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} /> */}
 
-          <Route path="/applications-results/:categoryId" element={<ProtectedRoute><ApplicationResults /></ProtectedRoute>} />
-          <Route path="/applications-results/no20/:categoryId" element={<ProtectedRoute><ApplicationResultsNo20 /></ProtectedRoute>} />
+          {/* <Route path="/applications-results/:categoryId" element={<ProtectedRoute><ApplicationResults /></ProtectedRoute>} />
+          <Route path="/applications-results/no20/:categoryId" element={<ProtectedRoute><ApplicationResultsNo20 /></ProtectedRoute>} /> */}
           {/* <Route path="/charts" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} /> */}
 
 
@@ -118,8 +113,8 @@ function App() {
 
           <Route path="/:processSelectionId/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} /> */}
 
-          <Route path="/application-outcomes/:processSelectionId" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} />
-          <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} />
+          {/* <Route path="/application-outcomes/:processSelectionId" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} /> */}
+          {/* <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} /> */}
 
 
           <Route path="/admins" element={<ProtectedRoute><AdminList /></ProtectedRoute>} />
