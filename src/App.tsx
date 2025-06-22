@@ -5,20 +5,9 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Login } from "./features/auth/Login";
 import { AuthProfile } from "./features/auth/AuthProfile";
 import { NotFoundCard } from "./components/NotFoundCard";
-import { ApplicationList } from "./features/applications/ApplicationList";
 import { UserList } from "./features/users/UserList";
-import { DashboardApplications } from "./features/applications/DashboardApplications";
-import { ApplicationSelected } from "./features/applications/ApplicationSelected";
-import { ApplicationCSVDownload } from "./features/applications/ApplicationCSVDownload";
-import { EnemScoreList } from "./features/enemScores/EnemScoreList";
-import { ApplicationOutcomeList } from "./features/applicationOutcomes/ApplicationOutcomeList";
-import { ApplicationOutcomeEdit } from "./features/applicationOutcomes/ApplicationOutcomeEdit";
-import { EnemScoreImport } from "./features/enemScores/EnemScoreImport";
-import { EnemScoreSelected } from "./features/enemScores/EnemScoreSelected";
-import { GenerateApplicationOutcomes } from "./features/applicationOutcomes/GenerateApplicationOutcomes";
-import { DeferidosIndeferidosList } from "./features/applicationOutcomes/DeferidosIndeferidosList";
-import { ApplicationResults } from "./features/applicationOutcomes/ApplicationResults";
-import { ApplicationResultsNo20 } from "./features/applicationOutcomes/ApplicationResultsNo20";
+// import { EnemScoreList } from "./features/enemScores/EnemScoreList";
+
 import { ProcessSelectionList } from "./features/processSelections/ProcessSelectionList";
 import { ProcessSelectionEdit } from "./features/processSelections/ProcessSelectionEdit";
 import { ProcessSelectionCreate } from "./features/processSelections/ProcessSelectionCreate";
@@ -42,6 +31,10 @@ import { AdminEdit } from "./features/admins/AdminEdit";
 import { AdminCreate } from "./features/admins/AdminCreate";
 import { UserDetails } from "./features/users/UserDetails";
 import { PasswordReset } from "./features/auth/PasswordReset";
+import { AuthProfileEdit } from "./features/auth/AuthProfileEdit";
+import { ApplicationList } from "./features/applications/ApplicationList";
+import { ApplicationDetail } from "./features/applications/ApplicationDetail";
+
 
 
 
@@ -90,40 +83,47 @@ function App() {
           <Route path="/courses/edit/:id" element={<ProtectedRoute><CourseEdit /></ProtectedRoute>} />
           <Route path="/courses/create" element={<ProtectedRoute><CourseCreate /></ProtectedRoute>} />
 
+          <Route path="/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
+          <Route path="/applications/detail/:id" element={<ProtectedRoute><ApplicationDetail /></ProtectedRoute>} />
 
 
 
-          <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} />
-          <Route path="/:processSelectionId/import-enem-score/" element={<ProtectedRoute><EnemScoreImport /><EnemScoreList /></ProtectedRoute>} />
-          <Route path="/:processSelectionId/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
-          <Route path="/:processSelectionId/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} />
+
+
+          {/* <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} /> */}
+          {/* <Route path="/:processSelectionId/import-enem-score/" element={<ProtectedRoute><EnemScoreImport /><EnemScoreList /></ProtectedRoute>} /> */}
+          {/* <Route path="/:processSelectionId/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} /> */}
+          {/* <Route path="/:processSelectionId/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} /> */}
 
           <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
           <Route path="/users/detail/:id" element={<ProtectedRoute><UserDetails /></ProtectedRoute>} />
 
-          <Route path="/:processSelectionId/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
-          <Route path="/:processSelectionId/applications/:id" element={<ProtectedRoute><ApplicationSelected /></ProtectedRoute>} />
-          <Route path="/applications-results/:categoryId" element={<ProtectedRoute><ApplicationResults /></ProtectedRoute>} />
-          <Route path="/applications-results/no20/:categoryId" element={<ProtectedRoute><ApplicationResultsNo20 /></ProtectedRoute>} />
-          <Route path="/charts" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
+          {/* <Route path="/:processSelectionId/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} /> */}
+
+          {/* <Route path="/applications-results/:categoryId" element={<ProtectedRoute><ApplicationResults /></ProtectedRoute>} />
+          <Route path="/applications-results/no20/:categoryId" element={<ProtectedRoute><ApplicationResultsNo20 /></ProtectedRoute>} /> */}
+          {/* <Route path="/charts" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} /> */}
 
 
-          <Route path="/dashboard" element={<ProtectedRoute><DashboardApplications /></ProtectedRoute>} />
+          {/* <Route path="/dashboard" element={<ProtectedRoute><DashboardApplications /></ProtectedRoute>} /> */}
 
 
-          <Route path="/profile" element={<ProtectedRoute><AuthProfile /></ProtectedRoute>} />
-          <Route path="/:processSelectionId/enem-scores" element={<ProtectedRoute><EnemScoreList /></ProtectedRoute>} />
 
-          <Route path="/:processSelectionId/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} />
+          {/* <Route path="/:processSelectionId/enem-scores" element={<ProtectedRoute><EnemScoreList /></ProtectedRoute>} />
 
-          <Route path="/application-outcomes/:processSelectionId" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} />
-          <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} />
+          <Route path="/:processSelectionId/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} /> */}
+
+          {/* <Route path="/application-outcomes/:processSelectionId" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} /> */}
+          {/* <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} /> */}
 
 
           <Route path="/admins" element={<ProtectedRoute><AdminList /></ProtectedRoute>} />
           <Route path="/admins/edit/:id" element={<ProtectedRoute><AdminEdit /></ProtectedRoute>} />
           <Route path="/admins/create" element={<ProtectedRoute><AdminCreate /></ProtectedRoute>} />
 
+
+          <Route path="/profile" element={<ProtectedRoute><AuthProfile /></ProtectedRoute>} />
+          <Route path="/profile/edit" element={<ProtectedRoute><AuthProfileEdit /></ProtectedRoute>} />
 
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password/:token/:email" element={<PasswordReset />} />

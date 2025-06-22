@@ -1,15 +1,11 @@
-import { Box, Typography } from "@mui/material";
-import {
-  useGetApplicationsQuery,
-} from "./applicationSlice";
-
+import { Box, Typography, Button, Paper } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useGetApplicationsQuery } from "./applicationSlice";
 import { GridFilterModel } from "@mui/x-data-grid";
 import { useState } from "react";
+import { useAppSelector } from "../../app/hooks";
+import { selectAuthUser } from "../auth/authSlice";
 import { ApplicationTable } from "./components/ApplicationTable";
-interface PaginationModel {
-  pageSize: number;
-  page: number;
-}
 
 export const ApplicationList = () => {
   const [options, setOptions] = useState({
@@ -18,13 +14,16 @@ export const ApplicationList = () => {
     perPage: 25,
     rowsPerPage: [25, 50, 100],
   });
+
   const { data, isFetching, error } = useGetApplicationsQuery(options);
+  const navigate = useNavigate();
 
-  function setPaginationModel(paginateModel:{ page: number, pageSize: number }){
-    setOptions({ ...options, page: paginateModel.page + 1, perPage: paginateModel.pageSize});
+
+  function setPaginationModel(paginateModel: { page: number; pageSize: number }) {
+    setOptions({ ...options, page: paginateModel.page + 1, perPage: paginateModel.pageSize });
   }
-  function handleFilterChange(filterModel: GridFilterModel) {
 
+  function handleFilterChange(filterModel: GridFilterModel) {
     if (!filterModel.quickFilterValues?.length) {
       return setOptions({ ...options, search: "" });
     }
@@ -32,22 +31,34 @@ export const ApplicationList = () => {
     setOptions({ ...options, search });
   }
 
+
+
   if (error) {
-    return <Typography>Error fetching applications</Typography>;
+    return (
+      <Box sx={{ mt: 4, mb: 4 }}>
+        <Typography variant="h6" color="error">
+          Erro ao carregar a lista
+        </Typography>
+      </Box>
+    );
   }
 
   return (
-    <Box>
-      O Processamento ainda está em desenvolvimento.
+    <Box sx={{ mt: 4, mb: 4 }}>
+      <Paper sx={{ p: 3, mb: 2 }}>
+        <Typography variant="h4" gutterBottom>
+          Inscrições
+        </Typography>
+      </Paper>
       <ApplicationTable
         applications={data}
         isFetching={isFetching}
-        // paginationModel={{
-        //   pageSize: 25,
-        //   page: 0,
-        // }}
-        // handleSetPaginationModel={setPaginationModel}
-        // handleFilterChange={handleFilterChange}
+        paginationModel={{
+          pageSize: 25,
+          page: 0,
+        }}
+        handleSetPaginationModel={setPaginationModel}
+        handleFilterChange={handleFilterChange}
       />
     </Box>
   );

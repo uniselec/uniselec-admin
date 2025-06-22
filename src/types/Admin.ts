@@ -9,13 +9,14 @@ export interface Result {
     data:  Admin;
 }
 
+
 export interface Admin {
-    id:              number;
+    id?:             string;
     name:            string;
     email:           string;
-    login:           string;
-    created_at: null | string;
-    updated_at: null | string;
+    password?:       string;
+    created_at?: null | string;
+    updated_at?: null | string;
 }
 export interface Links {
   prev: string;

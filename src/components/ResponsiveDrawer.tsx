@@ -39,6 +39,7 @@ export default function ResponsiveDrawer({ open, onClose, isDark }: Props) {
     { path: "/process-selections", name: "Seleções", roles: ["super_user", "promoter"]  },
     { path: "/admins", name: "Admins", roles: ["super_user"] },
     { path: "/users", name: "Candidatos", roles: ["super_user"]},
+    { path: "/applications", name: "Inscrições", roles: ["super_user"]},
     { path: "/profile", name: "Perfil", roles: ["super_user"] },
   ];
 

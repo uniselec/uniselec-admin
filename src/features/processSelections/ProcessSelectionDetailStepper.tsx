@@ -10,11 +10,8 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { ProcessSelectionDetails } from "./ProcessSelectionDetails";
-import { EnemScoreImport } from "../enemScores/EnemScoreImport";
-import { EnemScoreList } from "../enemScores/EnemScoreList";
-import { ApplicationList } from "../applications/ApplicationList";
-import { ApplicationCSVDownload } from "../applications/ApplicationCSVDownload";
-import { GenerateApplicationOutcomes } from "../applicationOutcomes/GenerateApplicationOutcomes";
+// import { EnemScoreImport } from "../enemScores/EnemScoreImport";
+// import { EnemScoreList } from "../enemScores/EnemScoreList";
 import { useGetProcessSelectionQuery } from "./processSelectionSlice";
 import { CardAdvise } from "./components/CardAdvise";
 

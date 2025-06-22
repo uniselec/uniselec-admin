@@ -24,8 +24,26 @@ function parseQueryParams(params: ApplicationParams) {
 function getApplications({ page = 1, perPage = 10, search = "" }) {
   const params = { page, perPage, search };
 
-  // return `${endpointUrl}?${parseQueryParams(params)}`;
-  return `${endpointUrl}?per_page=4000`;
+  return `${endpointUrl}?${parseQueryParams(params)}`;
+}
+
+function createApplicationMutation(processSelection: Application) {
+  return { url: endpointUrl, method: "POST", body: processSelection };
+}
+
+function updateApplicationMutation(processSelection: Application) {
+  return {
+    url: `${endpointUrl}/${processSelection.id}`,
+    method: "PUT",
+    body: processSelection,
+  };
+}
+
+function deleteApplicationMutation({ id }: { id: string }) {
+  return {
+    url: `${endpointUrl}/${id}`,
+    method: "DELETE",
+  };
 }
 
 
@@ -33,21 +51,37 @@ function getApplication({ id }: { id: string }) {
   return `${endpointUrl}/${id}`;
 }
 
-export const applicationsApiSlice = apiSlice.injectEndpoints({
+export const processSelectionsApiSlice = apiSlice.injectEndpoints({
   endpoints: ({ query, mutation }) => ({
     getApplications: query<Results, ApplicationParams>({
       query: getApplications,
       providesTags: ["Applications"],
     }),
-    getApplication: query<Application, { id: string }>({
+    getApplication: query<Result, { id: string }>({
       query: getApplication,
       providesTags: ["Applications"],
+    }),
+    createApplication: mutation<Result, Application>({
+      query: createApplicationMutation,
+      invalidatesTags: ["Applications"],
+    }),
+    updateApplication: mutation<Result, Application>({
+      query: updateApplicationMutation,
+      invalidatesTags: ["Applications"],
+    }),
+    deleteApplication: mutation<void, { id: string }>({
+      query: deleteApplicationMutation,
+      invalidatesTags: ["Applications"],
     }),
   }),
 });
 
 
+
 export const {
   useGetApplicationsQuery,
+  useCreateApplicationMutation,
+  useUpdateApplicationMutation,
   useGetApplicationQuery,
-} = applicationsApiSlice;
+  useDeleteApplicationMutation,
+} = processSelectionsApiSlice;
