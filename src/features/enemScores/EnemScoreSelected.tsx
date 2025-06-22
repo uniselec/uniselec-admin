@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { useGetEnemScoreQuery, useUpdateEnemScoreMutation } from "./enemScoreSlice";
 import { EnemScore } from "../../types/EnemScore";
 import { EnemScoreCard } from "./components/EnemScoreCard";
-import { ApplicationCard } from "../applications/components/ApplicationCard";
+import { ApplicationCard } from "../applications_bkp/components/ApplicationCard";
 
 export const EnemScoreSelected = () => {
   const id = useParams().id as string;

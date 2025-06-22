@@ -6,7 +6,6 @@ export interface Results {
     links: Links;
     meta: Meta;
 }
-
 export interface Result {
     data: Application;
 }
@@ -14,30 +13,7 @@ export interface Result {
 export interface Application {
     id: string;
     user?: User;
-    data: {
-        name: string;
-        social_name: string;
-        cpf: string;
-        enem: string;
-        birtdate: string;
-        sex: string;
-        email: string;
-        phone1: string;
-        phone2?: string;
-        address: string;
-        uf: string;
-        city: string;
-        campus: string;
-        course: string;
-        vaga: string[];
-        bonus?: string[];
-        edital?: string;
-        position?: string;
-        location_position?: string;
-        publicSchool: boolean;
-        termsAgreement: boolean;
-        updated_at?: string;
-    };
+
     enem_score?: EnemScore;
     verification_expected: string;
     verification_code: string;
@@ -45,8 +21,6 @@ export interface Application {
     created_at: null | string;
     updated_at: null | string;
 }
-
-
 export interface Links {
     prev: string;
     last: string;

@@ -12,7 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import { ApplicationOutcome } from "../../../types/ApplicationOutcome";
 import useTranslate from '../../polyglot/useTranslate';
-import { ApplicationCard } from "../../applications/components/ApplicationCard";
+import { ApplicationCard } from "../../applications_bkp/components/ApplicationCard";
 import { EnemScoreCard } from "../../enemScores/components/EnemScoreCard";
 
 type Props = {

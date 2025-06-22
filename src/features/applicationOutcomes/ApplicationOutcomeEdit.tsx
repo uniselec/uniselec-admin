@@ -7,7 +7,7 @@ import {
   useUpdateApplicationOutcomeMutation,
 } from "./applicationOutcomeSlice";
 import { ApplicationOutcome } from "../../types/ApplicationOutcome";
-import { ApplicationOutcomeForm } from "./components/ApplicationOutcomeForm";
+// import { ApplicationOutcomeForm } from "./components/ApplicationOutcomeForm";
 
 export const ApplicationOutcomeEdit = () => {
   const id = useParams().id as string;
@@ -62,14 +62,14 @@ export const ApplicationOutcomeEdit = () => {
             <Typography variant="h4">Resultado</Typography>
           </Box>
         </Box>
-        <ApplicationOutcomeForm
+        {/* <ApplicationOutcomeForm
           isLoading={isFetching || status.isLoading}
           applicationOutcome={applicationOutcomeState}
           isdisabled={isFetching || isdisabled}
           handleSubmit={handleSubmit}
           handleChange={handleChange}
           handleStatusChange={handleStatusChange}
-        />
+        /> */}
       </Paper>
     </Box>
   );
