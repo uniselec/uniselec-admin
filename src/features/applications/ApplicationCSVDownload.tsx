@@ -72,6 +72,10 @@ export const ApplicationCSVDownload = () => {
                 >
                     Clique Para Baixar CSV
                 </Button>
+
+                <Typography>
+                    Total de Inscrições:  {data?.meta?.total}
+                </Typography>
             </CardContent>
         </Card>
     );
