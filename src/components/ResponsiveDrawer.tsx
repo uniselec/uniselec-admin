@@ -43,6 +43,7 @@ export default function ResponsiveDrawer({ open, onClose, isDark }: Props) {
     { path: "/csv-export", name: "CSV Export", roles: ["super_user"]},
     { path: "/enem-scores", name: "Notas do Enem", roles: ["super_user"]},
     { path: "/enem-scores-import", name: "Importar Notas", roles: ["super_user"]},
+    { path: "/application-outcomes", name: "Resultados", roles: ["super_user"]},
     { path: "/profile", name: "Perfil", roles: ["super_user"] },
   ];
 

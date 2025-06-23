@@ -38,6 +38,8 @@ import { ApplicationCSVDownload } from "./features/applications/ApplicationCSVDo
 import { EnemScoreList } from "./features/enemScores/EnemScoreList";
 import { EnemScoreDetail } from "./features/enemScores/EnemScoreDetail";
 import { EnemScoreImport } from "./features/enemScores/EnemScoreImport";
+import { ApplicationOutcomeList } from "./features/applicationOutcomes/ApplicationOutcomeList";
+import { ApplicationOutcomeDetail } from "./features/applicationOutcomes/ApplicationOutcomeDetail";
 
 
 
@@ -79,8 +81,6 @@ function App() {
           <Route path="/academic-units/create" element={<ProtectedRoute><AcademicUnitCreate /></ProtectedRoute>} />
 
 
-
-
           <Route path="/courses" element={<ProtectedRoute><CourseList /></ProtectedRoute>} />
           <Route path="/courses/edit/:id" element={<ProtectedRoute><CourseEdit /></ProtectedRoute>} />
           <Route path="/courses/create" element={<ProtectedRoute><CourseCreate /></ProtectedRoute>} />
@@ -93,6 +93,24 @@ function App() {
           <Route path="/enem-scores/detail/:id" element={<ProtectedRoute><EnemScoreDetail /></ProtectedRoute>} />
           <Route path="/enem-scores-import" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
 
+          <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
+          <Route path="/users/detail/:id" element={<ProtectedRoute><UserDetails /></ProtectedRoute>} />
+
+          <Route path="/admins" element={<ProtectedRoute><AdminList /></ProtectedRoute>} />
+          <Route path="/admins/edit/:id" element={<ProtectedRoute><AdminEdit /></ProtectedRoute>} />
+          <Route path="/admins/create" element={<ProtectedRoute><AdminCreate /></ProtectedRoute>} />
+
+          <Route path="/application-outcomes" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} />
+          <Route path="/application-outcomes/detail/:id" element={<ProtectedRoute><ApplicationOutcomeDetail /></ProtectedRoute>} />
+
+
+          <Route path="/profile" element={<ProtectedRoute><AuthProfile /></ProtectedRoute>} />
+          <Route path="/profile/edit" element={<ProtectedRoute><AuthProfileEdit /></ProtectedRoute>} />
+
+          <Route path="/login" element={<Login />} />
+          <Route path="/reset-password/:token/:email" element={<PasswordReset />} />
+
+          <Route path="*" element={<NotFoundCard />} />
 
 
           {/* <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} /> */}
@@ -100,8 +118,6 @@ function App() {
           {/* <Route path="/:processSelectionId/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} /> */}
           {/* <Route path="/:processSelectionId/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} /> */}
 
-          <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
-          <Route path="/users/detail/:id" element={<ProtectedRoute><UserDetails /></ProtectedRoute>} />
 
           {/* <Route path="/:processSelectionId/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} /> */}
 
@@ -120,18 +136,7 @@ function App() {
           {/* <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} /> */}
 
 
-          <Route path="/admins" element={<ProtectedRoute><AdminList /></ProtectedRoute>} />
-          <Route path="/admins/edit/:id" element={<ProtectedRoute><AdminEdit /></ProtectedRoute>} />
-          <Route path="/admins/create" element={<ProtectedRoute><AdminCreate /></ProtectedRoute>} />
 
-
-          <Route path="/profile" element={<ProtectedRoute><AuthProfile /></ProtectedRoute>} />
-          <Route path="/profile/edit" element={<ProtectedRoute><AuthProfileEdit /></ProtectedRoute>} />
-
-          <Route path="/login" element={<Login />} />
-          <Route path="/reset-password/:token/:email" element={<PasswordReset />} />
-
-          <Route path="*" element={<NotFoundCard />} />
         </Routes>
       </Layout>
 
