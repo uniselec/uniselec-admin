@@ -21,7 +21,6 @@ import {
 } from "@mui/x-data-grid";
 import { Results } from "../../../types/ApplicationOutcome";
 import { Link } from "react-router-dom";
-import { useDeleteApplicationOutcomeMutation } from "../applicationOutcomeSlice";
 import useTranslate from "../../polyglot/useTranslate";
 import { GridPaginationModel } from "@mui/x-data-grid";
 
@@ -42,7 +41,6 @@ export function ApplicationOutcomeTable({
   handleFilterChange,
 }: Props) {
   const translate = useTranslate("applicationOutcomes");
-  const [deleteApplicationOutcome, { isLoading }] = useDeleteApplicationOutcomeMutation();
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState<"success" | "error">("success");
   const [alertMessage, setAlertMessage] = useState("");
@@ -65,21 +63,7 @@ export function ApplicationOutcomeTable({
     setSelectedApplicationOutcomeId(null);
   };
 
-  // const handleConfirmDelete = async () => {
-  //   if (!selectedApplicationOutcomeId) return;
-  //   try {
-  //     await deleteApplicationOutcome({ id: selectedApplicationOutcomeId }).unwrap();
-  //     setAlertSeverity("success");
-  //     setAlertMessage("Desconto apagado com sucesso.");
-  //   } catch (error) {
-  //     console.error("Falha ao tentar apagar o desconto.");
-  //     setAlertSeverity("error");
-  //     setAlertMessage("Falha ao tentar apagar o desconto..");
-  //   } finally {
-  //     setAlertOpen(true);
-  //     handleCloseConfirm();
-  //   }
-  // };
+
   function renderNameCell(rowData: GridRenderCellParams) {
     return (
       <Link
