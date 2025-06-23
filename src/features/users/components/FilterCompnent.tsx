@@ -85,7 +85,7 @@ export const FilterComponent = ({ onFilterChange }: FilterComponentProps) => {
 
 
   const { data: usersData } = useGetUsersQuery(
-    { page: 1, perPage: 25, filters: { status: "active" } }
+    { page: 1, perPage: 25, filters: {} }
   );
 
   // transforma em opções [{ label, value }]

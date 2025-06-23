@@ -34,6 +34,12 @@ import { PasswordReset } from "./features/auth/PasswordReset";
 import { AuthProfileEdit } from "./features/auth/AuthProfileEdit";
 import { ApplicationList } from "./features/applications/ApplicationList";
 import { ApplicationDetail } from "./features/applications/ApplicationDetail";
+import { ApplicationCSVDownload } from "./features/applications/ApplicationCSVDownload";
+import { EnemScoreList } from "./features/enemScores/EnemScoreList";
+import { EnemScoreDetail } from "./features/enemScores/EnemScoreDetail";
+import { EnemScoreImport } from "./features/enemScores/EnemScoreImport";
+import { ApplicationOutcomeList } from "./features/applicationOutcomes/ApplicationOutcomeList";
+import { ApplicationOutcomeDetail } from "./features/applicationOutcomes/ApplicationOutcomeDetail";
 
 
 
@@ -57,10 +63,8 @@ function App() {
           <Route path="/process-selections" element={<ProtectedRoute><ProcessSelectionList /></ProtectedRoute>} />
           <Route path="/process-selections/edit/:id" element={<ProtectedRoute><ProcessSelectionEdit /></ProtectedRoute>} />
           <Route path="/process-selections/details/:id" element={<ProtectedRoute><ProcessSelectionDetailStepper /></ProtectedRoute>} />
+          <Route path="/process-selections/details2/:id" element={<ProtectedRoute><ProcessSelectionDetails /></ProtectedRoute>} />
           <Route path="/process-selections/create" element={<ProtectedRoute><ProcessSelectionCreate /></ProtectedRoute>} />
-
-
-
 
           <Route path="/admission-categories" element={<ProtectedRoute><AdmissionCategoryList /></ProtectedRoute>} />
           <Route path="/admission-categories/edit/:id" element={<ProtectedRoute><AdmissionCategoryEdit /></ProtectedRoute>} />
@@ -77,17 +81,36 @@ function App() {
           <Route path="/academic-units/create" element={<ProtectedRoute><AcademicUnitCreate /></ProtectedRoute>} />
 
 
-
-
           <Route path="/courses" element={<ProtectedRoute><CourseList /></ProtectedRoute>} />
           <Route path="/courses/edit/:id" element={<ProtectedRoute><CourseEdit /></ProtectedRoute>} />
           <Route path="/courses/create" element={<ProtectedRoute><CourseCreate /></ProtectedRoute>} />
 
           <Route path="/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
           <Route path="/applications/detail/:id" element={<ProtectedRoute><ApplicationDetail /></ProtectedRoute>} />
+          <Route path="/csv-export" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
+
+          <Route path="/enem-scores" element={<ProtectedRoute><EnemScoreList /></ProtectedRoute>} />
+          <Route path="/enem-scores/detail/:id" element={<ProtectedRoute><EnemScoreDetail /></ProtectedRoute>} />
+          <Route path="/enem-scores-import" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
+
+          <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
+          <Route path="/users/detail/:id" element={<ProtectedRoute><UserDetails /></ProtectedRoute>} />
+
+          <Route path="/admins" element={<ProtectedRoute><AdminList /></ProtectedRoute>} />
+          <Route path="/admins/edit/:id" element={<ProtectedRoute><AdminEdit /></ProtectedRoute>} />
+          <Route path="/admins/create" element={<ProtectedRoute><AdminCreate /></ProtectedRoute>} />
+
+          <Route path="/application-outcomes" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} />
+          <Route path="/application-outcomes/detail/:id" element={<ProtectedRoute><ApplicationOutcomeDetail /></ProtectedRoute>} />
 
 
+          <Route path="/profile" element={<ProtectedRoute><AuthProfile /></ProtectedRoute>} />
+          <Route path="/profile/edit" element={<ProtectedRoute><AuthProfileEdit /></ProtectedRoute>} />
 
+          <Route path="/login" element={<Login />} />
+          <Route path="/reset-password/:token/:email" element={<PasswordReset />} />
+
+          <Route path="*" element={<NotFoundCard />} />
 
 
           {/* <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} /> */}
@@ -95,8 +118,6 @@ function App() {
           {/* <Route path="/:processSelectionId/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} /> */}
           {/* <Route path="/:processSelectionId/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} /> */}
 
-          <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
-          <Route path="/users/detail/:id" element={<ProtectedRoute><UserDetails /></ProtectedRoute>} />
 
           {/* <Route path="/:processSelectionId/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} /> */}
 
@@ -109,26 +130,13 @@ function App() {
 
 
 
-          {/* <Route path="/:processSelectionId/enem-scores" element={<ProtectedRoute><EnemScoreList /></ProtectedRoute>} />
-
-          <Route path="/:processSelectionId/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} /> */}
+          {/* <Route path="/:processSelectionId/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} /> */}
 
           {/* <Route path="/application-outcomes/:processSelectionId" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} /> */}
           {/* <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} /> */}
 
 
-          <Route path="/admins" element={<ProtectedRoute><AdminList /></ProtectedRoute>} />
-          <Route path="/admins/edit/:id" element={<ProtectedRoute><AdminEdit /></ProtectedRoute>} />
-          <Route path="/admins/create" element={<ProtectedRoute><AdminCreate /></ProtectedRoute>} />
 
-
-          <Route path="/profile" element={<ProtectedRoute><AuthProfile /></ProtectedRoute>} />
-          <Route path="/profile/edit" element={<ProtectedRoute><AuthProfileEdit /></ProtectedRoute>} />
-
-          <Route path="/login" element={<Login />} />
-          <Route path="/reset-password/:token/:email" element={<PasswordReset />} />
-
-          <Route path="*" element={<NotFoundCard />} />
         </Routes>
       </Layout>
 
