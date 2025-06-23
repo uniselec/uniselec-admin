@@ -40,6 +40,9 @@ export default function ResponsiveDrawer({ open, onClose, isDark }: Props) {
     { path: "/admins", name: "Admins", roles: ["super_user"] },
     { path: "/users", name: "Candidatos", roles: ["super_user"]},
     { path: "/applications", name: "Inscrições", roles: ["super_user"]},
+    { path: "/csv-export", name: "CSV Export", roles: ["super_user"]},
+    { path: "/enem-scores", name: "Notas do Enem", roles: ["super_user"]},
+    { path: "/enem-scores-import", name: "Importar Notas", roles: ["super_user"]},
     { path: "/profile", name: "Perfil", roles: ["super_user"] },
   ];
 

@@ -34,6 +34,10 @@ import { PasswordReset } from "./features/auth/PasswordReset";
 import { AuthProfileEdit } from "./features/auth/AuthProfileEdit";
 import { ApplicationList } from "./features/applications/ApplicationList";
 import { ApplicationDetail } from "./features/applications/ApplicationDetail";
+import { ApplicationCSVDownload } from "./features/applications/ApplicationCSVDownload";
+import { EnemScoreList } from "./features/enemScores/EnemScoreList";
+import { EnemScoreDetail } from "./features/enemScores/EnemScoreDetail";
+import { EnemScoreImport } from "./features/enemScores/EnemScoreImport";
 
 
 
@@ -57,10 +61,8 @@ function App() {
           <Route path="/process-selections" element={<ProtectedRoute><ProcessSelectionList /></ProtectedRoute>} />
           <Route path="/process-selections/edit/:id" element={<ProtectedRoute><ProcessSelectionEdit /></ProtectedRoute>} />
           <Route path="/process-selections/details/:id" element={<ProtectedRoute><ProcessSelectionDetailStepper /></ProtectedRoute>} />
+          <Route path="/process-selections/details2/:id" element={<ProtectedRoute><ProcessSelectionDetails /></ProtectedRoute>} />
           <Route path="/process-selections/create" element={<ProtectedRoute><ProcessSelectionCreate /></ProtectedRoute>} />
-
-
-
 
           <Route path="/admission-categories" element={<ProtectedRoute><AdmissionCategoryList /></ProtectedRoute>} />
           <Route path="/admission-categories/edit/:id" element={<ProtectedRoute><AdmissionCategoryEdit /></ProtectedRoute>} />
@@ -85,8 +87,11 @@ function App() {
 
           <Route path="/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
           <Route path="/applications/detail/:id" element={<ProtectedRoute><ApplicationDetail /></ProtectedRoute>} />
+          <Route path="/csv-export" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
 
-
+          <Route path="/enem-scores" element={<ProtectedRoute><EnemScoreList /></ProtectedRoute>} />
+          <Route path="/enem-scores/detail/:id" element={<ProtectedRoute><EnemScoreDetail /></ProtectedRoute>} />
+          <Route path="/enem-scores-import" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
 
 
 
@@ -109,9 +114,7 @@ function App() {
 
 
 
-          {/* <Route path="/:processSelectionId/enem-scores" element={<ProtectedRoute><EnemScoreList /></ProtectedRoute>} />
-
-          <Route path="/:processSelectionId/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} /> */}
+          {/* <Route path="/:processSelectionId/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} /> */}
 
           {/* <Route path="/application-outcomes/:processSelectionId" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} /> */}
           {/* <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} /> */}
