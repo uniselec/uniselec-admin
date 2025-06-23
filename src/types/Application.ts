@@ -65,4 +65,5 @@ export interface ApplicationParams {
     perPage?: number;
     search?: string;
     isActive?: boolean;
+    process_selection_id?: string | number; // novo
 }

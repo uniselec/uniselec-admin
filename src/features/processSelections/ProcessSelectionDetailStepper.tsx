@@ -14,22 +14,10 @@ import { ProcessSelectionDetails } from "./ProcessSelectionDetails";
 // import { EnemScoreList } from "../enemScores/EnemScoreList";
 import { useGetProcessSelectionQuery } from "./processSelectionSlice";
 import { CardAdvise } from "./components/CardAdvise";
+import { ApplicationCSVDownload } from "../applications/ApplicationCSVDownload";
+import { ImportEnemScoreStep } from "./ImportEnemScoreStep";
+import { ApplicationOutcomesStep } from "./ApplicationOutcomesStep";
 
-const steps = {
-  sisu: [
-    "Detalhes do Processo Seletivo",
-    "Notas do SISU",
-    "Processar Resultados",
-  ],
-  enem_scores: [
-    "Detalhes do Processo Seletivo",
-    "Visualizar Inscrições",
-    "Exportar Inscrições",
-    "Importar Notas",
-    "Listar Notas",
-    "Processar Resultados",
-  ],
-};
 
 export const ProcessSelectionDetailStepper = () => {
   const { id } = useParams<{ id: string }>();
@@ -47,29 +35,23 @@ export const ProcessSelectionDetailStepper = () => {
     return <Typography>Processo Seletivo não encontrado.</Typography>;
   }
 
-  const processType = (processSelection.data.type as keyof typeof steps) || "sisu";
-  const stepLabels = steps[processType] ?? steps["sisu"];
 
-  // Se o tipo não for suportado (por exemplo, não houver steps definidos), exibe um aviso
-  if (!stepLabels || stepLabels.length === 0) {
-    return (
-      <Paper sx={{ p: 3, mt: 4, mb: 4, textAlign: "center" }}>
-        <Typography variant="h5">
-          O sistema ainda não suporta este tipo de Seleção
-        </Typography>
-      </Paper>
-    );
-  }
+  const stepLabels = [
+    "Processo Seletivo",
+    "Importar Notas ",
+    "Resultados",
+    "Candidatura",
+  ]
+
 
   const handleNext = () => setActiveStep((prev) => prev + 1);
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
   return (
-    <Box sx={{ mt: 4, mb: 4 }}>
+    <Box sx={{ mt: 0, mb: 4 }}>
       <Paper sx={{ p: 3, mb: 3, textAlign: "center" }}>
         <Typography variant="h4">Gerenciamento do Processo Seletivo</Typography>
       </Paper>
-
       <Stepper activeStep={activeStep} alternativeLabel>
         {stepLabels.map((label: string, index: number) => (
           <Step key={index}>
@@ -87,17 +69,10 @@ export const ProcessSelectionDetailStepper = () => {
       </Box>
       <Box sx={{ p: 3, mt: 3, minHeight: 300 }}>
         {activeStep === 0 && <ProcessSelectionDetails />}
-        {activeStep != 0 && <CardAdvise/>}
-        {/* {activeStep === 1 && processType === "sisu" && <EnemScoreImport />}
-        {activeStep === 1 && processType === "enem_scores" && <ApplicationList />}
-        {activeStep === 2 && processType === "enem_scores" && <ApplicationCSVDownload />}
-        {activeStep === 3 && processType === "enem_scores" && <EnemScoreImport />}
-        {activeStep === 4 && processType === "enem_scores" && <EnemScoreList />}
-        {activeStep === 5 && processType === "enem_scores" && <GenerateApplicationOutcomes />}
-        {activeStep === 2 && processType === "sisu" && <GenerateApplicationOutcomes />} */}
+        {activeStep === 1 && <ImportEnemScoreStep />}
+        {activeStep === 2 && <ApplicationOutcomesStep/>}
+        {activeStep === 3 && <CardAdvise/>}
       </Box>
-
-
     </Box>
   );
 };
