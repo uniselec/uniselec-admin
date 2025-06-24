@@ -39,8 +39,7 @@ export const ProcessSelectionDetailStepper = () => {
   const stepLabels = [
     "Processo Seletivo",
     "Importar Notas ",
-    "Resultados",
-    "Candidatura",
+    "Resultados"
   ]
 
 

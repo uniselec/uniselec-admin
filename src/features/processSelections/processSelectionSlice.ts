@@ -51,7 +51,19 @@ function removeCourseFromProcessSelectionMutation({ process_selection_id, course
     body: { process_selection_id, course_id },
   };
 }
+function generateOutcome({ selectionId }: { selectionId: string }) {
+  return {
+    url: `/process_selections/${selectionId}/outcomes`,
+    method: "POST",
+  };
+}
 
+function generateOutcomeNoPending({ selectionId }: { selectionId: string }) {
+  return {
+    url: `/process_selections/${selectionId}/outcomes_without_pending`, // ou outcomes-no-pending
+    method: "POST",
+  };
+}
 export const processSelectionsApiSlice = apiSlice.injectEndpoints({
   endpoints: ({ query, mutation }) => ({
     getProcessSelections: query<Results, ProcessSelectionParams>({
@@ -82,6 +94,22 @@ export const processSelectionsApiSlice = apiSlice.injectEndpoints({
       query: removeCourseFromProcessSelectionMutation,
       invalidatesTags: ["ProcessSelections"],
     }),
+    generateApplicationOutcome: mutation<
+      Result,
+      { selectionId: string }
+    >({
+      query: generateOutcome,
+      invalidatesTags: ["ApplicationOutcomes"],
+    }),
+
+    /* gerar resultados – SEM pendentes */
+    generateApplicationOutcomeWithoutPending: mutation<
+      Result,
+      { selectionId: string }
+    >({
+      query: generateOutcomeNoPending,
+      invalidatesTags: ["ApplicationOutcomes"],
+    }),
   }),
 });
 
@@ -93,4 +121,6 @@ export const {
   useDeleteProcessSelectionMutation,
   useAttachCoursesMutation,
   useRemoveCourseFromProcessSelectionMutation,
+  useGenerateApplicationOutcomeWithoutPendingMutation,
+  useGenerateApplicationOutcomeMutation,
 } = processSelectionsApiSlice;
