@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Box, Typography, CircularProgress, MenuItem, Select, FormControl, InputLabel, Card, CardContent, List, ListItem, ListItemText } from '@mui/material';
 import { useGetApplicationsQuery } from './applicationSlice';
 import { saveAs } from 'file-saver';
-
+import { useParams } from "react-router-dom";
 
 
 
@@ -28,10 +28,20 @@ const handleDownloadCSV = (applications: any[]) => {
 
 
 export const ApplicationCSVDownload = () => {
+    const { id: processSelectionId } = useParams<{ id: string }>();
     const [page, setPage] = useState(1);
     const [allApplications, setAllApplications] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { data, isFetching, error } = useGetApplicationsQuery({ page, perPage: 1000 });
+    const { data, isFetching, error } = useGetApplicationsQuery({
+        page,
+        perPage: 1000,
+        process_selection_id: processSelectionId,
+    });
+    useEffect(() => {
+        setPage(1);
+        setAllApplications([]);
+        setIsLoading(true);
+    }, [processSelectionId]);
 
     useEffect(() => {
         if (data && !isFetching) {
@@ -60,10 +70,10 @@ export const ApplicationCSVDownload = () => {
 
 
     return (
-        <Card sx={{ maxWidth: 600, mx: 'auto', mt: 4 }}>
+        <Card>
             <CardContent>
-                <Typography variant="h4" gutterBottom>
-                    Download arquivo CSV para o INEP
+                <Typography variant="h5" gutterBottom>
+                    1. Faça o download do CSV das inscrições do ENEM
                 </Typography>
                 <Button
                     variant="contained"
@@ -72,6 +82,8 @@ export const ApplicationCSVDownload = () => {
                 >
                     Clique Para Baixar CSV
                 </Button>
+                <p>Os arquivos serão divididos em partes com no máximo mil inscrições por arquivo. Use essas notas no sistema do INEP para obter as notas do ENEM de cada candidato.</p>
+                <p>Total de Inscrições:  {data?.meta?.total}</p>
             </CardContent>
         </Card>
     );

@@ -1,58 +1,70 @@
-import { Result, Results, EnemScoreParams, EnemScore } from "../../types/EnemScore";
+// features/enemScores/enemScoresApiSlice.ts
+import {
+  Result,
+  Results,
+  EnemScoreParams,
+  EnemScore,
+  ImportSummary as Summary,      // ↳ tipo da resposta do import
+} from "../../types/EnemScore";
 import { apiSlice } from "../api/apiSlice";
 
 const endpointUrl = "/enem_scores";
 
+/* ---------------------------------------------------------- */
+/* Helpers                                                    */
+/* ---------------------------------------------------------- */
+
 function parseQueryParams(params: EnemScoreParams) {
   const query = new URLSearchParams();
 
-  if (params.page) {
-    query.append("page", params.page.toString());
-  }
-
-  if (params.perPage) {
-    query.append("per_page", params.perPage.toString());
-  }
-
-  if (params.search) {
-    query.append("search", params.search);
-  }
+  if (params.page)     query.append("page", params.page.toString());
+  if (params.perPage)  query.append("per_page", params.perPage.toString());
+  if (params.search)   query.append("search", params.search);
 
   return query.toString();
 }
 
-function getEnemScores({ page = 1, perPage = 10, search = "" }) {
-  const params = { page, perPage, search };
-
-  return `${endpointUrl}?${parseQueryParams(params)}`;
+function getEnemScores(params: EnemScoreParams = {}) {
+  return `${endpointUrl}?${parseQueryParams({ page: 1, perPage: 10, ...params })}`;
 }
 
-function createEnemScoreMutation(processSelection: EnemScore) {
-  return { url: endpointUrl, method: "POST", body: processSelection };
+function createEnemScoreMutation(body: EnemScore) {
+  return { url: endpointUrl, method: "POST", body };
 }
 
-function updateEnemScoreMutation(processSelection: EnemScore) {
-  return {
-    url: `${endpointUrl}/${processSelection.id}`,
-    method: "PUT",
-    body: processSelection,
-  };
+function updateEnemScoreMutation(body: EnemScore) {
+  return { url: `${endpointUrl}/${body.id}`, method: "PUT", body };
 }
 
 function deleteEnemScoreMutation({ id }: { id: string }) {
-  return {
-    url: `${endpointUrl}/${id}`,
-    method: "DELETE",
-  };
+  return { url: `${endpointUrl}/${id}`, method: "DELETE" };
 }
-
 
 function getEnemScore({ id }: { id: string }) {
   return `${endpointUrl}/${id}`;
 }
 
-export const processSelectionsApiSlice = apiSlice.injectEndpoints({
+/* ----------------------- import --------------------------- */
+
+type ImportPayload = {
+  file: File;
+  processSelectionId: number;
+};
+
+function importEnemScoresMutation(payload: ImportPayload) {
+  const form = new FormData();
+  form.append("file", payload.file);
+  form.append("process_selection_id", String(payload.processSelectionId));
+
+  return { url: `${endpointUrl}/import`, method: "POST", body: form };
+}
+/* ---------------------------------------------------------- */
+/* Slice                                                      */
+/* ---------------------------------------------------------- */
+
+export const enemScoresApiSlice = apiSlice.injectEndpoints({
   endpoints: ({ query, mutation }) => ({
+    /* CRUD */
     getEnemScores: query<Results, EnemScoreParams>({
       query: getEnemScores,
       providesTags: ["EnemScores"],
@@ -73,15 +85,23 @@ export const processSelectionsApiSlice = apiSlice.injectEndpoints({
       query: deleteEnemScoreMutation,
       invalidatesTags: ["EnemScores"],
     }),
+
+    importEnemScores: mutation<Summary, ImportPayload>({
+      query: importEnemScoresMutation,
+      invalidatesTags: ["EnemScores"], // força lista a recarregar se precisar
+    }),
   }),
 });
 
-
+/* ---------------------------------------------------------- */
+/* Hooks                                                      */
+/* ---------------------------------------------------------- */
 
 export const {
   useGetEnemScoresQuery,
+  useGetEnemScoreQuery,
   useCreateEnemScoreMutation,
   useUpdateEnemScoreMutation,
-  useGetEnemScoreQuery,
   useDeleteEnemScoreMutation,
-} = processSelectionsApiSlice;
+  useImportEnemScoresMutation,
+} = enemScoresApiSlice;

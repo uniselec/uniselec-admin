@@ -1,7 +1,7 @@
 import { Result, Results, ApplicationOutcomeParams, ApplicationOutcome } from "../../types/ApplicationOutcome";
 import { apiSlice } from "../api/apiSlice";
 
-const endpointUrl = "/applications";
+const endpointUrl = "/application_outcomes";
 
 function parseQueryParams(params: ApplicationOutcomeParams) {
   const query = new URLSearchParams();
@@ -82,6 +82,5 @@ export const {
   useGetApplicationOutcomesQuery,
   useCreateApplicationOutcomeMutation,
   useUpdateApplicationOutcomeMutation,
-  useGetApplicationOutcomeQuery,
-  useDeleteApplicationOutcomeMutation,
+  useGetApplicationOutcomeQuery
 } = processSelectionsApiSlice;

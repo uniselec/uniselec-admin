@@ -17,14 +17,15 @@ function parseQueryParams(params: ApplicationParams) {
   if (params.search) {
     query.append("search", params.search);
   }
-
+  if (params.process_selection_id) {
+    query.append("process_selection_id", params.process_selection_id.toString());
+  }
   return query.toString();
 }
 
-function getApplications({ page = 1, perPage = 10, search = "" }) {
-  const params = { page, perPage, search };
 
-  return `${endpointUrl}?${parseQueryParams(params)}`;
+function getApplications(params: ApplicationParams = {}) {
+  return `${endpointUrl}?${parseQueryParams({ page: 1, perPage: 10, ...params })}`;
 }
 
 function createApplicationMutation(processSelection: Application) {

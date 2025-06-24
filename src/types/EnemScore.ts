@@ -53,3 +53,11 @@ export interface EnemScoreParams {
   search?: string;
   isActive?: boolean;
 }
+
+export interface ImportSummary {
+  processed:  number;
+  created:    number;
+  updated:    number;
+  not_found:  number;
+  errors:     number;
+}

@@ -34,10 +34,8 @@ import { PasswordReset } from "./features/auth/PasswordReset";
 import { AuthProfileEdit } from "./features/auth/AuthProfileEdit";
 import { ApplicationList } from "./features/applications/ApplicationList";
 import { ApplicationDetail } from "./features/applications/ApplicationDetail";
-import { ApplicationCSVDownload } from "./features/applications/ApplicationCSVDownload";
 import { EnemScoreList } from "./features/enemScores/EnemScoreList";
 import { EnemScoreDetail } from "./features/enemScores/EnemScoreDetail";
-import { EnemScoreImport } from "./features/enemScores/EnemScoreImport";
 import { ApplicationOutcomeList } from "./features/applicationOutcomes/ApplicationOutcomeList";
 import { ApplicationOutcomeDetail } from "./features/applicationOutcomes/ApplicationOutcomeDetail";
 
@@ -87,11 +85,10 @@ function App() {
 
           <Route path="/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
           <Route path="/applications/detail/:id" element={<ProtectedRoute><ApplicationDetail /></ProtectedRoute>} />
-          <Route path="/csv-export" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} />
+
 
           <Route path="/enem-scores" element={<ProtectedRoute><EnemScoreList /></ProtectedRoute>} />
           <Route path="/enem-scores/detail/:id" element={<ProtectedRoute><EnemScoreDetail /></ProtectedRoute>} />
-          <Route path="/enem-scores-import" element={<ProtectedRoute><EnemScoreImport /></ProtectedRoute>} />
 
           <Route path="/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
           <Route path="/users/detail/:id" element={<ProtectedRoute><UserDetails /></ProtectedRoute>} />

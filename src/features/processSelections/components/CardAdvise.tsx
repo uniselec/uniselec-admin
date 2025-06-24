@@ -12,8 +12,8 @@ const CardAdvise = () => {
                         alignItems: 'center',
                     }}
                     p={5}>
-                    <Typography variant="h1">Em desenvolvimento</Typography>
-                    <Typography variant="h2">O Processamento da Seleção está em desenvolvimento</Typography>
+                    <Typography variant="h4">Em desenvolvimento</Typography><br />
+                    <Typography variant="h6">Esta funcionalidade está em desenvolvimento.</Typography>
                 </Box>
             </Paper>
         </Box>
