@@ -11,19 +11,20 @@ import {
   Typography,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
-import {
-  useGenerateApplicationOutcomeMutation,
-  useGenerateApplicationOutcomeWithoutPendingMutation,
-} from "../processSelections/processSelectionSlice";
+import { useGenerateApplicationOutcomeMutation } from "../applicationOutcomes/applicationOutcomeSlice";
+
 
 export const GenerateOutcomes: React.FC = () => {
   const { id: selectionId } = useParams<{ id: string }>();
 
-  /* hooks RTK Query */
+
   const [generate, { isLoading: loadingAll }] =
     useGenerateApplicationOutcomeMutation();
-  const [generateNoPending, { isLoading: loadingNoPend }] =
-    useGenerateApplicationOutcomeWithoutPendingMutation();
+
+  //Sem pendencias;
+  // const [generate, { isLoading: loadingNoPend }] =
+  //   useGenerateApplicationOutcomeWithoutPendingMutation();
+
 
   /* feedback */
   const [snack, setSnack] = React.useState<{
@@ -74,25 +75,7 @@ export const GenerateOutcomes: React.FC = () => {
                 {loadingAll ? (
                   <CircularProgress size={22} sx={{ mr: 1 }} />
                 ) : null}
-                Gerar (com pendentes)
-              </Button>
-            </Grid>
-
-            {/* Botão 2 */}
-            <Grid item>
-              <Button
-                variant="outlined"
-                disabled={loadingNoPend || !selectionId}
-                onClick={() =>
-                  handle(
-                    generateNoPending({ selectionId: selectionId! }).unwrap()
-                  )
-                }
-              >
-                {loadingNoPend ? (
-                  <CircularProgress size={22} sx={{ mr: 1 }} />
-                ) : null}
-                Gerar (sem pendentes)
+                Gerar Resultados
               </Button>
             </Grid>
           </Grid>

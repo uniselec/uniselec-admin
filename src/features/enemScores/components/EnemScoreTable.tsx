@@ -81,25 +81,21 @@ export function EnemScoreTable({
       field: "id",
       headerName: "Id",
       type: "string",
-      width: 150,
+      width: 100,
       renderCell: renderNameCell,
     },
-    { field: "user_name", headerName: "Nome", flex: 1, renderCell: renderNameCell },
-    { field: "email", headerName: "E-mail", flex: 1, renderCell: renderNameCell },
-    { field: "cpf", headerName: "CPF", flex: 1, renderCell: renderNameCell },
-    { field: "enem", headerName: "ENEM", flex: 1, renderCell: renderNameCell },
+    { field: "name", headerName: "Nome", width: 300, renderCell: renderNameCell },
+    { field: "enem", headerName: "Inscrição ENEM", width: 150, renderCell: renderNameCell },
+    { field: "original_score", headerName: "Score INEP", flex: 1, renderCell: renderNameCell },
   ];
 
   function mapDataToGridRows(data: Results) {
     const { data: enemScores } = data;
     return enemScores.map((enemScore) => ({
       id: enemScore.id,
-      // user_name: enemScore?.form_data?.name,
-      // email: enemScore?.form_data?.email,
-      // cpf: enemScore?.form_data?.cpf,
-      // enem: enemScore?.form_data?.enem,
-      updated_at: enemScore.updated_at,
-      // data: [],
+      enem: enemScore.enem,
+      name: enemScore?.scores?.name,
+      original_score: enemScore.original_scores,
       created_at: enemScore.created_at,
     }));
   }

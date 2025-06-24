@@ -18,19 +18,16 @@ const ApplicationCard = ({
         return <div>Loading...</div>;
     }
 
-    // Função de formatação de data que aceita string ou Date
-    const formatDate = (dateValue: string | Date | undefined) => {
-        if (!dateValue) return '';
-        if (dateValue instanceof Date) {
-            const year = dateValue.getFullYear();
-            const month = String(dateValue.getMonth() + 1).padStart(2, '0');
-            const day = String(dateValue.getDate()).padStart(2, '0');
-            return `${day}/${month}/${year}`;
-        }
-        const [year, month, day] = dateValue.split("-");
+    // Função de formatação de data sem criar um objeto Date
+    const formatDate = (dateString: string | undefined) => {
+        if (!dateString) return '';
+        const [year, month, day] = dateString.split("-");
         return `${day}/${month}/${year}`;
     };
-    console.log(application);
+    const formData = application.form_data ?? ({} as any);
+    const positionCourse = formData.position ?? null;           // Course | null
+    const selectedCategories = formData.admission_categories ?? [];
+    const selectedBonus = formData.bonus ?? null;
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} sm={12} xl={4} lg={4} md={4}>
@@ -69,6 +66,7 @@ const ApplicationCard = ({
                                     <TableCell component="th">Telefone 1</TableCell>
                                     <TableCell>{application?.form_data?.phone1}</TableCell>
                                 </TableRow>
+
                             </TableBody>
                         </Table>
                     </CardContent>
@@ -88,11 +86,11 @@ const ApplicationCard = ({
                                 </TableRow>
                                 <TableRow>
                                     <TableCell component="th">Curso</TableCell>
-                                    <TableCell>{application?.form_data?.position}</TableCell>
+                                    <TableCell>{application?.form_data?.position?.name}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell component="th">Localização</TableCell>
-                                    <TableCell>{application?.form_data?.location_position}</TableCell>
+                                    <TableCell>{application?.form_data?.position?.academic_unit?.name}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell component="th">ENEM</TableCell>
@@ -113,39 +111,30 @@ const ApplicationCard = ({
                         <Typography variant="h5" component="div" gutterBottom>
                             Vagas e Bonificação
                         </Typography>
-                        <Table>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell component="th">Vagas</TableCell>
-                                    <TableCell>
-                                        <ul>
-                                            <li>AC: Ampla Concorrência</li>
-                                        </ul>
-                                        <ul>
-                                            A VER DEPOI
-                                            {/* {application?.form_data?.vaga?.map((vaga, index) => (
-                                                <li key={index}>{vaga}</li>
-                                            ))} */}
-                                        </ul>
-                                    </TableCell>
-                                </TableRow>
-                                {application?.form_data?.bonus && (
-                                    <TableRow>
-                                        <TableCell component="th">Bonificação</TableCell>
-                                        <TableCell>
-                                            <ul>
-                                                {application?.form_data?.bonus === undefined || application?.form_data?.bonus?.length === 0
-                                                    ? (<> Nenhuma das anteriores</>) : (<></>)
-                                                }
-                                                {/* {application?.form_data?.bonus?.map((bonus, index) => (
-                                                    <li key={index}>{bonus}</li>
-                                                ))} */}
-                                            </ul>
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
+                        <TableRow>
+                            <TableCell>Modalidades</TableCell>
+                            <TableCell>
+                                {selectedCategories.length ? (
+                                    <ul style={{ margin: 0, paddingLeft: 16 }}>
+                                        {selectedCategories.map((cat: any) => (
+                                            <li key={cat.id}>{cat.name}</li>
+                                        ))}
+                                    </ul>
+                                ) : '—'}
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>Bonificação</TableCell>
+                            <TableCell>
+                                {selectedBonus ? (
+                                    <>
+                                        <strong>{selectedBonus.name}</strong>
+                                        {selectedBonus.description && <><br />{selectedBonus.description}</>}
+                                        {selectedBonus.value && <><br />Valor: {selectedBonus.value}%</>}
+                                    </>
+                                ) : 'Nenhuma'}
+                            </TableCell>
+                        </TableRow>
                     </CardContent>
                 </Card>
             </Grid>
