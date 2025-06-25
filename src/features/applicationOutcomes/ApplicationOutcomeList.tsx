@@ -10,9 +10,9 @@ import { ApplicationOutcomeTable } from "./components/ApplicationOutcomeTable";
 export const ApplicationOutcomeList = () => {
   const [options, setOptions] = useState({
     page: 1,
-    search: "",
     perPage: 25,
-    rowsPerPage: [25, 50, 100],
+    search: "",
+    filters: {} as Record<string, string>,
   });
 
   const { data, isFetching, error } = useGetApplicationOutcomesQuery(options);

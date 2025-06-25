@@ -10,7 +10,7 @@ export interface Result {
 }
 
 export interface AdmissionCategory {
-  id?: number;
+  id: number;
   name: string;
   description?: string;
   created_at?: string;

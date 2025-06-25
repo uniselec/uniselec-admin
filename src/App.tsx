@@ -37,7 +37,9 @@ import { ApplicationDetail } from "./features/applications/ApplicationDetail";
 import { EnemScoreList } from "./features/enemScores/EnemScoreList";
 import { EnemScoreDetail } from "./features/enemScores/EnemScoreDetail";
 import { ApplicationOutcomeList } from "./features/applicationOutcomes/ApplicationOutcomeList";
-import { ApplicationOutcomeDetail } from "./features/applicationOutcomes/ApplicationOutcomeDetail";
+import { ApplicationOutcomeEdit } from "./features/applicationOutcomes/ApplicationOutcomeEdit";
+import { DeferidosIndeferidosList } from "./features/processSelections/DeferidosIndeferidosList";
+import { ApplicationResults } from "./features/processSelections/ApplicationResults";
 
 
 
@@ -56,7 +58,8 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<ProtectedRoute><ProcessSelectionResume /></ProtectedRoute>} />
-
+          <Route path="/deferidos-indeferidos/:id" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} />
+          <Route path="/applications-results" element={<ProtectedRoute><ApplicationResults /></ProtectedRoute>} />
 
           <Route path="/process-selections" element={<ProtectedRoute><ProcessSelectionList /></ProtectedRoute>} />
           <Route path="/process-selections/edit/:id" element={<ProtectedRoute><ProcessSelectionEdit /></ProtectedRoute>} />
@@ -98,7 +101,7 @@ function App() {
           <Route path="/admins/create" element={<ProtectedRoute><AdminCreate /></ProtectedRoute>} />
 
           <Route path="/application-outcomes" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} />
-          <Route path="/application-outcomes/detail/:id" element={<ProtectedRoute><ApplicationOutcomeDetail /></ProtectedRoute>} />
+          <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} />
 
 
           <Route path="/profile" element={<ProtectedRoute><AuthProfile /></ProtectedRoute>} />
@@ -118,7 +121,7 @@ function App() {
 
           {/* <Route path="/:processSelectionId/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} /> */}
 
-          {/* <Route path="/applications-results/:categoryId" element={<ProtectedRoute><ApplicationResults /></ProtectedRoute>} />
+          {/*
           <Route path="/applications-results/no20/:categoryId" element={<ProtectedRoute><ApplicationResultsNo20 /></ProtectedRoute>} /> */}
           {/* <Route path="/charts" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} /> */}
 

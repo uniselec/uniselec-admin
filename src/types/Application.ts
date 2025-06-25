@@ -1,48 +1,51 @@
+import { AdmissionCategory } from "./AdmissionCategory";
+import { BonusOption } from "./BonusOption";
+import { Course } from "./Course";
 import { EnemScore } from "./EnemScore";
-import { User } from "./User";
-
 
 export interface Results {
     data: Application[];
     links: Links;
     meta: Meta;
 }
+
 export interface Result {
     data: Application;
 }
 
+export interface ApplicationFormData {
+    edital: string;
+    position: Course;
+    name?: string;
+    social_name?: string;
+    email?: string;
+    cpf: string;
+    birthdate?: string;
+    enem_year?: number;
+    sex: string;
+    phone1: string;
+    address: string;
+    uf: string;
+    city: string;
+    enem: string;
+    admission_categories: AdmissionCategory[];
+    bonus: BonusOption;
+    termsAgreement: boolean;
+    updated_at?: string;
+}
+
 export interface Application {
-    id: number;
-    user_id: number;
-    form_data: FormData;
+    id?: string;
+    process_selection_id: string;
+    form_data: ApplicationFormData;
     enem_score?: EnemScore;
     verification_expected: string;
     verification_code: string;
     valid_verification_code: boolean;
-    created_at?: string;
-    updated_at?: string;
+    created_at: string | null;
+    updated_at: string | null;
 }
 
-export interface FormData {
-    edital: string;
-    position: string;
-    location_position: string;
-    name: string;
-    email: string;
-    cpf: string;
-    social_name: string;
-    phone1: string;
-    address: string;
-    city: string;
-    sex: string;
-    uf: string;
-    enem: string;
-    birthdate: Date;
-    bonus: string;
-    modalidade: string[];
-    enem_year: number;
-    updated_at: string;
-}
 export interface Links {
     prev: string;
     last: string;
@@ -65,5 +68,5 @@ export interface ApplicationParams {
     perPage?: number;
     search?: string;
     isActive?: boolean;
-    process_selection_id?: string | number; // novo
+    process_selection_id?: string;
 }

@@ -27,60 +27,76 @@ function getApplicationOutcomes({ page = 1, perPage = 10, search = "" }) {
   return `${endpointUrl}?${parseQueryParams(params)}`;
 }
 
-function createApplicationOutcomeMutation(processSelection: ApplicationOutcome) {
-  return { url: endpointUrl, method: "POST", body: processSelection };
-}
-
-function updateApplicationOutcomeMutation(processSelection: ApplicationOutcome) {
+function generateOutcome({ selectionId }: { selectionId: string }) {
   return {
-    url: `${endpointUrl}/${processSelection.id}`,
-    method: "PUT",
-    body: processSelection,
+    url: `/process_selections/${selectionId}/outcomes`,
+    method: "POST",
   };
 }
 
-function deleteApplicationOutcomeMutation({ id }: { id: string }) {
+function generateOutcomeNoPending({ selectionId }: { selectionId: string }) {
   return {
-    url: `${endpointUrl}/${id}`,
-    method: "DELETE",
+    url: `/process_selections/${selectionId}/outcomes_without_pending`, // ou outcomes-no-pending
+    method: "POST",
   };
 }
 
+function updateApplicationOutcomeMutation(application: ApplicationOutcome) {
+  return {
+    url: `${endpointUrl}/${application.id}`,
+    method: "PATCH",
+    body: application,
+  };
+}
 
 function getApplicationOutcome({ id }: { id: string }) {
   return `${endpointUrl}/${id}`;
 }
 
-export const processSelectionsApiSlice = apiSlice.injectEndpoints({
+export const applicationOutcomesApiSlice = apiSlice.injectEndpoints({
   endpoints: ({ query, mutation }) => ({
-    getApplicationOutcomes: query<Results, ApplicationOutcomeParams>({
-      query: getApplicationOutcomes,
-      providesTags: ["ApplicationOutcomes"],
+    getApplicationOutcomes: query<Results, { page: number; perPage: number; filters: Record<string, string> }>({
+      query: ({ page, perPage, filters }) => {
+        const params = new URLSearchParams({ page: String(page), per_page: String(perPage) });
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value) params.append(key, value);
+        });
+        return `${endpointUrl}?${params.toString()}`;
+      },
+      providesTags: ["Applications"],
     }),
     getApplicationOutcome: query<Result, { id: string }>({
       query: getApplicationOutcome,
       providesTags: ["ApplicationOutcomes"],
     }),
-    createApplicationOutcome: mutation<Result, ApplicationOutcome>({
-      query: createApplicationOutcomeMutation,
+    generateApplicationOutcome: mutation<
+      Result,
+      { selectionId: string }
+    >({
+      query: generateOutcome,
+      invalidatesTags: ["ApplicationOutcomes"],
+    }),
+
+    /* gerar resultados – SEM pendentes */
+    generateApplicationOutcomeWithoutPending: mutation<
+      Result,
+      { selectionId: string }
+    >({
+      query: generateOutcomeNoPending,
       invalidatesTags: ["ApplicationOutcomes"],
     }),
     updateApplicationOutcome: mutation<Result, ApplicationOutcome>({
       query: updateApplicationOutcomeMutation,
       invalidatesTags: ["ApplicationOutcomes"],
     }),
-    deleteApplicationOutcome: mutation<void, { id: string }>({
-      query: deleteApplicationOutcomeMutation,
-      invalidatesTags: ["ApplicationOutcomes"],
-    }),
   }),
 });
 
 
-
 export const {
   useGetApplicationOutcomesQuery,
-  useCreateApplicationOutcomeMutation,
+  useGenerateApplicationOutcomeWithoutPendingMutation,
+  useGenerateApplicationOutcomeMutation,
   useUpdateApplicationOutcomeMutation,
-  useGetApplicationOutcomeQuery
-} = processSelectionsApiSlice;
+  useGetApplicationOutcomeQuery,
+} = applicationOutcomesApiSlice;

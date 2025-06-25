@@ -1,50 +1,41 @@
-import React from 'react';
-import { Card, CardContent, Typography, Grid, Table, TableBody, TableCell, TableRow } from '@mui/material';
-import { EnemScore } from '../../../types/EnemScore';
+import { Box, Button, Grid, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
+import { EnemScore } from "../../../types/EnemScore";
 
 type Props = {
-    enemScore: EnemScore;
-    isLoading?: boolean;
+  enemScore: EnemScore;
+  isLoading?: boolean;
 };
 
-const EnemScoreCard = ({
-    enemScore,
-    isLoading = false,
-}: Props) => {
-    if (enemScore === undefined) {
-        return <div>Loading...</div>;
-    }
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+function formatDate(dateString: string | null | undefined): string {
+  if (!dateString) return 'N/A';
+  return new Intl.DateTimeFormat('pt-BR').format(new Date(dateString));
+}
 
-    // Função de formatação de data que aceita string ou Date
-    const formatDate = (dateValue: string | Date | undefined) => {
-        if (!dateValue) return '';
-        if (dateValue instanceof Date) {
-            const year = dateValue.getFullYear();
-            const month = String(dateValue.getMonth() + 1).padStart(2, '0');
-            const day = String(dateValue.getDate()).padStart(2, '0');
-            return `${day}/${month}/${year}`;
-        }
-        const [year, month, day] = dateValue.split("-");
-        return `${day}/${month}/${year}`;
-    };
-    console.log(enemScore);
-    return (
-        <Grid container spacing={2}>
-            <Grid item xs={12} sm={12} xl={4} lg={4} md={4}>
-                <Card variant="outlined">
-                    <CardContent>
-                        <Typography variant="h5" component="div" gutterBottom>
-                            Informações Pessoais
-                        </Typography>
+export function EnemScoreCard({ enemScore, isLoading = false }: Props) {
+  if (!enemScore || !enemScore.scores) {
+    return <Typography variant="h6">Carregando...</Typography>;
+  }
 
-                    </CardContent>
-                </Card>
-            </Grid>
-        </Grid >
-    );
-};
-
-export { EnemScoreCard };
+  return (
+    <Box p={2}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Typography variant="h6">Informações vindas do arquivo do INEP</Typography>
+          <Typography>ENEM: {enemScore.enem}</Typography>
+          <Typography>Nome: {enemScore.scores.name || 'N/A'}</Typography>
+          <Typography>CPF: {enemScore.scores.cpf || 'N/A'}</Typography>
+          <Typography>Data de Nascimento: {enemScore.scores.birthdate || 'N/A'}</Typography>
+          <Typography>Nota em Ciências da Natureza: {enemScore.scores.science_score || 'N/A'}</Typography>
+          <Typography>Nota em Ciências Humanas: {enemScore.scores.humanities_score || 'N/A'}</Typography>
+          <Typography>Nota em Linguagens e Códigos: {enemScore.scores.language_score || 'N/A'}</Typography>
+          <Typography>Nota em Matemática: {enemScore.scores.math_score || 'N/A'}</Typography>
+          <Typography>Nota em Redação: {enemScore.scores.writing_score || 'N/A'}</Typography>
+          <Typography>Notas Originais: {enemScore.original_scores || 'N/A'}</Typography>
+          <Typography>Criado em: {formatDate(enemScore.created_at)}</Typography>
+          <Typography>Atualizado em: {formatDate(enemScore.updated_at)}</Typography>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+}

@@ -68,7 +68,7 @@ export function ApplicationOutcomeTable({
     return (
       <Link
         style={{ textDecoration: "none" }}
-        to={`/application-outcomes/detail/${rowData.id}`}
+        to={`/application-outcomes/edit/${rowData.id}`}
       >
         <Typography color="primary">{rowData.value}</Typography>
       </Link>
@@ -80,25 +80,25 @@ export function ApplicationOutcomeTable({
       field: "id",
       headerName: "Id",
       type: "string",
-      width: 150,
+      width: 100,
       renderCell: renderNameCell,
     },
-    { field: "user_name", headerName: "Nome", flex: 1, renderCell: renderNameCell },
-    { field: "email", headerName: "E-mail", flex: 1, renderCell: renderNameCell },
-    { field: "cpf", headerName: "CPF", flex: 1, renderCell: renderNameCell },
-    { field: "enem", headerName: "ENEM", flex: 1, renderCell: renderNameCell },
+    { field: "name", headerName: "Nome", flex: 1, renderCell: renderNameCell },
+    { field: "enem", headerName: "N Inscrição ENEM", flex: 1, renderCell: renderNameCell },
+    { field: "reason", headerName: "Motivo de Indeferimento", flex: 1, renderCell: renderNameCell },
+    { field: "status", headerName: "Estado", flex: 1, renderCell: renderNameCell },
+    { field: "classification_status", headerName: "Classificação", flex: 1, renderCell: renderNameCell },
   ];
 
   function mapDataToGridRows(data: Results) {
     const { data: applicationOutcomes } = data;
     return applicationOutcomes.map((applicationOutcome) => ({
       id: applicationOutcome.id,
-      // user_name: applicationOutcome?.form_data?.name,
-      // email: applicationOutcome?.form_data?.email,
-      // cpf: applicationOutcome?.form_data?.cpf,
-      // enem: applicationOutcome?.form_data?.enem,
-      updated_at: applicationOutcome.updated_at,
-      data: [],
+      reason: applicationOutcome.reason,
+      enem: applicationOutcome?.application?.form_data?.enem,
+      name: applicationOutcome?.application?.form_data?.name,
+      status: translate(applicationOutcome?.status),
+      classification_status: applicationOutcome?.classification_status != null ? translate(applicationOutcome?.classification_status) : "-",
       created_at: applicationOutcome.created_at,
     }));
   }
