@@ -34,18 +34,27 @@ const GenerateLists = () => {
                         mt: 2,
                     }}
                 >
-                    {hasApplicationOutcomes && (
-                        <Button
-                            component={Link}
-                            to={`/deferidos-indeferidos/${processSelectionId}`}
-                            variant="outlined"
-                            color="secondary"
-                            sx={{ fontSize: '12px' }}
-                        >
-                            Ver Resultado
-                        </Button>
-                    )}
-                    {hasApplicationOutcomes && <CategoryCards applicationOutcomes={outcomesData} isFetching={isFetchingOutcomeData}/>}
+
+                    <Button
+                        component={Link}
+                        to={`/deferidos-indeferidos/${processSelectionId}`}
+                        variant="outlined"
+                        color="secondary"
+                        sx={{ fontSize: '12px' }}
+                        disabled={outcomesData?.meta?.total === 0}
+                    >
+                        {outcomesData?.meta?.total ? `${outcomesData.meta.total} Resultados` : "0 Resultados"}
+                    </Button>
+                    <Button
+                        component={Link}
+                        to={`/applications-results?process_selection_id=${processSelectionId}`}
+                        variant="outlined"
+                        color="secondary"
+                        sx={{ fontSize: '12px' }}
+                        disabled={outcomesData?.meta?.total === 0}
+                    >
+                        Listas
+                    </Button>
 
                 </Box>
             </CardContent>

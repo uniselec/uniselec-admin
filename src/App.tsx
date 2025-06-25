@@ -39,6 +39,7 @@ import { EnemScoreDetail } from "./features/enemScores/EnemScoreDetail";
 import { ApplicationOutcomeList } from "./features/applicationOutcomes/ApplicationOutcomeList";
 import { ApplicationOutcomeEdit } from "./features/applicationOutcomes/ApplicationOutcomeEdit";
 import { DeferidosIndeferidosList } from "./features/processSelections/DeferidosIndeferidosList";
+import { ApplicationResults } from "./features/processSelections/ApplicationResults";
 
 
 
@@ -58,6 +59,7 @@ function App() {
         <Routes>
           <Route path="/" element={<ProtectedRoute><ProcessSelectionResume /></ProtectedRoute>} />
           <Route path="/deferidos-indeferidos/:id" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} />
+          <Route path="/applications-results" element={<ProtectedRoute><ApplicationResults /></ProtectedRoute>} />
 
           <Route path="/process-selections" element={<ProtectedRoute><ProcessSelectionList /></ProtectedRoute>} />
           <Route path="/process-selections/edit/:id" element={<ProtectedRoute><ProcessSelectionEdit /></ProtectedRoute>} />
@@ -119,7 +121,7 @@ function App() {
 
           {/* <Route path="/:processSelectionId/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} /> */}
 
-          {/* <Route path="/applications-results/:categoryId" element={<ProtectedRoute><ApplicationResults /></ProtectedRoute>} />
+          {/*
           <Route path="/applications-results/no20/:categoryId" element={<ProtectedRoute><ApplicationResultsNo20 /></ProtectedRoute>} /> */}
           {/* <Route path="/charts" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} /> */}
 

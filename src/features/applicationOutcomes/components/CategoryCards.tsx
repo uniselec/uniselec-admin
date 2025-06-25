@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Grid, Card, CardContent, Typography, Box, CircularProgress, Switch, FormControlLabel } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Results } from "../../../types/ApplicationOutcome";
+import { ProcessSelection } from "../../../types/ProcessSelection";
 
 
 const categories = [
@@ -18,11 +19,13 @@ const categories = [
 
 type Props = {
   applicationOutcomes: Results | undefined;
+  processSelection: ProcessSelection;
   isFetching: boolean;
 };
 
 export function CategoryCards({
   applicationOutcomes,
+  processSelection,
   isFetching,
 }: Props) {
 
@@ -46,13 +49,16 @@ export function CategoryCards({
   return (
     <Box sx={{ padding: 2 }}>
       {/* {JSON.stringify(applicationOutcomes)} */}
+
       <Grid container spacing={2}>
+
         {categories.map((category) => {
           return (
             <Grid item xs={12} sm={6} md={4} key={category.id}>
               <Link to={`/applications-results/${category.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <Card sx={{ cursor: "pointer", height: "100%" }}>
                   <CardContent>
+                    <pre>{JSON.stringify(processSelection, null, 2)}</pre>
                     <Typography variant="h6">{category.label}</Typography>
                     <Typography variant="body2">
                       Vagas: {category.vagas}
