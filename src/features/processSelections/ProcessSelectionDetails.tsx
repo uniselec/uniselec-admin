@@ -86,38 +86,6 @@ export const ProcessSelectionDetails = () => {
 
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
-      {/* 🚀 Novo Card com Ações */}
-      {/* <Paper sx={{ p: 3, mb: 2, display: "flex", justifyContent: "center", gap: 2 }}>
-        {processType === "sisu" ? (
-          <>
-            <Button variant="contained" color="warning" onClick={() => navigate(`/${id}/import-enem-score/`)}>
-              Notas do SISU
-            </Button>
-            <Button variant="contained" color="error" onClick={() => navigate(`/${id}/generate-results/`)}>
-              Processar Resultados
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button variant="contained" color="primary" onClick={() => navigate(`/${id}/applications/`)}>
-              Visualizar Inscrições
-            </Button>
-            <Button variant="contained" color="success" onClick={() => navigate(`/${id}/export-csv/`)}>
-              Exportar Inscrições
-            </Button>
-            <Button variant="contained" color="warning" onClick={() => navigate(`/${id}/import-enem-score/`)}>
-              Importar Notas
-            </Button>
-            <Button variant="contained" color="info" onClick={() => navigate(`/${id}/enem-scores/`)}>
-              Listar Notas do Enem
-            </Button>
-            <Button variant="contained" color="error" onClick={() => navigate(`/${id}/generate-results/`)}>
-              Processar Resultados
-            </Button>
-          </>
-        )}
-      </Paper> */}
-
       <Paper sx={{ p: 3, mb: 2 }}>
         <Typography variant="h4">{processSelection.data.name}</Typography>
         <Typography>{processSelection.data.description}</Typography>

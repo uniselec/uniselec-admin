@@ -21,12 +21,6 @@ export const GenerateOutcomes: React.FC = () => {
   const [generate, { isLoading: loadingAll }] =
     useGenerateApplicationOutcomeMutation();
 
-  //Sem pendencias;
-  // const [generate, { isLoading: loadingNoPend }] =
-  //   useGenerateApplicationOutcomeWithoutPendingMutation();
-
-
-  /* feedback */
   const [snack, setSnack] = React.useState<{
     open: boolean;
     severity: "success" | "error";
