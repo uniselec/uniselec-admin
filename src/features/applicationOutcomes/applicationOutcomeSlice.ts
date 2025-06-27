@@ -63,7 +63,7 @@ export const applicationOutcomesApiSlice = apiSlice.injectEndpoints({
         });
         return `${endpointUrl}?${params.toString()}`;
       },
-      providesTags: ["Applications"],
+      providesTags: ["ApplicationOutcomes"],
     }),
     getApplicationOutcome: query<Result, { id: string }>({
       query: getApplicationOutcome,

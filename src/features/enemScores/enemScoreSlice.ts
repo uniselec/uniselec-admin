@@ -88,7 +88,7 @@ export const enemScoresApiSlice = apiSlice.injectEndpoints({
 
     importEnemScores: mutation<Summary, ImportPayload>({
       query: importEnemScoresMutation,
-      invalidatesTags: ["EnemScores"], // força lista a recarregar se precisar
+      invalidatesTags: ["EnemScores", "ApplicationOutcomes"],
     }),
   }),
 });
