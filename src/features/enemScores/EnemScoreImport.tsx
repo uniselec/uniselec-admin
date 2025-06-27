@@ -8,6 +8,11 @@ import {
   CircularProgress,
   Typography,
   Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useImportEnemScoresMutation } from "./enemScoreSlice";
@@ -24,13 +29,16 @@ export const EnemScoreImport: React.FC = () => {
     errors: number;
   }>(null);
   const [error, setError] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const [importScores, { isLoading }] = useImportEnemScoresMutation();
 
+  /* upload real — chamado somente após confirmar no modal */
   const handleUpload = async () => {
     if (!file) return;
     setError(null);
     setSummary(null);
+    setDialogOpen(false);
 
     try {
       const res = await importScores({
@@ -62,12 +70,47 @@ export const EnemScoreImport: React.FC = () => {
           <Button
             variant="contained"
             disabled={!file || isLoading}
-            onClick={handleUpload}
+            onClick={() => setDialogOpen(true)} // abre modal
           >
             Enviar Arquivo
           </Button>
           {isLoading && <CircularProgress size={24} />}
         </Box>
+
+        {/* diálogo de confirmação */}
+        <Dialog
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+          aria-labelledby="enem-confirm-dialog-title"
+        >
+          <DialogTitle id="enem-confirm-dialog-title">
+            Confirmar importação
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Todos os resultados e notas anteriormente processados serão
+              apagados.<br />
+              Tem certeza de que deseja prosseguir?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDialogOpen(false)} color="inherit">
+              Cancelar
+            </Button>
+            <Button
+              onClick={handleUpload}
+              variant="contained"
+              color="primary"
+              disabled={isLoading}
+              autoFocus
+            >
+              {isLoading ? (
+                <CircularProgress size={20} sx={{ mr: 1 }} />
+              ) : null}
+              Prosseguir
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         {summary && (
           <Alert severity="success" sx={{ mt: 2 }}>
