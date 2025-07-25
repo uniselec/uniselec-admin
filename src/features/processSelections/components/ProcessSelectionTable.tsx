@@ -20,6 +20,7 @@ import {
 import { Results } from "../../../types/ProcessSelection";
 import { Link } from "react-router-dom";
 import { useDeleteProcessSelectionMutation } from "../processSelectionSlice";
+import useTranslate from "../../polyglot/useTranslate";
 
 type Props = {
   processSelections: Results | undefined;
@@ -42,6 +43,7 @@ export function ProcessSelectionTable({
   const [alertMessage, setAlertMessage] = useState("");
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedProcessSelectionId, setSelectedProcessSelectionId] = useState<string | null>(null);
+  const translate = useTranslate('processSelection.status');
 
   const handleAlertClose = () => {
     setAlertOpen(false);
@@ -128,7 +130,7 @@ export function ProcessSelectionTable({
       name: processSelection.name,
       description: processSelection.description,
       type: processSelection.type,
-      status: processSelection.status,
+      status: translate(processSelection.status),
       start_date: processSelection.start_date,
       end_date: processSelection.end_date,
     }));
