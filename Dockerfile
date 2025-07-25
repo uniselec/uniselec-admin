@@ -3,6 +3,6 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install
 COPY . .
-EXPOSE 5173
+EXPOSE 5174
 CMD ["yarn", "dev"]
 
