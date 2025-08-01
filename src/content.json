@@ -6,8 +6,15 @@
             "pending": "Pendente",
             "classified": "Classificado",
             "classifiable": "Classificável",
-            "disqualified": "Desclassificado"
-
+            "disqualified": "Desclassificado",
+            "processSelection.status": "Rascunho"
+        },
+        "processSelection.status": {
+            "draft": "Rascunho",
+            "published": "Publicado",
+            "archived": "Arquivado",
+            "active": "Ativo",
+            "finished": "Finalizado"
         }
     },
     "en": {
