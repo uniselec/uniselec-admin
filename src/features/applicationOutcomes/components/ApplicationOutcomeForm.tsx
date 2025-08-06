@@ -78,13 +78,13 @@ export function ApplicationOutcomeForm({
           <Grid item xs={12}>
             <Typography variant="h6">Informações do Inep</Typography>
             <Typography style={ getFieldStyle('name') }>
-              Nome: {applicationOutcome.application?.enem_score?.scores.name}
+              Nome: {applicationOutcome.application?.enem_score?.scores?.name}
             </Typography>
             <Typography style={ getFieldStyle('cpf') }>
-              CPF: {applicationOutcome.application?.enem_score?.scores.cpf}
+              CPF: {applicationOutcome.application?.enem_score?.scores?.cpf}
             </Typography>
             <Typography style={ getFieldStyle('birthdate') }>
-              Data de Nascimento: {applicationOutcome.application?.enem_score?.scores.birthdate}
+              Data de Nascimento: {applicationOutcome.application?.enem_score?.scores?.birthdate}
             </Typography>
             <Typography>ID: {applicationOutcome.id}</Typography>
             <Typography>Score Médio: {applicationOutcome.average_score}</Typography>
