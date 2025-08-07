@@ -17,6 +17,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useGetProcessSelectionQuery, useAttachCoursesMutation, useRemoveCourseFromProcessSelectionMutation } from "./processSelectionSlice";
 import { useGetCoursesQuery } from "../courses/courseSlice";
 import { DocumentList } from "../documents/DocumentList";
+import useTranslate from "../polyglot/useTranslate";
 
 export const ProcessSelectionDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,6 +31,7 @@ export const ProcessSelectionDetails = () => {
   const { data: coursesData } = useGetCoursesQuery({ perPage: 100 });
   const [confirmRemoveOpen, setConfirmRemoveOpen] = useState(false);
   const [courseToRemove, setCourseToRemove] = useState<string | null>(null);
+  const translate = useTranslate('processSelection.status');
 
   useEffect(() => {
     if (processSelection && processSelection.data) {
@@ -90,7 +92,7 @@ export const ProcessSelectionDetails = () => {
         <Typography variant="h4">{processSelection.data.name}</Typography>
         <Typography>{processSelection.data.description}</Typography>
         <Typography>Tipo: {processSelection.data.type === 'enem_score' ? 'Notas do Enem' : 'SISU'}</Typography>
-        <Typography>Status: {processSelection.data.status}</Typography>
+        <Typography>Status: {translate(processSelection.data.status)}</Typography>
         <Typography>Início: {processSelection.data.start_date}</Typography>
         <Typography>Fim: {processSelection.data.end_date}</Typography>
         <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={() => navigate(`/process-selections/edit/${id!}`)}>

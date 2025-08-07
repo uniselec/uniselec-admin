@@ -1,15 +1,23 @@
 version: '3.8'
 
 services:
-  react-app:
+  react-app-admin:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: react_admin
     ports:
-      - "5173:5173"
+      - "5174:5173"
     volumes:
       - .:/app
       - /app/node_modules
+    networks:
+      - shared-network-uniselec
     environment:
       - NODE_ENV=development
-    command: ["yarn", "dev"]
+    restart: unless-stopped
+    command: yarn dev --host
+
+networks:
+  shared-network-uniselec:
+    external: true

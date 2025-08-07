@@ -39,6 +39,20 @@ export function ApplicationOutcomeForm({
     return `${day}/${month}/${year}`;
   };
 
+  const getFieldStyle = (fieldKey: "name" | "cpf" | "birthdate"): React.CSSProperties => {
+    const inconsistencyMap: Record<typeof fieldKey, string> = {
+      name: "Inconsistência no Nome",
+      cpf: "Inconsistência no CPF",
+      birthdate: "Inconsistência na Data de Nascimento",
+    };
+    const inconsistencies: string[] = applicationOutcome.reason
+      ?.split(";")
+      .map((inconsistency) => inconsistency.trim()) ?? [];
+
+    const label: string = inconsistencyMap[fieldKey];
+    return inconsistencies.includes(label) ? { color: "red" } : {};
+  }
+
   return (
     <Box p={2}>
       <form onSubmit={handleSubmit}>
@@ -62,7 +76,16 @@ export function ApplicationOutcomeForm({
 
           {/* Exibição das informações do ApplicationOutcome */}
           <Grid item xs={12}>
-            <Typography variant="h6">Informações do Resultado</Typography>
+            <Typography variant="h6">Informações do Inep</Typography>
+            <Typography style={ getFieldStyle('name') }>
+              Nome: {applicationOutcome.application?.enem_score?.scores?.name}
+            </Typography>
+            <Typography style={ getFieldStyle('cpf') }>
+              CPF: {applicationOutcome.application?.enem_score?.scores?.cpf}
+            </Typography>
+            <Typography style={ getFieldStyle('birthdate') }>
+              Data de Nascimento: {applicationOutcome.application?.enem_score?.scores?.birthdate}
+            </Typography>
             <Typography>ID: {applicationOutcome.id}</Typography>
             <Typography>Score Médio: {applicationOutcome.average_score}</Typography>
             <Typography>Score Final: {applicationOutcome.final_score}</Typography>
