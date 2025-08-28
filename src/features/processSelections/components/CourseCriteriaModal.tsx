@@ -10,14 +10,16 @@ import {
 } from "@mui/material";
 import { AdmissionCategory } from "../../../types/AdmissionCategory";
 import { KnowledgeArea } from "../../../types/KnowledgeArea";
+import { CourseCriteria } from "../../../types/Course";
 
-type CourseVacancyModalProps = {
+type CourseCriteriaModalProps = {
   courseName: string;
   admissionCategories: AdmissionCategory[];
   knowledgeAreas: KnowledgeArea[];
   currentVacancies: { [key: string]: number } | undefined;
+  currentMinimumScores: { [key: string]: number } | undefined;
   onClose: () => void;
-  onSave: (vacanciesMapping: { [key: string]: number }) => void;
+  onSave: (criteria: CourseCriteria) => void;
 };
 
 const buildInitialMap = <T extends { name?: string; slug?: string }>(
@@ -54,7 +56,7 @@ export const CourseCriteriaModal: React.FC<CourseCriteriaModalProps> = ({
     setVacanciesMap((prev) => ({ ...prev, [categoryName]: numberValue }));
   };
 
-  const handleMinimunScore = (knowledgeAreaName, value) => {
+  const handleMinimunScore = (knowledgeAreaName: string, value: string) => {
     const minimumScore = parseFloat(value);
     setMinimumScoresMap((prev) => ({ ...prev, [knowledgeAreaName]: isNaN(minimumScore) ? 0 : minimumScore }));
   }

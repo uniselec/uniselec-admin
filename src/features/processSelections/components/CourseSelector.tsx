@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, TextField, Chip, Autocomplete } from "@mui/material";
 import { CourseCriteriaModal } from "./CourseCriteriaModal";
-import { Course } from "../../../types/Course";
+import { Course, CourseCriteria } from "../../../types/Course";
 import { AdmissionCategory } from "../../../types/AdmissionCategory";
 import { KnowledgeArea } from "../../../types/KnowledgeArea";
 
@@ -14,10 +14,10 @@ type CourseSelectorProps = {
   selectedKnowledgeAreas: KnowledgeArea[];
 };
 
-type CourseCriteria = {
-  vacanciesMap: { [key: string]: number };
-  minimumScoresMap: { [key: string]: number };
-};
+// type CourseCriteria = {
+//   vacanciesMap: { [key: string]: number };
+//   minimumScoresMap: { [key: string]: number };
+// };
 
 export const CourseSelector: React.FC<CourseSelectorProps> = ({
   coursesOptions,
@@ -42,15 +42,12 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
       const defaultVacancies: { [key: string]: number } = {};
       const defaultMinimumScores: { [key: string]: number } = {};
 
-      [...selectedAdmissionCategories, ...selectedKnowledgeAreas].forEach((item) => {
-        if ("name" in item) {
-          // AdmissionCategory
-          defaultVacancies[item.name] = 0;
-        }
-        if ("slug" in item) {
-          // KnowledgeArea
-          defaultMinimumScores[item.slug] = 0;
-        }
+      selectedAdmissionCategories.forEach((admissionCategory) => {
+        defaultVacancies[admissionCategory.name] = 0;
+      });
+
+      selectedKnowledgeAreas.forEach((knowledgeArea) => {
+        defaultMinimumScores[knowledgeArea.slug] = 0;
       });
 
       setSelectedCourses([
