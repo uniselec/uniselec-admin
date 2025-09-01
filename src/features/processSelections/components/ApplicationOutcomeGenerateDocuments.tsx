@@ -89,7 +89,11 @@ export function ApplicationOutcomeGenerateDocuments({
       classification: idx < vacancies ? "Classificado" : "Classificável",
     }));
 
-
+  // The order of the input array defines the priority
+  const getValidName = (names: Array<string | null | undefined>): string => {
+    const invalids = [null, undefined, "", "N/A"];
+    return names.find(name => !invalids.includes(name)) || "";
+  }
 
   const generateDocx = async () => {
     const doc = new Document({
@@ -169,7 +173,11 @@ export function ApplicationOutcomeGenerateDocuments({
                       new TableCell({
                         children: [
                           new Paragraph(
-                            outcome.application?.enem_score?.scores?.name || ""
+                            getValidName([
+                              outcome.application?.form_data?.social_name,    // priority 1
+                              outcome.application?.enem_score?.scores?.name, // priority 2
+                              outcome.application?.form_data?.name           // priority 3
+                            ])
                           ),
                         ],
                       }),
@@ -245,7 +253,11 @@ export function ApplicationOutcomeGenerateDocuments({
 
     const rows = classifiedOutcomes.map((outcome, index) => [
       index + 1,
-      outcome.application?.enem_score?.scores?.name || "",
+      getValidName([
+        outcome.application?.form_data?.social_name,    // priority 1
+        outcome.application?.enem_score?.scores?.name, // priority 2
+        outcome.application?.form_data?.name           // priority 3
+      ]),
       maskCPF(outcome.application?.form_data?.cpf || ""),
       outcome.classification || "",
       outcome.final_score || "",

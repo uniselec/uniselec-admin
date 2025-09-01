@@ -53,6 +53,12 @@ function getApplicationOutcome({ id }: { id: string }) {
   return `${endpointUrl}/${id}`;
 }
 
+function notifyApplicationStatus({ selectionId }: { selectionId: string }) {
+  return {
+    url: `/process_selections/${selectionId}/notify-status`,
+  };
+}
+
 export const applicationOutcomesApiSlice = apiSlice.injectEndpoints({
   endpoints: ({ query, mutation }) => ({
     getApplicationOutcomes: query<Results, { page: number; perPage: number; filters: Record<string, string> }>({
@@ -89,6 +95,10 @@ export const applicationOutcomesApiSlice = apiSlice.injectEndpoints({
       query: updateApplicationOutcomeMutation,
       invalidatesTags: ["ApplicationOutcomes"],
     }),
+    notifyApplicationStatus: mutation<{ message: string }, { selectionId: string }>({
+      query: notifyApplicationStatus,
+      invalidatesTags: ["ApplicationOutcomes"],
+    }),
   }),
 });
 
@@ -99,4 +109,5 @@ export const {
   useGenerateApplicationOutcomeMutation,
   useUpdateApplicationOutcomeMutation,
   useGetApplicationOutcomeQuery,
+  useNotifyApplicationStatusMutation,
 } = applicationOutcomesApiSlice;

@@ -1,7 +1,26 @@
 import React, { useState } from "react";
-import { Box, Typography, Button, FormControl, InputLabel, Select, MenuItem, Card, CardContent, Grid } from "@mui/material";
+import {
+    Box,
+    Typography,
+    Button,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    Card,
+    CardContent,
+    Grid,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+    Snackbar,
+    Alert,
+    CircularProgress,
+} from "@mui/material";
 import { Link, useParams } from "react-router-dom";
-import { useGetApplicationOutcomesQuery } from "../applicationOutcomes/applicationOutcomeSlice";
+import { useGetApplicationOutcomesQuery, useNotifyApplicationStatusMutation } from "../applicationOutcomes/applicationOutcomeSlice";
 import { ApplicationOutcome } from "../../types/ApplicationOutcome";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -18,6 +37,13 @@ interface ProcessedApplicationOutcome extends ApplicationOutcome {
 const toUpperCase = (text: string): string => text.toUpperCase();
 
 const DeferidosIndeferidosList = () => {
+
+    const [dialogOpen, setDialogOpen] = React.useState(false);
+    const [snack, setSnack] = React.useState<{
+        open: boolean;
+        severity: "success" | "error";
+        msg: string;
+    }>({ open: false, severity: "success", msg: "" });
 
     const { id: processSelectionId } = useParams<{ id: string }>();
 
@@ -37,6 +63,8 @@ const DeferidosIndeferidosList = () => {
     const [filterStatus, setFilterStatus] = useState<string>('all');
 
     const { data: outcomesData, isFetching, error } = useGetApplicationOutcomesQuery(options);
+    const [notifyApplicationStatus, { isLoading }] = useNotifyApplicationStatusMutation();
+
     if (isFetchingProcess) {
         return <Typography>Loading...</Typography>;
     }
@@ -122,6 +150,25 @@ const DeferidosIndeferidosList = () => {
             displayReason: outcome.status === "rejected" || outcome.status === "pending" ? outcome.reason || "-" : "",
         }))
         .sort((a: ProcessedApplicationOutcome, b: ProcessedApplicationOutcome) => (a.application?.form_data?.name || "").localeCompare(b.application?.form_data?.name || ""));
+    
+    /* wrapper para lidar com o snackbar */
+    const wrapWithSnack = (promise: Promise<any>) => {
+        return promise
+                .then(() =>
+                    setSnack({ open: true, severity: "success", msg: "Notificações enviadas!" })
+                )
+                .catch(() =>
+                    setSnack({ open: true, severity: "error", msg: "Erro ao enviar as notificações." })
+                );
+    }
+        
+    const sendNotifications = () => {
+        setDialogOpen(false);
+        const selectionId = processSelectionId;
+        if (selectionId) {
+            wrapWithSnack(notifyApplicationStatus({ selectionId }).unwrap());
+        }
+    }
 
     const totalApproved = deferidosIndeferidos.filter(outcome => outcome.status === "approved").length;
     const totalRejected = deferidosIndeferidos.filter(outcome => outcome.status === "rejected").length;
@@ -267,6 +314,63 @@ const DeferidosIndeferidosList = () => {
                     </Card>
                 </Grid>
             </Grid>
+
+            <Grid item sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+                <Button
+                    variant="contained"
+                    disabled={isLoading || !processSelectionId}
+                    onClick={() => setDialogOpen(true)}
+                >
+                    {isLoading ? <CircularProgress size={22} sx={{ mr: 1 }} /> : null}
+                    Notificar situação das inscrições
+                </Button>
+            </Grid>
+
+            <Dialog
+                open={dialogOpen}
+                onClose={() => setDialogOpen(false)}
+                aria-labelledby="confirm-dialog-title"
+            >
+                <DialogTitle id="confirm-dialog-title">Confirmar processamento</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Antes de prosseguir, resolva as pendências possíveis.
+                        As notificações só podem ser enviadas uma única vez.
+                        <br />
+                        <br />
+                        Tem certeza de que deseja continuar?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setDialogOpen(false)} color="inherit">
+                        Cancelar
+                    </Button>
+                    <Button
+                        onClick={sendNotifications}
+                        variant="contained"
+                        color="primary"
+                        autoFocus
+                        disabled={isLoading}
+                    >
+                        {isLoading ? <CircularProgress size={20} sx={{ mr: 1 }} /> : null}
+                        Prosseguir
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Snackbar
+                open={snack.open}
+                autoHideDuration={4000}
+                onClose={() => setSnack((snack) => ({ ...snack, open: false }))}
+            >
+                <Alert
+                    onClose={() => setSnack((snack) => ({ ...snack, open: false }))}
+                    severity={snack.severity}
+                    sx={{ width: "100%" }}
+                >
+                    {snack.msg}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };

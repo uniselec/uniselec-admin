@@ -19,12 +19,14 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { useGetCoursesQuery } from "../../courses/courseSlice";
 import { useGetAdmissionCategoriesQuery } from "../../admissionCategories/admissionCategorySlice";
+import { useGetKnowledgeAreasQuery } from "../../knowledgeAreas/knowledgeAreaSlice";
 import { CourseSelector } from "./CourseSelector";
 import { AdmissionCategorySelector } from "./AdmissionCategorySelector";
 import { Course } from "../../../types/Course";
 import { AllowedEnemYearsSelector } from "./AllowedEnemYearsSelector";
 import { BonusOptionSelector } from "./BonusOptionSelector";
 import { useGetBonusOptionsQuery } from "../../bonusOptions/bonusOptionSlice";
+import { KnowledgeAreaSelector } from "./KnowledgeAreaSelector";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -65,10 +67,12 @@ export function ProcessSelectionForm({
   // Buscando as opções de cursos e admission categories
   const { data: coursesData } = useGetCoursesQuery({ page: 1, perPage: 100, search: "" });
   const { data: admissionCategoriesData } = useGetAdmissionCategoriesQuery({ page: 1, perPage: 100, search: "" });
+  const { data: knowledgeAreasData } = useGetKnowledgeAreasQuery({ page: 1, perPage: 100, search: "" });
   const { data: bonusOptionsData } = useGetBonusOptionsQuery({ page: 1, perPage: 100, search: "" });
   const coursesOptions = coursesData?.data || [];
 
   const admissionCategoriesOptions = admissionCategoriesData?.data || [];
+  const knowledgeAreasOptions = knowledgeAreasData?.data || [];
   const availableBonusOptions = bonusOptionsData?.data || [];
 
   // Função para tratar a mudança de datas, garantindo o formato UTC para o SQL.
@@ -193,11 +197,29 @@ export function ProcessSelectionForm({
               <AdmissionCategorySelector
                 admissionCategoriesOptions={admissionCategoriesOptions}
                 selectedAdmissionCategories={processSelection.admission_categories || []}
-                setSelectedAdmissionCategories={(newCategories) =>
-                  setProcessSelection((prev) => ({
-                    ...prev,
-                    admission_categories: Array.isArray(newCategories) ? newCategories : [],
-                  }))
+                setSelectedAdmissionCategories={(newCategories) => {
+                    return setProcessSelection((prev) => ({
+                      ...prev,
+                      admission_categories: Array.isArray(newCategories) ? newCategories : [],
+                    }))
+                  }
+                }
+              />
+            </FormControl>
+          </Grid>
+
+          {/* Seleção das áreas de conhecimento que receberão nota mínima. */}
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <KnowledgeAreaSelector
+                knowledgeAreasOptions={knowledgeAreasOptions}
+                selectedKnowledgeAreas={processSelection.knowledge_areas || []}
+                setSelectedKnowledgeAreas={(newKnowledgeAreas) => {
+                    return setProcessSelection((prev) => ({
+                      ...prev,
+                      knowledge_areas: Array.isArray(newKnowledgeAreas) ? newKnowledgeAreas : [],
+                    }))
+                  }
                 }
               />
             </FormControl>
@@ -214,6 +236,7 @@ export function ProcessSelectionForm({
                   setProcessSelection((prev) => ({ ...prev, courses: newCourses as Course[] }))
                 }
                 selectedAdmissionCategories={processSelection.admission_categories || []}
+                selectedKnowledgeAreas={processSelection.knowledge_areas || []}
               />
             </FormControl>
           </Grid>

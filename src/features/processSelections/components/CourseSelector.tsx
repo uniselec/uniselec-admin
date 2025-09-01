@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Box, TextField, Chip, Autocomplete } from "@mui/material";
-import { CourseVacancyModal } from "./CourseVacancyModal";
-import { Course } from "../../../types/Course";
+import { CourseCriteriaModal } from "./CourseCriteriaModal";
+import { Course, CourseCriteria } from "../../../types/Course";
 import { AdmissionCategory } from "../../../types/AdmissionCategory";
+import { KnowledgeArea } from "../../../types/KnowledgeArea";
 
 type CourseSelectorProps = {
   coursesOptions: Course[];
@@ -10,13 +11,20 @@ type CourseSelectorProps = {
   setSelectedCourses: React.Dispatch<React.SetStateAction<Course[]>>;
   // We'll need the selected admission categories for default vacancy mapping.
   selectedAdmissionCategories: AdmissionCategory[];
+  selectedKnowledgeAreas: KnowledgeArea[];
 };
+
+// type CourseCriteria = {
+//   vacanciesMap: { [key: string]: number };
+//   minimumScoresMap: { [key: string]: number };
+// };
 
 export const CourseSelector: React.FC<CourseSelectorProps> = ({
   coursesOptions,
   selectedCourses,
   setSelectedCourses,
   selectedAdmissionCategories,
+  selectedKnowledgeAreas,
 }) => {
   const [selectedOption, setSelectedOption] = useState<Course | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
@@ -28,21 +36,34 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     (option) => !selectedCourses.some((course) => course.id === option.id)
   );
 
-  // When a course is selected, add it with a default vacancy mapping.
+  // When a course is selected, add it with default vacancy and minimum score mappings.
   const handleSelect = (_: any, newValue: Course | null) => {
     if (newValue) {
       const defaultVacancies: { [key: string]: number } = {};
-      selectedAdmissionCategories.forEach((cat) => {
-        defaultVacancies[cat.name] = 0;
+      const defaultMinimumScores: { [key: string]: number } = {};
+
+      selectedAdmissionCategories.forEach((admissionCategory) => {
+        defaultVacancies[admissionCategory.name] = 0;
       });
+
+      selectedKnowledgeAreas.forEach((knowledgeArea) => {
+        defaultMinimumScores[knowledgeArea.slug] = 0;
+      });
+
       setSelectedCourses([
         ...selectedCourses,
-        { ...newValue, vacanciesByCategory: defaultVacancies },
+        {
+          ...newValue,
+          vacanciesByCategory: defaultVacancies,
+          minimumScores: defaultMinimumScores,
+        },
       ]);
+
       setSelectedOption(null);
       setInputValue("");
     }
   };
+
 
   const handleRemove = (courseId: number) => {
     setSelectedCourses(selectedCourses.filter((c) => c.id !== courseId));
@@ -53,11 +74,15 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     setOpenVacancyModal(true);
   };
 
-  const handleSaveVacancies = (vacanciesMapping: { [key: string]: number }) => {
+  const handleSaveCourseCriteria = (courseCriteria: CourseCriteria) => {
     if (currentCourse) {
       setSelectedCourses(
         selectedCourses.map((course) =>
-          course.id === currentCourse.id ? { ...course, vacanciesByCategory: vacanciesMapping } : course
+          course.id === currentCourse.id ? {
+            ...course,
+            vacanciesByCategory: courseCriteria.vacanciesMap,
+            minimumScores: courseCriteria.minimumScoresMap
+          } : course
         )
       );
     }
@@ -94,12 +119,14 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
       </Box>
 
       {openVacancyModal && currentCourse && (
-        <CourseVacancyModal
+        <CourseCriteriaModal
           courseName={currentCourse.name}
           admissionCategories={selectedAdmissionCategories}
+          knowledgeAreas={selectedKnowledgeAreas}
           currentVacancies={currentCourse.vacanciesByCategory}
+          currentMinimumScores={currentCourse.minimumScores}
           onClose={() => setOpenVacancyModal(false)}
-          onSave={handleSaveVacancies}
+          onSave={handleSaveCourseCriteria}
         />
       )}
     </Box>

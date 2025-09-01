@@ -17,6 +17,7 @@ export interface Course {
   vacancies?: number;
   academic_unit: AcademicUnit;
   vacanciesByCategory?: { [categoryName: string]: number };
+  minimumScores?: { [knowledgeAreaSlug: string]: number };
   created_at?: null | string;
   updated_at?: null | string;
 }
@@ -43,3 +44,8 @@ export interface CourseParams {
   search?: string;
   isActive?: boolean;
 }
+
+export interface CourseCriteria {
+  vacanciesMap: { [categoryName: string]: number };
+  minimumScoresMap: { [knowledgeAreaSlug: string]: number };
+};

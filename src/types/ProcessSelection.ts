@@ -2,6 +2,7 @@ import { AdmissionCategory } from "./AdmissionCategory";
 import { BonusOption } from "./BonusOption";
 import { Course } from "./Course";
 import { Document } from "./Document";
+import { KnowledgeArea } from "./KnowledgeArea";
 
 
 export interface Results {
@@ -26,6 +27,7 @@ export interface ProcessSelection {
     bonus_options?: BonusOption[];
     allowed_enem_years?: number[];
     admission_categories?: AdmissionCategory[];
+    knowledge_areas?: KnowledgeArea[];
     created_at?: null | string;
     updated_at?: null | string;
 }
