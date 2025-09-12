@@ -166,7 +166,7 @@ const DeferidosIndeferidosList = () => {
                     msg: response.message || "Notificações enviadas com sucesso!",
                 })
             )
-            .catch((error: { data?: { error?: string } }) =>
+            .catch((error) =>
                 setSnack({
                     open: true,
                     severity: "error",
@@ -183,11 +183,11 @@ const DeferidosIndeferidosList = () => {
     }
 
     const handleStatusCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value, checked } = event.target;
+        const { name, checked } = event.target;
         setSelectedStatusesForNotification((previousStatuses) =>
             checked
-                ? [...previousStatuses, value]
-                : previousStatuses.filter((status) => status !== value)
+                ? [...previousStatuses, name]
+                : previousStatuses.filter((status) => status !== name)
         );
     };
 
@@ -356,25 +356,34 @@ const DeferidosIndeferidosList = () => {
                 <DialogContent>
                     <FormGroup row>
                         <FormControlLabel
-                            control={<Checkbox />}
                             label={translate("approved")}
-                            value="approved"
-                            onChange={handleStatusCheckboxChange}
-                            checked={selectedStatusesForNotification.includes("approved")}
+                            control={
+                                <Checkbox
+                                    name="approved"
+                                    onChange={handleStatusCheckboxChange}
+                                    checked={selectedStatusesForNotification.includes("approved")}
+                                />
+                            }
                         />
                         <FormControlLabel
-                            control={<Checkbox />}
                             label={translate("pending")}
-                            value="pending"
-                            onChange={handleStatusCheckboxChange}
-                            checked={selectedStatusesForNotification.includes("pending")}
+                            control={
+                                <Checkbox
+                                    name="pending"
+                                    onChange={handleStatusCheckboxChange}
+                                    checked={selectedStatusesForNotification.includes("pending")}
+                                />
+                            }
                         />
                         <FormControlLabel
-                            control={<Checkbox />}
                             label={translate("rejected")}
-                            value="rejected"
-                            onChange={handleStatusCheckboxChange}
-                            checked={selectedStatusesForNotification.includes("rejected")}
+                            control={
+                                <Checkbox
+                                    name="rejected"
+                                    onChange={handleStatusCheckboxChange}
+                                    checked={selectedStatusesForNotification.includes("rejected")}              
+                                />
+                            }
                         />
                     </FormGroup>
                     <br />

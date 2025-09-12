@@ -102,8 +102,7 @@ export const applicationOutcomesApiSlice = apiSlice.injectEndpoints({
     }),
     notifyApplicationStatus: mutation<
       { message: string },
-      { selectionId: string; statuses: string[] },
-      { error: { error: string } }
+      { selectionId: string; statuses: string[] }
     >({
       query: notifyApplicationStatus,
       invalidatesTags: ["ApplicationOutcomes"],
