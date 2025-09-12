@@ -15,16 +15,17 @@ export interface Result {
 }
 
 export interface ProcessSelection {
-    id?:              number;
-    name:            string;
-    description:            string;
-    status:           string;
-    start_date:           string;
-    end_date:           string;
+    id?:            number;
+    name:           string;
+    description:    string;
+    status:         string;
+    start_date:     string;
+    end_date:       string;
     type:           string;
     courses: Course[];
     documents?: Document[];
     bonus_options?: BonusOption[];
+    last_applications_processed_at?: null | string;
     allowed_enem_years?: number[];
     admission_categories?: AdmissionCategory[];
     knowledge_areas?: KnowledgeArea[];
