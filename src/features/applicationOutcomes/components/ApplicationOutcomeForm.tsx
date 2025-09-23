@@ -14,7 +14,7 @@ import { ApplicationOutcome } from "../../../types/ApplicationOutcome";
 import useTranslate from '../../polyglot/useTranslate';
 import { ApplicationCard } from "../../applications/components/ApplicationCard";
 import { EnemScoreCard } from "../../enemScores/components/EnemScoreCard";
-import { ResolvedInconsistencies } from "../../../types/Application";
+import { ApplicationFragment } from "../../../types/Application";
 
 type Props = {
   applicationOutcome: ApplicationOutcome;
@@ -24,7 +24,7 @@ type Props = {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleStatusChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSolutionsInconsistencies: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  resolvedInconsistencies: ResolvedInconsistencies;
+  resolvedInconsistencies: ApplicationFragment;
   applicationRequestIsLoading?: boolean,
 };
 

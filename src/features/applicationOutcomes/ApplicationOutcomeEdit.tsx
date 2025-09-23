@@ -9,7 +9,7 @@ import {
 import { ApplicationOutcome } from "../../types/ApplicationOutcome";
 import { ApplicationOutcomeForm } from "./components/ApplicationOutcomeForm";
 import { useUpdateApplicationMutation } from "../applications/applicationSlice";
-import { ResolvedInconsistencies } from "../../types/Application";
+import { ApplicationFragment } from "../../types/Application";
 
 export const ApplicationOutcomeEdit = () => {
   const id = useParams().id as string;
@@ -18,9 +18,8 @@ export const ApplicationOutcomeEdit = () => {
   const [updateApplicationOutcome, status] = useUpdateApplicationOutcomeMutation();
   const [applicationOutcomeState, setApplicationOutcomeState] = useState<ApplicationOutcome>({} as ApplicationOutcome);
   const [updateApplication, applicationRequestStatus] = useUpdateApplicationMutation();
-  const [resolvedInconsistencies, setResolvedInconsistencies] = useState<ResolvedInconsistencies>(
+  const [resolvedInconsistencies, setResolvedInconsistencies] = useState<ApplicationFragment>(
     {
-      id: undefined,
       name_source: "",
       birthdate_source: "",
       cpf_source: ""
@@ -78,7 +77,6 @@ export const ApplicationOutcomeEdit = () => {
     if (applicationOutcome) {
       setApplicationOutcomeState(applicationOutcome.data);
       setResolvedInconsistencies({
-        id: applicationOutcome?.data?.application?.id,
         name_source: applicationOutcome?.data?.application?.name_source,
         birthdate_source: applicationOutcome?.data?.application?.birthdate_source,
         cpf_source: applicationOutcome?.data?.application?.cpf_source

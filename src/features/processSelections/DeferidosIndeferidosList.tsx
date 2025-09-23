@@ -197,33 +197,32 @@ const DeferidosIndeferidosList = () => {
     const total = deferidosIndeferidos.length;
 
     const getDisplayName = (outcome: ApplicationOutcome): string => {
+
         if (!outcome?.application) return "";
 
-        const { name_source, form_data, enem_score } = outcome.application;
+        const { form_data, enem_score, resolved_inconsistencies } = outcome.application;
 
-        if (name_source === "enem") {
-            return (enem_score?.scores?.name || "").toUpperCase();
+        if (resolved_inconsistencies?.selected_name) {
+            return resolved_inconsistencies.selected_name.toUpperCase();
         }
-        if (name_source === "application") {
-            return (form_data?.name || "").toUpperCase();
-        }
+
         if (outcome.status === "approved") {
             return (enem_score?.scores?.name || "").toUpperCase();
         }
+        
         return (form_data?.name || "").toUpperCase();
     };
 
     const getDisplayCPF = (outcome: ApplicationOutcome, maskCPF: (cpf: string) => string): string => {
+        
         if (!outcome?.application) return "";
 
-        const { cpf_source, form_data, enem_score } = outcome.application;
+        const { form_data, resolved_inconsistencies } = outcome.application;
 
-        if (cpf_source === "enem") {
-            return maskCPF(enem_score?.scores?.cpf || "");
+        if (resolved_inconsistencies?.selected_cpf) {
+            return maskCPF(resolved_inconsistencies.selected_cpf);
         }
-        if (cpf_source === "application") {
-            return maskCPF(form_data?.cpf || "");
-        }
+
         return maskCPF(form_data?.cpf || "");
     };
 

@@ -35,7 +35,12 @@ export interface ApplicationFormData {
 }
 
 export interface ResolvedInconsistencies {
-    id?: number | string | undefined;
+    selected_name?: string | null;
+    selected_birthdate?: string | null;
+    selected_cpf?: string | null;
+}
+
+export interface ApplicationFragment {
     name_source?: string | null;
     birthdate_source?: string | null;
     cpf_source?: string | null;
