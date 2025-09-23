@@ -155,7 +155,7 @@ const DeferidosIndeferidosList = () => {
             displayReason: outcome.status === "rejected" || outcome.status === "pending" ? outcome.reason || "-" : "",
         }))
         .sort((a: ProcessedApplicationOutcome, b: ProcessedApplicationOutcome) => (a.application?.form_data?.name || "").localeCompare(b.application?.form_data?.name || ""));
-    
+
     /* wrapper para lidar com o snackbar */
     const wrapWithSnack = (promise: Promise<{ message: string }>) => {
         return promise
@@ -174,7 +174,7 @@ const DeferidosIndeferidosList = () => {
                 })
             );
     };
-        
+
     const sendNotifications = () => {
         setDialogOpen(false);
         if (processSelectionId) {
@@ -195,6 +195,37 @@ const DeferidosIndeferidosList = () => {
     const totalRejected = deferidosIndeferidos.filter(outcome => outcome.status === "rejected").length;
     const totalPending = deferidosIndeferidos.filter(outcome => outcome.status === "pending").length;
     const total = deferidosIndeferidos.length;
+
+    const getDisplayName = (outcome: ApplicationOutcome): string => {
+        if (!outcome?.application) return "";
+
+        const { name_source, form_data, enem_score } = outcome.application;
+
+        if (name_source === "enem") {
+            return (enem_score?.scores?.name || "").toUpperCase();
+        }
+        if (name_source === "application") {
+            return (form_data?.name || "").toUpperCase();
+        }
+        if (outcome.status === "approved") {
+            return (enem_score?.scores?.name || "").toUpperCase();
+        }
+        return (form_data?.name || "").toUpperCase();
+    };
+
+    const getDisplayCPF = (outcome: ApplicationOutcome, maskCPF: (cpf: string) => string): string => {
+        if (!outcome?.application) return "";
+
+        const { cpf_source, form_data, enem_score } = outcome.application;
+
+        if (cpf_source === "enem") {
+            return maskCPF(enem_score?.scores?.cpf || "");
+        }
+        if (cpf_source === "application") {
+            return maskCPF(form_data?.cpf || "");
+        }
+        return maskCPF(form_data?.cpf || "");
+    };
 
     return (
         <Box sx={{ mt: 0, mb: 0 }}>
@@ -272,11 +303,11 @@ const DeferidosIndeferidosList = () => {
                                     <tr key={outcome.id} style={{ border: "1px solid black", color: "black" }}>
                                         <td style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>
                                             <Link to={`/application-outcomes/edit/${outcome.id}`} style={{ textDecoration: 'none', color: 'blue' }}>
-                                                {(outcome?.status === 'approved' ? toUpperCase(outcome?.application?.enem_score?.scores?.name || "") : toUpperCase(outcome?.application?.form_data?.name || ""))}
+                                                {getDisplayName(outcome)}
                                             </Link>
                                         </td>
                                         <td style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>
-                                            {maskCPF(outcome.application?.form_data?.cpf || "")}
+                                            {getDisplayCPF(outcome, maskCPF)}
                                         </td>
                                         <td style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>
                                             {translate(outcome?.status)}
@@ -381,7 +412,7 @@ const DeferidosIndeferidosList = () => {
                                 <Checkbox
                                     name="rejected"
                                     onChange={handleStatusCheckboxChange}
-                                    checked={selectedStatusesForNotification.includes("rejected")}              
+                                    checked={selectedStatusesForNotification.includes("rejected")}
                                 />
                             }
                         />

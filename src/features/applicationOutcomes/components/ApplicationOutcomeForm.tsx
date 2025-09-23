@@ -14,6 +14,7 @@ import { ApplicationOutcome } from "../../../types/ApplicationOutcome";
 import useTranslate from '../../polyglot/useTranslate';
 import { ApplicationCard } from "../../applications/components/ApplicationCard";
 import { EnemScoreCard } from "../../enemScores/components/EnemScoreCard";
+import { ResolvedInconsistencies } from "../../../types/Application";
 
 type Props = {
   applicationOutcome: ApplicationOutcome;
@@ -22,6 +23,9 @@ type Props = {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleStatusChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSolutionsInconsistencies: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  resolvedInconsistencies: ResolvedInconsistencies;
+  applicationRequestIsLoading?: boolean,
 };
 
 export function ApplicationOutcomeForm({
@@ -31,6 +35,9 @@ export function ApplicationOutcomeForm({
   handleSubmit,
   handleChange,
   handleStatusChange,
+  handleSolutionsInconsistencies,
+  resolvedInconsistencies,
+  applicationRequestIsLoading = false,
 }: Props) {
   const translate = useTranslate('status');
 
@@ -39,19 +46,22 @@ export function ApplicationOutcomeForm({
     return `${day}/${month}/${year}`;
   };
 
+  const fields = [
+    { key: "name", label: "Nome" },
+    { key: "cpf", label: "CPF" },
+    { key: "birthdate", label: <>Data de<br />Nascimento</> },
+  ] as const;
+
   const getFieldStyle = (fieldKey: "name" | "cpf" | "birthdate"): React.CSSProperties => {
-    const inconsistencyMap: Record<typeof fieldKey, string> = {
+    const labels = {
       name: "Inconsistência no Nome",
       cpf: "Inconsistência no CPF",
       birthdate: "Inconsistência na Data de Nascimento",
-    };
-    const inconsistencies: string[] = applicationOutcome.reason
-      ?.split(";")
-      .map((inconsistency) => inconsistency.trim()) ?? [];
+    } as const;
 
-    const label: string = inconsistencyMap[fieldKey];
-    return inconsistencies.includes(label) ? { color: "red" } : {};
-  }
+    const inconsistencies = applicationOutcome.reason?.split(";").map(inconsistency => inconsistency.trim()) ?? [];
+    return inconsistencies.includes(labels[fieldKey]) ? { color: "red" } : {};
+  };
 
   return (
     <Box p={2}>
@@ -76,7 +86,7 @@ export function ApplicationOutcomeForm({
 
           {/* Exibição das informações do ApplicationOutcome */}
           <Grid item xs={12}>
-            <Typography variant="h6">Informações do Inep</Typography>
+            <Typography variant="h6">Informações do Enem (Inep)</Typography>
             <Typography style={ getFieldStyle('name') }>
               Nome: {applicationOutcome.application?.enem_score?.scores?.name}
             </Typography>
@@ -90,6 +100,28 @@ export function ApplicationOutcomeForm({
             <Typography>Score Médio: {applicationOutcome.average_score}</Typography>
             <Typography>Score Final: {applicationOutcome.final_score}</Typography>
             <Typography>Ranking: {applicationOutcome.ranking || "N/A"}</Typography>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="h6">Informe qual deve ser considerada como fonte da informação</Typography>
+              {fields.map(({ key, label }) => (
+                <Box key={key} sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                  <Box mr={2} sx={{ minWidth: 90 }}>
+                    <Typography>{label}:</Typography>
+                  </Box>
+                  <FormControl>
+                    <RadioGroup
+                      row
+                      name={`${key}_source`}
+                      onChange={handleSolutionsInconsistencies}
+                      value={resolvedInconsistencies[`${key}_source`] || ""}
+                    >
+                      <FormControlLabel value="enem" control={<Radio />} label="Enem" />
+                      <FormControlLabel value="application" control={<Radio />} label="Inscrição" />
+                    </RadioGroup>
+                  </FormControl>
+                </Box>
+              ))}
           </Grid>
 
           {/* RadioGroup para definir deferido, indeferido ou pendente */}
@@ -153,7 +185,7 @@ export function ApplicationOutcomeForm({
                 type="submit"
                 variant="contained"
                 color="secondary"
-                disabled={isdisabled || isLoading}
+                disabled={isdisabled || isLoading || applicationRequestIsLoading}
               >
                 {isLoading ? "Salvando..." : "Salvar"}
               </Button>
