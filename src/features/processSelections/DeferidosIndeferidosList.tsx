@@ -17,6 +17,7 @@ import {
     DialogActions,
     Snackbar,
     Alert,
+    Paper,
     CircularProgress,
 } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
@@ -26,7 +27,6 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import useTranslate from '../polyglot/useTranslate';
 import { useGetProcessSelectionQuery } from "./processSelectionSlice";
-
 
 
 interface ProcessedApplicationOutcome extends ApplicationOutcome {
@@ -150,18 +150,18 @@ const DeferidosIndeferidosList = () => {
             displayReason: outcome.status === "rejected" || outcome.status === "pending" ? outcome.reason || "-" : "",
         }))
         .sort((a: ProcessedApplicationOutcome, b: ProcessedApplicationOutcome) => (a.application?.form_data?.name || "").localeCompare(b.application?.form_data?.name || ""));
-    
+
     /* wrapper para lidar com o snackbar */
     const wrapWithSnack = (promise: Promise<any>) => {
         return promise
-                .then(() =>
-                    setSnack({ open: true, severity: "success", msg: "Notificações enviadas!" })
-                )
-                .catch(() =>
-                    setSnack({ open: true, severity: "error", msg: "Erro ao enviar as notificações." })
-                );
+            .then(() =>
+                setSnack({ open: true, severity: "success", msg: "Notificações enviadas!" })
+            )
+            .catch(() =>
+                setSnack({ open: true, severity: "error", msg: "Erro ao enviar as notificações." })
+            );
     }
-        
+
     const sendNotifications = () => {
         setDialogOpen(false);
         const selectionId = processSelectionId;
@@ -177,45 +177,46 @@ const DeferidosIndeferidosList = () => {
 
     return (
         <Box sx={{ mt: 0, mb: 0 }}>
-            <Typography variant="h5" sx={{ mt: 4, mb: 4 }}>
-                Inscrições Deferidas ou Indeferidas
-            </Typography>
+            <Paper sx={{ p: 3, mb: 2 }}>
+                <Grid container alignItems="center" spacing={2}>
+                    {/* Título */}
+                    <Grid item xs={12} md>
+                        <Typography variant="h4" sx={{ fontWeight: 600 }}>
+                            Inscrições Deferidas ou Indeferidas
+                        </Typography>
+                    </Grid>
 
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: { xs: 'column', md: 'row' },
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: 2,
-                    mb: 4,
-                }}
-            >
-                <Box sx={{ flexBasis: { xs: '100%', md: '50%' } }}>
-                    <FormControl fullWidth>
-                        <InputLabel id="status-filter-label">Filtrar por Status</InputLabel>
-                        <Select
-                            labelId="status-filter-label"
-                            id="status-filter"
-                            value={filterStatus}
-                            label="Filtrar por Status"
-                            onChange={(e) => setFilterStatus(e.target.value)}
-                        >
-                            <MenuItem value="all">Todos</MenuItem>
-                            <MenuItem value="without_duplicates">Todos exceto duplicados</MenuItem>
-                            <MenuItem value="approved">Deferidos</MenuItem>
-                            <MenuItem value="pending">Pendentes</MenuItem>
-                            <MenuItem value="rejected">Indeferidos</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Box>
+                    {/* Select de filtro */}
+                    <Grid item xs={12} sm={6} md={3} lg={2}>
+                        <FormControl fullWidth size="small">
+                            <InputLabel id="status-filter-label">Filtrar Status</InputLabel>
+                            <Select
+                                labelId="status-filter-label"
+                                id="status-filter"
+                                value={filterStatus}
+                                label="Filtrar Status"
+                                onChange={(e) => setFilterStatus(e.target.value)}
+                            >
+                                <MenuItem value="all">Todos</MenuItem>
+                                <MenuItem value="without_duplicates">Exceto duplicados</MenuItem>
+                                <MenuItem value="approved">Deferidos</MenuItem>
+                                <MenuItem value="pending">Pendentes</MenuItem>
+                                <MenuItem value="rejected">Indeferidos</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
 
-                <Box sx={{ flexBasis: { xs: '100%', md: '50%' }, textAlign: { xs: 'center', md: 'right' } }}>
-                    <Button variant="contained" color="primary" onClick={generatePDF} fullWidth={false}>
-                        Gerar PDF
-                    </Button>
-                </Box>
-            </Box>
+                    {/* Botão PDF */}
+                    <Grid item xs={12} sm={6} md="auto">
+                        <Button variant="contained" onClick={generatePDF}>
+                            Gerar PDF
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Paper>
+
+
+
 
             <Box
                 sx={{

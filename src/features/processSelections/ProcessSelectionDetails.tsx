@@ -88,18 +88,58 @@ export const ProcessSelectionDetails = () => {
 
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
-      <Paper sx={{ p: 3, mb: 2 }}>
-        <Typography variant="h4">{processSelection.data.name}</Typography>
-        <Typography>{processSelection.data.description}</Typography>
-        <Typography>Tipo: {processSelection.data.type === 'enem_score' ? 'Notas do Enem' : 'SISU'}</Typography>
-        <Typography>Status: {translate(processSelection.data.status)}</Typography>
-        <Typography>Início: {processSelection.data.start_date}</Typography>
-        <Typography>Fim: {processSelection.data.end_date}</Typography>
-        <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={() => navigate(`/process-selections/edit/${id!}`)}>
-          Editar Processo Seletivo
-        </Button>
-      </Paper>
+      <Grid container spacing={2} sx={{ mb: 2 }}>
+        {/* CARD · Detalhes do processo seletivo */}
+        <Grid item xs={12} md={6}>
+          <Paper sx={{ p: 3, height: "100%" }}>
+            <Typography variant="h4">{processSelection.data.name}</Typography>
+            <Typography>{processSelection.data.description}</Typography>
+            <Typography>
+              Tipo: {processSelection.data.type === "enem_score" ? "Notas do Enem" : "SISU"}
+            </Typography>
+            <Typography>Status: {translate(processSelection.data.status)}</Typography>
+            <Typography>Início: {processSelection.data.start_date}</Typography>
+            <Typography>Fim: {processSelection.data.end_date}</Typography>
 
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ mt: 2 }}
+              onClick={() => navigate(`/process-selections/edit/${id!}`)}
+            >
+              Editar Processo Seletivo
+            </Button>
+          </Paper>
+        </Grid>
+
+        {/* CARD · Listas de convocação */}
+        <Grid item xs={12} md={6}>
+          <Paper sx={{ p: 3, height: "100%", display: "flex", flexDirection: "column" }}>
+            <Typography variant="h5" gutterBottom>
+              Listas de Convocação
+            </Typography>
+
+            {/* Botão de nova lista */}
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{ alignSelf: "flex-start", mb: 2 }}
+              onClick={() => {
+                /* TODO: chamar mutation para criar nova lista */
+              }}
+            >
+              Nova Convocação
+            </Button>
+
+            {/* Placeholder da lista — troque pelo hook real assim que disponível */}
+            <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
+              {/* Exemplo estático; substitua por convocationLists.map(...) */}
+              <Typography>- 1ª Convocação (publicada em 08/09/2025)</Typography>
+              <Typography>- 2ª Convocação (rascunho)</Typography>
+            </Box>
+          </Paper>
+        </Grid>
+      </Grid>
 
 
       <DocumentList processSelectionId={id!} />
