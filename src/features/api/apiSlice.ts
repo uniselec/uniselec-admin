@@ -5,7 +5,20 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 
 export const apiSlice = createApi({
-    reducerPath: "api", tagTypes: ["Applications", "Users", "Admins", "EnemScores", "ApplicationOutcomes", "ProcessSelections", "Courses", "Documents", "AcademicUnits", "AdmissionCategories", "BonusOptions", "KnowledgeAreas"],
+    reducerPath: "api", tagTypes: ["Applications",
+        "Users",
+        "Admins",
+        "EnemScores",
+        "ApplicationOutcomes",
+        "ProcessSelections",
+        "Courses",
+        "Documents",
+        "AcademicUnits",
+        "AdmissionCategories", "BonusOptions",
+        "KnowledgeAreas",
+        "ConvocationLists",
+        "ConvocationListSeats",
+        "ConvocationListApplications"],
     baseQuery: async (args, api, extraOptions) => {
         const state = api.getState() as RootState;
         const role = state.auth?.userDetails?.role;
