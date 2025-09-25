@@ -47,16 +47,9 @@ export const ConvocationListSeatList = () => {
     <Box sx={{ mt: 4, mb: 4 }}>
       <Paper sx={{ p: 3, mb: 2 }}>
         <Typography variant="h4" gutterBottom>
-          Cursos
+          Vagas
         </Typography>
 
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate("/convocation-list-seats/create")}
-          >
-            Incluir Novo
-          </Button>
       </Paper>
       <ConvocationListSeatTable
         convocationListSeats={data}

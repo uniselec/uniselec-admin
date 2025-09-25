@@ -29,6 +29,8 @@ import {
 } from '../../types/ConvocationList';
 import { AdmissionCategory } from '../../types/AdmissionCategory';
 import { Course } from '../../types/Course';
+import { ConvocationListSeatList } from './ConvocationListSeatist';
+import { ConvocationListApplicationList } from './ConvocationListApplicationList';
 
 /* ────────────────────────────────────────────────────────────── */
 /* utilitário: converte o VacancyPlan no formato aceito pelo back */
@@ -226,7 +228,8 @@ export const ConvocationListDetail = () => {
           </Grid>
         </Grid>
       </Paper>
-
+      <ConvocationListSeatList />
+      <ConvocationListApplicationList />
       {/* EDITORs */}
       <ChainsEditor
         open={remapEditorOpen}

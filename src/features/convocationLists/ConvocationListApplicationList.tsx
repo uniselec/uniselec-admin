@@ -11,7 +11,7 @@ export const ConvocationListApplicationList = () => {
   const [options, setOptions] = useState({
     page: 1,
     search: "",
-    perPage: 25,
+    perPage: 1000,
     rowsPerPage: [25, 50, 100],
   });
 
@@ -47,16 +47,8 @@ export const ConvocationListApplicationList = () => {
     <Box sx={{ mt: 4, mb: 4 }}>
       <Paper sx={{ p: 3, mb: 2 }}>
         <Typography variant="h4" gutterBottom>
-          Cursos
+          Inscrições em Listas de Convocação
         </Typography>
-
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate("/convocationList-applications/create")}
-          >
-            Incluir Novo
-          </Button>
       </Paper>
       <ConvocationListApplicationTable
         convocationListApplications={data}
