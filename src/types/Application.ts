@@ -1,4 +1,5 @@
 import { AdmissionCategory } from "./AdmissionCategory";
+import { ApplicationOutcome } from "./ApplicationOutcome";
 import { BonusOption } from "./BonusOption";
 import { Course } from "./Course";
 import { EnemScore } from "./EnemScore";
@@ -11,6 +12,13 @@ export interface Results {
 
 export interface Result {
     data: Application;
+}
+
+export interface ResolveInconsistenciesResponse {
+    application: Application[];
+    applicationOutcome: ApplicationOutcome
+    links: Links;
+    meta: Meta;
 }
 
 export interface ApplicationFormData {
@@ -41,6 +49,7 @@ export interface ResolvedInconsistencies {
 }
 
 export interface ApplicationFragment {
+    id?: number | string | undefined;
     name_source?: string | null;
     birthdate_source?: string | null;
     cpf_source?: string | null;
