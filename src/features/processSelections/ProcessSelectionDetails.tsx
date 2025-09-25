@@ -13,7 +13,7 @@ import {
   DialogActions,
   Grid
 } from "@mui/material";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useGetProcessSelectionQuery, useAttachCoursesMutation, useRemoveCourseFromProcessSelectionMutation } from "./processSelectionSlice";
 import { useGetCoursesQuery } from "../courses/courseSlice";
 import { DocumentList } from "../documents/DocumentList";
@@ -118,22 +118,36 @@ export const ProcessSelectionDetails = () => {
             <Typography variant="h5" gutterBottom>
               Listas de Convocação
             </Typography>
-
-            {/* Botão de nova lista */}
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{ alignSelf: "flex-start", mb: 2 }}
-              onClick={() => {
-                /* TODO: chamar mutation para criar nova lista */
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 2,
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                mt: 2,
               }}
             >
-              Nova Convocação
-            </Button>
 
-            {/* Placeholder da lista — troque pelo hook real assim que disponível */}
+              <Button
+                component={Link}
+                to={`/process-selections/${processSelection.data.id}/convocation-lists`}
+                variant="outlined"
+                color="secondary"
+                sx={{ fontSize: '12px' }}
+              >
+                Listas de Convocação
+              </Button>
+              <Button
+                component={Link}
+                to={`/process-selections/${processSelection.data.id}/convocation-lists/create`}
+                variant="outlined"
+                color="secondary"
+                sx={{ fontSize: '12px' }}
+              >
+                Criar Lista de Convocação
+              </Button>
+            </Box>
             <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
-              {/* Exemplo estático; substitua por convocationLists.map(...) */}
               <Typography>- 1ª Convocação (publicada em 08/09/2025)</Typography>
               <Typography>- 2ª Convocação (rascunho)</Typography>
             </Box>

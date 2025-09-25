@@ -44,11 +44,12 @@ import { ConvocationListApplicationList } from "./features/convocationListApplic
 import { ConvocationListApplicationEdit } from "./features/convocationListApplication/ConvocationListApplicationEdit";
 import { ConvocationListApplicationCreate } from "./features/convocationListApplication/ConvocationListApplicationCreate";
 import { ConvocationListList } from "./features/convocationLists/ConvocationListList";
-import { ConvocationListEdit } from "./features/convocationLists/ConvocationListEdit";
 import { ConvocationListCreate } from "./features/convocationLists/ConvocationListCreate";
 import { ConvocationListSeatList } from "./features/convocationListSeats/ConvocationListSeatist";
 import { ConvocationListSeatEdit } from "./features/convocationListSeats/ConvocationListSeatEdit";
 import { ConvocationListSeatCreate } from "./features/convocationListSeats/ConvocationListSeatCreate";
+import { ConvocationListDetail } from "./features/convocationLists/ConvocationListDetail";
+import { ConvocationListEdit } from "./features/convocationLists/ConvocationListEdit";
 
 
 
@@ -95,13 +96,14 @@ function App() {
           <Route path="/courses/edit/:id" element={<ProtectedRoute><CourseEdit /></ProtectedRoute>} />
           <Route path="/courses/create" element={<ProtectedRoute><CourseCreate /></ProtectedRoute>} />
 
-          <Route path="/process-selections/:id/convocation-list-applications" element={<ProtectedRoute><ConvocationListApplicationList /></ProtectedRoute>} />
-          <Route path="/process-selections/:id/convocation-list-applications/edit/:id" element={<ProtectedRoute><ConvocationListApplicationEdit /></ProtectedRoute>} />
-          <Route path="/process-selections/:id/convocation-list-applications/create" element={<ProtectedRoute><ConvocationListApplicationCreate /></ProtectedRoute>} />
+          <Route path="/convocation-list-applications" element={<ProtectedRoute><ConvocationListApplicationList /></ProtectedRoute>} />
+          <Route path="/convocation-list-applications/edit/:id" element={<ProtectedRoute><ConvocationListApplicationEdit /></ProtectedRoute>} />
+          <Route path="/convocation-list-applications/create" element={<ProtectedRoute><ConvocationListApplicationCreate /></ProtectedRoute>} />
 
-          <Route path="/convocation-lists" element={<ProtectedRoute><ConvocationListList /></ProtectedRoute>} />
-          <Route path="/convocation-lists/edit/:id" element={<ProtectedRoute><ConvocationListEdit /></ProtectedRoute>} />
-          <Route path="/convocation-lists/create" element={<ProtectedRoute><ConvocationListCreate /></ProtectedRoute>} />
+          <Route path="/process-selections/:id/convocation-lists" element={<ProtectedRoute><ConvocationListList /></ProtectedRoute>} />
+          <Route path="/process-selections/:id/convocation-lists/detail/:convocationListId" element={<ProtectedRoute><ConvocationListDetail /></ProtectedRoute>} />
+          <Route path="/process-selections/:id/convocation-lists/edit/:convocationListId" element={<ProtectedRoute><ConvocationListEdit /></ProtectedRoute>} />
+          <Route path="/process-selections/:id/convocation-lists/create" element={<ProtectedRoute><ConvocationListCreate /></ProtectedRoute>} />
 
 
           <Route path="/convocation-list-seats" element={<ProtectedRoute><ConvocationListSeatList /></ProtectedRoute>} />

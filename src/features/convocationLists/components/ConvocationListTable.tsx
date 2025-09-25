@@ -81,8 +81,8 @@ export function ConvocationListTable({
       width: 250,
       renderCell: (params) => (
         <Box display="flex" gap={2}>
-          <Button variant="contained" size="small" color="primary" component={Link} to={`/convocationLists/edit/${params.row.id}`}>
-            Editar
+          <Button variant="contained" size="small" color="primary" component={Link} to={`/process-selections/1/convocation-lists/detail/${params.row.id}`}>
+            Detalhes
           </Button>
           <Button variant="contained" size="small" color="secondary" onClick={() => handleOpenConfirm(params.row.id)} disabled={isLoading}>
             Apagar

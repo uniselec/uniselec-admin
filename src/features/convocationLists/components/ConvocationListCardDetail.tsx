@@ -22,7 +22,7 @@ type Props = {
   setConvocationList: React.Dispatch<React.SetStateAction<ConvocationList>>;
 };
 
-export function ConvocationListForm({
+export function ConvocationListCardDetail({
   convocationList,
   isdisabled = false,
   isLoading = false,

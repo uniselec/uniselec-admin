@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Paper } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGetConvocationListsQuery } from "./convocationListSlice";
 import { GridFilterModel } from "@mui/x-data-grid";
 import { useState } from "react";
@@ -14,7 +14,7 @@ export const ConvocationListList = () => {
     perPage: 25,
     rowsPerPage: [25, 50, 100],
   });
-
+  const { id: processSelectionId } = useParams<{ id: string }>();
   const { data, isFetching, error } = useGetConvocationListsQuery(options);
   const navigate = useNavigate();
 
@@ -47,16 +47,18 @@ export const ConvocationListList = () => {
     <Box sx={{ mt: 4, mb: 4 }}>
       <Paper sx={{ p: 3, mb: 2 }}>
         <Typography variant="h4" gutterBottom>
-          Cursos
+          Listas de Convocação
         </Typography>
 
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate("/convocation-lists/create")}
-          >
-            Incluir Novo
-          </Button>
+        <Button
+          component={Link}
+          to={`/process-selections/${processSelectionId}/convocation-lists/create`}
+          variant="contained"
+          color="primary"
+        >
+          Criar Lista de Convocação
+        </Button>
+
       </Paper>
       <ConvocationListTable
         convocationLists={data}

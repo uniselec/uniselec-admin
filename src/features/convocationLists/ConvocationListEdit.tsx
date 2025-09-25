@@ -8,7 +8,8 @@ import { ConvocationListForm } from "./components/ConvocationListForm";
 
 export const ConvocationListEdit = () => {
   const id = useParams().id as string;
-  const { data: convocationListData, isFetching } = useGetConvocationListQuery({ id });
+  const convocationListId = useParams().convocationListId as string;
+  const { data: convocationListData, isFetching } = useGetConvocationListQuery({ id: convocationListId });
   const [isDisabled, setIsDisabled] = useState(false);
   const [updateConvocationList, status] = useUpdateConvocationListMutation();
   const { enqueueSnackbar } = useSnackbar();

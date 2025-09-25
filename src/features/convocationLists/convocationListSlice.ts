@@ -32,8 +32,49 @@ function getConvocationList({ id }: { id: string }) {
   return `${endpointUrl}/${id}`;
 }
 
+function postNoBody(path: string) {
+  return ({ id }: { id: string }) => ({
+    url: `${endpointUrl}/${id}/${path}`,
+    method: "POST",
+  });
+}
+function generateSeatsMutation({ id, seats }: { id: string; seats: any[] }) {
+  return {
+    url: `${endpointUrl}/${id}/generate-seats`,
+    method: "POST",
+    body: { seats },
+  };
+}
+
+
 export const processSelectionsApiSlice = apiSlice.injectEndpoints({
   endpoints: ({ query, mutation }) => ({
+    generateSeats: mutation<
+      { message: string; created: number },
+      { id: string; seats: any[] }
+    >({
+      query: generateSeatsMutation,
+      invalidatesTags: ["ConvocationLists", "ConvocationListSeats"],
+    }),
+    generateApplications: mutation<{ message: string }, { id: string }>({
+      query: postNoBody("generate-applications"),
+      invalidatesTags: ["ConvocationLists", "ConvocationListApplications"],
+    }),
+    allocateSeats: mutation<{ message: string }, { id: string }>({
+      query: postNoBody("allocate-seats"),
+      invalidatesTags: ["ConvocationLists", "ConvocationListSeats"],
+    }),
+    publishConvocationList: mutation<{ data: ConvocationList }, { id: string }>({
+      query: ({ id }) => ({
+        url: `${endpointUrl}/${id}`,
+        method: "PATCH",
+        body: {
+          status: "published",
+          published_at: new Date().toISOString(),
+        },
+      }),
+      invalidatesTags: ["ConvocationLists"],
+    }),
     getConvocationLists: query<Results, ConvocationListParams>({
       query: getConvocationLists,
       providesTags: ["ConvocationLists"],
@@ -63,4 +104,8 @@ export const {
   useUpdateConvocationListMutation,
   useGetConvocationListQuery,
   useDeleteConvocationListMutation,
+  useGenerateSeatsMutation,
+  useGenerateApplicationsMutation,
+  useAllocateSeatsMutation,
+  usePublishConvocationListMutation,
 } = processSelectionsApiSlice;

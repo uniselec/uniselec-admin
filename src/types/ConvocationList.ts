@@ -9,12 +9,33 @@ export interface Results {
 export interface Result {
     data:  ConvocationList;
 }
+export interface RemapRules {
+  [categoryId: number]: number[];
+}
 
 export interface ConvocationList {
   id?: number;
   name: string;
-  created_at?: null | string;
-  updated_at?: null | string;
+  process_selection_id: number | string;
+  status?: "draft" | "published";
+  published_at?: string | null;
+  generated_by?: number | null;
+
+  /**
+   * Regras de remanejamento.
+   * Formato:
+   * {
+   *   "chains": {
+   *     "AC": ["LB-PPI", "LB-Q", …],
+   *     "LB-PPI": ["AC", "LB-Q", …],
+   *     …
+   *   }
+   * }
+   */
+  remap_rules?: RemapRules | null;
+
+  created_at?: string | null;
+  updated_at?: string | null;
 }
 export interface Links {
   prev: string;
@@ -39,4 +60,3 @@ export interface ConvocationListParams {
   search?: string;
   isActive?: boolean;
 }
-
