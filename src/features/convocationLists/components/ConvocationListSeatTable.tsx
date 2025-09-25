@@ -9,175 +9,209 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  TextField,
+  Typography,
+  Paper,
 } from "@mui/material";
-import {
-  DataGrid,
-  GridColDef,
-  GridFilterModel,
-  GridToolbar,
-  ptPT,
-} from "@mui/x-data-grid";
 import { Results } from "../../../types/ConvocationListSeat";
-import { Link } from "react-router-dom";
 import { useDeleteConvocationListSeatMutation } from "../convocationListSeatSlice";
-import useTranslate from "../../polyglot/useTranslate";
 
 type Props = {
   convocationListSeats: Results | undefined;
-  paginationModel: object;
   isFetching: boolean;
-  handleSetPaginationModel: (paginateModel: { page: number; pageSize: number }) => void;
-  handleFilterChange: (filterModel: GridFilterModel) => void;
+  /* paginação & filtro */
+  handleSetPaginationModel: (page: number) => void;
+  handleFilterChange: (search: string) => void;
 };
 
-export function ConvocationListSeatTable({
+export const ConvocationListSeatTable: React.FC<Props> = ({
   convocationListSeats,
-  paginationModel,
   isFetching,
   handleSetPaginationModel,
   handleFilterChange,
-}: Props) {
-  const translate = useTranslate("convocationListSeats");
-  const [deleteConvocationListSeat, { isLoading }] = useDeleteConvocationListSeatMutation();
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [alertSeverity, setAlertSeverity] = useState<"success" | "error">("success");
-  const [alertMessage, setAlertMessage] = useState("");
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const [selectedConvocationListSeatId, setSelectedConvocationListSeatId] = useState<string | null>(null);
+}) => {
+  /* ---- mutations & feedback ---- */
+  const [deleteSeat, { isLoading }] = useDeleteConvocationListSeatMutation();
+  const [alert, setAlert] = useState<{ open: boolean; msg: string; sev: "success" | "error" }>({
+    open: false,
+    msg: "",
+    sev: "success",
+  });
+  const [confirm, setConfirm] = useState<{ open: boolean; id: string | null }>({
+    open: false,
+    id: null,
+  });
 
-  const handleAlertClose = () => setAlertOpen(false);
-  const handleOpenConfirm = (id: string) => {
-    setSelectedConvocationListSeatId(id);
-    setConfirmOpen(true);
-  };
-  const handleCloseConfirm = () => {
-    setConfirmOpen(false);
-    setSelectedConvocationListSeatId(null);
-  };
+  const closeAlert = () => setAlert({ ...alert, open: false });
+
+  const openConfirm = (id: string) => setConfirm({ open: true, id });
+  const closeConfirm = () => setConfirm({ open: false, id: null });
 
   const handleConfirmDelete = async () => {
-    if (!selectedConvocationListSeatId) return;
+    if (!confirm.id) return;
     try {
-      await deleteConvocationListSeat({ id: selectedConvocationListSeatId }).unwrap();
-      setAlertSeverity("success");
-      setAlertMessage("Curso apagado com sucesso.");
-    } catch (error) {
-      setAlertSeverity("error");
-      setAlertMessage("Falha ao tentar apagar o curso.");
+      await deleteSeat({ id: confirm.id }).unwrap();
+      setAlert({ open: true, sev: "success", msg: "Vaga removida com sucesso." });
+    } catch {
+      setAlert({ open: true, sev: "error", msg: "Falha ao remover a vaga." });
     } finally {
-      setAlertOpen(true);
-      handleCloseConfirm();
+      closeConfirm();
     }
   };
 
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) return "-";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR");
-  };
+  /* ---- helper ---- */
+  const formatDate = (d?: string | null) =>
+    d ? new Date(d).toLocaleDateString("pt-BR") : "-";
 
-  const modalityLabels: Record<string, string> = {
-    "distance": "EAD",
-    "in-person": "Presencial"
-  };
-
-  const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 100 },
-    { field: "name", headerName: "Nome", flex: 1 },
-    { field: "modality", headerName: "Modalidade", flex: 1,
-      valueGetter: (params) => modalityLabels[params.value] || params.value
-    },
-    { field: "campus", headerName: "Campus", flex: 1 },
-
-    {
-      field: "actions",
-      headerName: "Ações",
-      width: 250,
-      renderCell: (params) => (
-        <Box display="flex" gap={2}>
-          <Button variant="contained" size="small" color="primary" component={Link} to={`/convocationListSeats/edit/${params.row.id}`}>
-            Editar
-          </Button>
-          <Button variant="contained" size="small" color="secondary" onClick={() => handleOpenConfirm(params.row.id)} disabled={isLoading}>
-            Apagar
-          </Button>
-        </Box>
-      ),
-    },
-  ];
-
-  const mapDataToGridRows = (data: Results) => {
-    return data.data.map((convocationListSeat) => ({
-      id: convocationListSeat.id,
-      name: convocationListSeat.name,
-      created_at: convocationListSeat.created_at,
-      updated_at: convocationListSeat.updated_at,
-    }));
-  };
-
-  const rows = convocationListSeats ? mapDataToGridRows(convocationListSeats) : [];
-  const rowCount = convocationListSeats?.meta.total || 0;
+  /* ---- tabela ---- */
+  const rows = convocationListSeats?.data ?? [];
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: 500,
-        width: "100%",
-        boxShadow: 3,
-        borderRadius: 2,
-        bgcolor: "background.paper",
-        overflow: "hidden",
-      }}
-    >
-      <DataGrid
-        columns={columns}
-        rows={rows}
-        filterMode="server"
-        rowCount={rowCount}
-        loading={isFetching}
-        paginationMode="server"
-        checkboxSelection={false}
-        disableColumnFilter={true}
-        disableColumnSelector={true}
-        disableDensitySelector={true}
-        slots={{ toolbar: GridToolbar }}
-        slotProps={{
-          toolbar: {
-            showQuickFilter: true,
-            quickFilterProps: { debounceMs: 500 },
-            csvOptions: { disableToolbarButton: true },
-            printOptions: { disableToolbarButton: true },
-          },
-        }}
-        onPaginationModelChange={handleSetPaginationModel}
-        onFilterModelChange={handleFilterChange}
-        localeText={ptPT.components.MuiDataGrid.defaultProps.localeText}
-        sx={{
-          border: "none",
-          "& .MuiDataGrid-columnHeaders": { bgcolor: "primary.main", color: "#FFFFFF", fontWeight: "bold" },
-          "& .MuiDataGrid-row:hover": { bgcolor: "grey.100" },
-          "& .MuiDataGrid-cell": { overflow: "hidden", textOverflow: "ellipsis" },
-        }}
-      />
+    <Box sx={{ mt: 2 }}>
+      <Paper sx={{ p: 3, mb: 2 }}>
 
-      <Snackbar open={alertOpen} autoHideDuration={3000} onClose={handleAlertClose} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
-        <Alert onClose={handleAlertClose} severity={alertSeverity} sx={{ width: "100%" }}>
-          {alertMessage}
-        </Alert>
-      </Snackbar>
 
-      <Dialog open={confirmOpen} onClose={handleCloseConfirm} aria-labelledby="confirm-dialog-title" aria-describedby="confirm-dialog-description">
-        <DialogTitle id="confirm-dialog-title">Confirmação</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="confirm-dialog-description">Tem certeza de que deseja apagar este curso?</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseConfirm} color="primary">Cancelar</Button>
-          <Button onClick={handleConfirmDelete} color="secondary" autoFocus>Confirmar</Button>
-        </DialogActions>
-      </Dialog>
+        <Table
+          id="outcomes-table"
+          style={{
+            borderCollapse: "collapse",
+            width: "100%",
+            color: "black",
+            tableLayout: "fixed",
+            wordWrap: "break-word",
+            fontSize: "12px",
+          }}
+        >
+          <TableHead>
+            <TableRow>
+              {[
+                "Código",
+                "Curso",
+                "Cat. Origem",
+                "Cat. Atual",
+                "Status",
+                "Criada em",
+                "Ações",
+              ].map((h) => (
+                <TableCell
+                  key={h}
+                  style={{ border: "1px solid black", padding: "8px", fontWeight: "bold" }}
+                >
+                  {h}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {isFetching && (
+              <TableRow>
+                <TableCell colSpan={7}>
+                  <Typography align="center">Carregando…</Typography>
+                </TableCell>
+              </TableRow>
+            )}
+
+            {!isFetching && rows.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={7}>
+                  <Typography align="center">Nenhuma vaga encontrada.</Typography>
+                </TableCell>
+              </TableRow>
+            )}
+
+            {rows.map((seat) => (
+              <TableRow key={seat.id} style={{ border: "1px solid black" }}>
+                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                  {seat.seat_code}
+                </TableCell>
+                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                  {seat.course?.name}
+                </TableCell>
+                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                  {seat.origin_category?.name}
+                </TableCell>
+                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                  {seat.current_category?.name}
+                </TableCell>
+                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                  {seat.status === "open" ? "Aberta" : seat.status === "reserved" ? "Reservada" : seat.application?.form_data?.name}
+                </TableCell>
+                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                  {formatDate(seat.created_at)}
+                </TableCell>
+                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                  {/* <Button
+                    variant="contained"
+                    size="small"
+                    color="secondary"
+                    disabled={isLoading}
+                    onClick={() => openConfirm(String(seat.id))}
+                  >
+                    Apagar
+                  </Button> */}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
+        {/* paginação simples */}
+        {convocationListSeats && (
+          <Box sx={{ mt: 1, display: "flex", gap: 2, justifyContent: "center" }}>
+            {/* <Button
+              size="small"
+              disabled={!convocationListSeats.links.prev}
+              onClick={() => handleSetPaginationModel(convocationListSeats.meta.current_page - 1)}
+            >
+              Anterior
+            </Button>
+            <Typography variant="caption" sx={{ mt: 1 }}>
+              Página {convocationListSeats.meta.current_page} de {convocationListSeats.meta.last_page}
+            </Typography>
+            <Button
+              size="small"
+              disabled={!convocationListSeats.links.next}
+              onClick={() => handleSetPaginationModel(convocationListSeats.meta.current_page + 1)}
+            >
+              Próxima
+            </Button> */}
+          </Box>
+        )}
+
+        {/* snack de feedback */}
+        <Snackbar
+          open={alert.open}
+          autoHideDuration={3000}
+          onClose={closeAlert}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert onClose={closeAlert} severity={alert.sev} sx={{ width: "100%" }}>
+            {alert.msg}
+          </Alert>
+        </Snackbar>
+
+        {/* diálogo de confirmação */}
+        <Dialog open={confirm.open} onClose={closeConfirm}>
+          <DialogTitle>Confirmação</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Tem certeza de que deseja apagar esta vaga?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeConfirm}>Cancelar</Button>
+            <Button color="secondary" onClick={handleConfirmDelete} autoFocus>
+              Confirmar
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Paper>
     </Box>
   );
-}
+};

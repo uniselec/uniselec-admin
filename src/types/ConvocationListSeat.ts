@@ -1,3 +1,6 @@
+import { AdmissionCategory } from "./AdmissionCategory";
+import { Application } from "./Application";
+import { Course } from "./Course";
 
 
 
@@ -12,10 +15,26 @@ export interface Result {
 
 export interface ConvocationListSeat {
   id?: number;
-  name: string;
+  convocation_list_id: number;
+  seat_code: string;
 
-  created_at?: null | string;
-  updated_at?: null | string;
+  course_id: number;
+  course: Course;
+
+  /* categorias de origem / atual */
+  origin_admission_category_id: number;
+  current_admission_category_id: number;
+  origin_category: AdmissionCategory;     // eager-loaded no controller
+  current_category: AdmissionCategory;    // idem
+
+  /* vínculo com inscrição – pode ser nulo */
+  application_id?: number | null;
+  application?: Application | null;
+
+  status: "open" | "reserved" | "filled";
+
+  created_at?: string | null;
+  updated_at?: string | null;
 }
 export interface Links {
   prev: string;

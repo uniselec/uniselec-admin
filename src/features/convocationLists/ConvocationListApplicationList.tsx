@@ -11,7 +11,7 @@ export const ConvocationListApplicationList = () => {
   const [options, setOptions] = useState({
     page: 1,
     search: "",
-    perPage: 1000,
+    perPage: 5000,
     rowsPerPage: [25, 50, 100],
   });
 
@@ -53,12 +53,8 @@ export const ConvocationListApplicationList = () => {
       <ConvocationListApplicationTable
         convocationListApplications={data}
         isFetching={isFetching}
-        paginationModel={{
-          pageSize: 25,
-          page: 0,
-        }}
-        handleSetPaginationModel={setPaginationModel}
-        handleFilterChange={handleFilterChange}
+        handleSetPaginationModel={(page) => setOptions({ ...options, page })}
+        handleFilterChange={(search) => setOptions({ ...options, search })}
       />
     </Box>
   );

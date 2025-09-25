@@ -54,12 +54,12 @@ export const ConvocationListSeatList = () => {
       <ConvocationListSeatTable
         convocationListSeats={data}
         isFetching={isFetching}
-        paginationModel={{
-          pageSize: 25,
-          page: 0,
-        }}
-        handleSetPaginationModel={setPaginationModel}
-        handleFilterChange={handleFilterChange}
+        handleSetPaginationModel={(page) =>
+          setOptions({ ...options, page })
+        }
+        handleFilterChange={(search) =>
+          setOptions({ ...options, search })
+        }
       />
     </Box>
   );
