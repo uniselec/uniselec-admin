@@ -1,3 +1,4 @@
+/* src/features/convocationLists/components/ChainsEditor.tsx */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   Dialog,
@@ -8,38 +9,43 @@ import {
   Paper,
   Typography,
   IconButton,
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import { useEffect, useState } from 'react';
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+} from "@hello-pangea/dnd";
+import { useEffect, useState } from "react";
 
-import { AdmissionCategory } from '../../../types/AdmissionCategory';
-import { RemapRules } from '../../../types/ConvocationList';
+import { AdmissionCategory } from "../../../types/AdmissionCategory";
 
-/* ─────────────────── TIPOS ─────────────────── */
+/* ---------- NOVO tipo de regra (chave = name) ---------- */
+export interface RemapRules {
+  /** ex.: "AC": ["LB-PPI", "LB-Q"] */
+  [categoryName: string]: string[];
+}
+
+/* ---------- Props ---------- */
 interface ChainsEditorProps {
   open: boolean;
   onClose: () => void;
-  /** Regras salvas (ou `null` se nunca definido) */
-  value: RemapRules | null;
-  /** Categorias que realmente existem no processo seletivo  */
-  categories: AdmissionCategory[];
-  /** Callback de salvamento  */
+  value: RemapRules | null;             // regras atuais
+  categories: AdmissionCategory[];      // somente as do PS
   onSave: (rules: RemapRules | null) => void;
 }
 
-/* ─────────────────── HELPERS ────────────────── */
-/** Gera uma regra padrão: cada categoria remaneja para todas as outras */
-const buildDefaultRules = (cats: AdmissionCategory[]): RemapRules => {
-  const ids = cats.map((c) => c.id!);
-  const defaultRules: RemapRules = {};
-  ids.forEach((id) => {
-    defaultRules[id] = ids.filter((otherId) => otherId !== id);
+/* ---------- Helpers ---------- */
+const buildDefault = (cats: AdmissionCategory[]): RemapRules => {
+  const names = cats.map((c) => c.name);
+  const def: RemapRules = {};
+  names.forEach((n) => {
+    def[n] = names.filter((other) => other !== n);
   });
-  return defaultRules;
+  return def;
 };
 
-/* ─────────────────── COMPONENTE ─────────────── */
+/* ---------- Componente ---------- */
 export default function ChainsEditor({
   open,
   onClose,
@@ -47,145 +53,130 @@ export default function ChainsEditor({
   categories,
   onSave,
 }: ChainsEditorProps) {
-  /**
-   * O estado local precisa de index-signature numérica.
-   * Garanta que seu tipo RemapRules tenha esta forma:
-   *   export interface RemapRules { [categoryId: number]: number[] }
-   */
-  const [remapRulesState, setRemapRulesState] = useState<RemapRules>({});
+  /* estado interno sempre baseado em NAMES ------------------------- */
+  const [rulesState, setRulesState] = useState<RemapRules>({});
 
-  /* ---------- Sincroniza quando abrir ou mudar categorias ---------- */
-  useEffect(() => {
-    const initialRules = value ?? buildDefaultRules(categories);
+  /* converte regras que vierem com IDs numéricos (versão antiga) ---- */
+  const migrateFromIds = (raw: any): RemapRules => {
+    if (!raw) return buildDefault(categories);
 
-    /* garante que todas as categorias apareçam mesmo se tiver regra faltando */
-    const completeRules: RemapRules = {};
-    const idsInProcess = categories.map((c) => c.id!);
+    const idToName: Record<number, string> = {};
+    categories.forEach((c) => (idToName[c.id!] = c.name));
 
-    idsInProcess.forEach((categoryId) => {
-      completeRules[categoryId] =
-        initialRules[categoryId] ??
-        idsInProcess.filter((id) => id !== categoryId);
+    const converted: RemapRules = {};
+    Object.entries(raw).forEach(([key, arr]) => {
+      const originName =
+        isNaN(Number(key)) ? key : idToName[Number(key)];
+      converted[originName] = (arr as (string | number)[])
+        .map((x) => (typeof x === "number" ? idToName[x] : x))
+        .filter(Boolean) as string[];
     });
+    return converted;
+  };
 
-    setRemapRulesState(completeRules);
+  /* sincronia inicial / mudanças de categorias --------------------- */
+  useEffect(() => {
+    const base = migrateFromIds(value);
+    const catNames = categories.map((c) => c.name);
+
+    const complete: RemapRules = {};
+    catNames.forEach((name) => {
+      complete[name] =
+        base[name] ??
+        catNames.filter((other) => other !== name);
+    });
+    setRulesState(complete);
   }, [value, categories]);
 
-  /* ---------- Drag & Drop ---------- */
-  const handleDragEnd = (
+  /* drag-and-drop --------------------------------------------------- */
+  const onDragEnd = (
     result: any,
-    originCategoryId: number,
+    originName: string,
   ) => {
     if (!result.destination) return;
 
-    const updatedTargets = Array.from(
-      remapRulesState[originCategoryId],
-    );
-    const [removed] = updatedTargets.splice(result.source.index, 1);
-    updatedTargets.splice(result.destination.index, 0, removed);
+    const items = Array.from(rulesState[originName]);
+    const [removed] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, removed);
 
-    setRemapRulesState({
-      ...remapRulesState,
-      [originCategoryId]: updatedTargets,
+    setRulesState({ ...rulesState, [originName]: items });
+  };
+
+  /* remove destino individual -------------------------------------- */
+  const removeTarget = (origin: string, target: string) => {
+    setRulesState({
+      ...rulesState,
+      [origin]: rulesState[origin].filter((t) => t !== target),
     });
   };
 
-  const handleDeleteTarget = (
-    originCategoryId: number,
-    targetCategoryId: number,
-  ) => {
-    setRemapRulesState({
-      ...remapRulesState,
-      [originCategoryId]: remapRulesState[originCategoryId].filter(
-        (id) => id !== targetCategoryId,
-      ),
-    });
-  };
+  /* salvar ---------------------------------------------------------- */
+  const handleSave = () => onSave(rulesState);
 
-  /* ---------- Salvar ---------- */
-  const handleSave = () => onSave(remapRulesState);
-
-  /* ─────────────────── UI ─────────────────── */
+  /* UI -------------------------------------------------------------- */
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle>Ordem de remanejamento de vagas</DialogTitle>
 
       <DialogContent dividers sx={{ maxHeight: 480 }}>
-        {categories.map((originCategory) => (
+        {categories.map((cat) => (
           <Paper
-            key={originCategory.id}
+            key={cat.name}
             variant="outlined"
-            sx={{ p: 2, mb: 2, bgcolor: 'grey.50' }}
+            sx={{ p: 2, mb: 2, bgcolor: "grey.50" }}
           >
             <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-              {originCategory.name}
+              {cat.name}
             </Typography>
 
             <DragDropContext
-              onDragEnd={(res) =>
-                handleDragEnd(res, originCategory.id!)
-              }
+              onDragEnd={(res) => onDragEnd(res, cat.name)}
             >
-              <Droppable droppableId={`drop-${originCategory.id}`}>
+              <Droppable droppableId={`drop-${cat.name}`}>
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     style={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
+                      display: "flex",
+                      flexWrap: "wrap",
                       gap: 8,
                     }}
                   >
-                    {remapRulesState[originCategory.id!]?.map(
-                      (targetCategoryId, index) => {
-                        const targetCategory = categories.find(
-                          (c) => c.id === targetCategoryId,
-                        );
-                        if (!targetCategory) return null;
-
-                        return (
-                          <Draggable
-                            key={targetCategoryId}
-                            draggableId={`drag-${originCategory.id}-${targetCategoryId}`}
-                            index={index}
+                    {rulesState[cat.name]?.map((targetName, idx) => (
+                      <Draggable
+                        key={targetName}
+                        draggableId={`drag-${cat.name}-${targetName}`}
+                        index={idx}
+                      >
+                        {(dragProps) => (
+                          <Paper
+                            ref={dragProps.innerRef}
+                            {...dragProps.draggableProps}
+                            {...dragProps.dragHandleProps}
+                            sx={{
+                              px: 1.5,
+                              py: 0.5,
+                              display: "flex",
+                              alignItems: "center",
+                              bgcolor: "primary.light",
+                              color: "primary.contrastText",
+                            }}
                           >
-                            {(dragProps) => (
-                              <Paper
-                                ref={dragProps.innerRef}
-                                {...dragProps.draggableProps}
-                                {...dragProps.dragHandleProps}
-                                sx={{
-                                  px: 1.5,
-                                  py: 0.5,
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  bgcolor: 'primary.light',
-                                  color: 'primary.contrastText',
-                                }}
-                              >
-                                {targetCategory.name}
-                                <IconButton
-                                  size="small"
-                                  onClick={() =>
-                                    handleDeleteTarget(
-                                      originCategory.id!,
-                                      targetCategoryId,
-                                    )
-                                  }
-                                  sx={{
-                                    ml: 0.5,
-                                    color: 'inherit',
-                                  }}
-                                >
-                                  <DeleteIcon fontSize="small" />
-                                </IconButton>
-                              </Paper>
-                            )}
-                          </Draggable>
-                        );
-                      },
-                    )}
+                            {targetName}
+                            <IconButton
+                              size="small"
+                              onClick={() =>
+                                removeTarget(cat.name, targetName)
+                              }
+                              sx={{ ml: 0.5, color: "inherit" }}
+                            >
+                              <DeleteIcon fontSize="small" />
+                            </IconButton>
+                          </Paper>
+                        )}
+                      </Draggable>
+                    ))}
                     {provided.placeholder}
                   </div>
                 )}
