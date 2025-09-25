@@ -21,6 +21,7 @@ import {
 import { Results } from "../../../types/ConvocationListApplication";
 import { useDeleteConvocationListApplicationMutation } from "../convocationListApplicationSlice";
 import useTranslate from "../../polyglot/useTranslate";
+import { Link } from "react-router-dom";
 
 type Props = {
   convocationListApplications: Results | undefined;
@@ -128,7 +129,10 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                   {app.id}
                 </TableCell>
                 <TableCell style={{ border: "1px solid black", padding: "6px" }}>
-                  {app.application?.form_data?.name ?? "-"}
+                  <Link to={`/application-outcomes/edit/${app.application.id}`} style={{ textDecoration: 'none', color: 'blue' }}>
+                    {app.application?.form_data?.name}
+                  </Link>
+
                 </TableCell>
                 <TableCell style={{ border: "1px solid black", padding: "6px" }}>
                   {app.course?.name}

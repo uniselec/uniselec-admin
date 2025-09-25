@@ -12,7 +12,13 @@
             "pendingResource": "Aguardando Ativo",
             "pendingCustomerResponse": "Aguardando Resposta do Cliente",
             "committed": "Confirmado",
-            "canceled": "Cancelado"
+            "canceled": "Cancelado",
+            "approved": " Deferido",
+            "rejected": "Indeferido",
+            "pending": "Pendente",
+            "classified": "Classificado",
+            "classifiable": "Classificável",
+            "disqualified": "Desclassificado"
         },
         "home": {
             "create": "Criar uma Nova",
@@ -67,6 +73,15 @@
                 "eligible": " Elegível",
                 "skipped": " Convocado em Lista Anterior"
             }
+        },
+        "processSelection": {
+            "status": {
+                "draft": "Rascunho",
+                "published": "Publicado",
+                "archived": "Arquivado",
+                "active": "Ativo",
+                "finished": "Finalizado"
+            }
         }
     },
     "pt-PT": {
@@ -82,7 +97,13 @@
             "pendingResource": "Aguardando Ativo",
             "pendingCustomerResponse": "Aguardando Resposta do Cliente",
             "committed": "Confirmado",
-            "canceled": "Cancelado"
+            "canceled": "Cancelado",
+            "approved": "Deferido",
+            "rejected": "Indeferido",
+            "pending": "Pendente",
+            "classified": "Classificado",
+            "classifiable": "Classificável",
+            "disqualified": "Desclassificado"
         },
         "home": {
             "create": "Criar uma Nova",
@@ -137,6 +158,15 @@
                 "eligible": " Elegível",
                 "skipped": " Convocado em Lista Anterior"
             }
+        },
+        "processSelection": {
+            "status": {
+                "draft": "Rascunho",
+                "published": "Publicado",
+                "archived": "Arquivado",
+                "active": "Ativo",
+                "finished": "Finalizado"
+            }
         }
     },
     "en": {
@@ -152,7 +182,13 @@
             "pendingResource": "pending resource",
             "pendingCustomerResponse": "pending customer response",
             "committed": "committed",
-            "canceled": "canceled"
+            "canceled": "canceled",
+            "approved": "Deferido",
+            "rejected": "Indeferido",
+            "pending": "Pendente",
+            "classified": "Classificado",
+            "classifiable": "Classificável",
+            "disqualified": "Desclassificado"
         },
         "home": {
             "create": "Create new",
@@ -207,6 +243,15 @@
                 "eligible": " Eligible",
                 "skipped": " Convocado em Lista Anterior"
             }
+        },
+        "processSelection": {
+            "status": {
+                "draft": "Draft",
+                "published": "Published",
+                "archived": "Archived",
+                "active": "Active",
+                "finished": "Finished"
+            }
         }
     },
     "fr": {
@@ -222,7 +267,13 @@
             "pendingResource": "En attente de ressources",
             "pendingCustomerResponse": "En attente de la réponse du client",
             "committed": "Engagé",
-            "canceled": "Annulé"
+            "canceled": "Annulé",
+            "approved": "Deferido",
+            "rejected": "Indeferido",
+            "pending": "Pendente",
+            "classified": "Classificado",
+            "classifiable": "Classificável",
+            "disqualified": "Desclassificado"
         },
         "home": {
             "create": "Créer un nouveau",
@@ -277,6 +328,15 @@
                 "eligible": " Éligible",
                 "skipped": " Convocado em Lista Anterior"
             }
+        },
+        "processSelection": {
+            "status": {
+                "draft": "Brouillon",
+                "published": "Publié",
+                "archived": "Archivé",
+                "active": "Actif",
+                "finished": "Terminé"
+            }
         }
     },
     "es": {
@@ -292,7 +352,13 @@
             "pendingResource": "Pendiente de recurso",
             "pendingCustomerResponse": "Pendiente de respuesta del cliente",
             "committed": "Comprometido",
-            "canceled": "Cancelado"
+            "canceled": "Cancelado",
+            "approved": "Deferido",
+            "rejected": "Indeferido",
+            "pending": "Pendente",
+            "classified": "Classificado",
+            "classifiable": "Classificável",
+            "disqualified": "Desclassificado"
         },
         "home": {
             "create": "Crear uno nuevo",
@@ -346,6 +412,15 @@
                 "convoked": " Convocado",
                 "eligible": " Elegible",
                 "skipped": " Convocado em Lista Anterior"
+            }
+        },
+        "processSelection": {
+            "status": {
+                "draft": "Borrador",
+                "published": "Publicado",
+                "archived": "Archivado",
+                "active": "Activo",
+                "finished": "Finalizado"
             }
         }
     }

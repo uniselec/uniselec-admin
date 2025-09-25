@@ -44,3 +44,14 @@ eventSupportRequest.approved, Deferido, Deferido, Deferido, Deferido, Deferido
 convocationListApplication.status.convoked, Convocado, Convocado, Convoked, Convoqué, Convocado
 convocationListApplication.status.eligible, Elegível, Elegível, Eligible, Éligible, Elegible
 convocationListApplication.status.skipped, Convocado em Lista Anterior, Convocado em Lista Anterior, Convocado em Lista Anterior, Convocado em Lista Anterior, Convocado em Lista Anterior
+status.approved, Deferido,Deferido,Deferido,Deferido,Deferido
+status.rejected,Indeferido,Indeferido,Indeferido,Indeferido,Indeferido
+status.pending,Pendente,Pendente,Pendente,Pendente,Pendente
+status.classified,Classificado,Classificado,Classificado,Classificado,Classificado
+status.classifiable,Classificável,Classificável,Classificável,Classificável,Classificável
+status.disqualified,Desclassificado,Desclassificado,Desclassificado,Desclassificado,Desclassificado
+processSelection.status.draft,Rascunho,Rascunho,Draft,Brouillon,Borrador
+processSelection.status.published,Publicado,Publicado,Published,Publié,Publicado
+processSelection.status.archived,Arquivado,Arquivado,Archived,Archivé,Archivado
+processSelection.status.active,Ativo,Ativo,Active,Actif,Activo
+processSelection.status.finished,Finalizado,Finalizado,Finished,Terminé,Finalizado

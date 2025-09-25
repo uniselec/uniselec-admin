@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { Results } from "../../../types/ConvocationListSeat";
 import { useDeleteConvocationListSeatMutation } from "../convocationListSeatSlice";
+import { Link } from "react-router-dom";
 
 type Props = {
   convocationListSeats: Results | undefined;
@@ -140,7 +141,13 @@ export const ConvocationListSeatTable: React.FC<Props> = ({
                   {seat.current_category?.name}
                 </TableCell>
                 <TableCell style={{ border: "1px solid black", padding: "6px" }}>
-                  {seat.status === "open" ? "Aberta" : seat.status === "reserved" ? "Reservada" : seat.application?.form_data?.name}
+                  {seat.status === "open" ? "Aberta" : seat.status === "reserved" ? "Reservada" : (
+                    <>
+                      <Link to={`/application-outcomes/edit/${seat?.application?.id}`} style={{ textDecoration: 'none', color: 'blue' }}>
+                        {seat.application?.form_data?.name}
+                      </Link>
+                    </>
+                  )}
                 </TableCell>
                 <TableCell style={{ border: "1px solid black", padding: "6px" }}>
                   {formatDate(seat.created_at)}
