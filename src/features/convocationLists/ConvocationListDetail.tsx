@@ -74,7 +74,7 @@ export const ConvocationListDetail = () => {
   const [allocateSeats, allocateSeatsStatus] = useAllocateSeatsMutation();
   const [publishConvocationList, publishStatus] = usePublishConvocationListMutation();
   const hasAllParams =
-    !!processSelectionId && !!admissionCategoryId && !!courseId;
+    !!processSelectionId && !!courseId;
 
   const { data: dataApplication, isFetching: isFetchingApplication, error: errorApplication } = useGetConvocationListApplicationsQuery(
     hasAllParams
@@ -326,7 +326,7 @@ export const ConvocationListDetail = () => {
       ) : fetchingOut ? (
         <Typography>Carregando resultados…</Typography>
       ) : (
-        selectedCategory && selectedCourse && (
+        selectedCourse && (
           <>
             <Box sx={{ mt: 4, mb: 4 }}>
               <Paper sx={{ p: 3, mb: 2 }}>

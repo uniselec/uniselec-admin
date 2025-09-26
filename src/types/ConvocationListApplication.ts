@@ -35,6 +35,7 @@ export interface ConvocationListApplication {
 
   /* dados de geração / status ------------------------------------ */
   ranking_at_generation: number;
+  ranking_in_category: number;
   status: "eligible" | "convoked" | "skipped";
 
   /* timestamps ---------------------------------------------------- */

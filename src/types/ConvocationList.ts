@@ -10,6 +10,7 @@ export interface Result {
     data:  ConvocationList;
 }
 export interface RemapRules {
+  order: string[];
   [categoryName: string]: string[];
 }
 

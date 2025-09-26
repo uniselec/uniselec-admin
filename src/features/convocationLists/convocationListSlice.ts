@@ -54,15 +54,15 @@ export const processSelectionsApiSlice = apiSlice.injectEndpoints({
       { id: string; seats: any[] }
     >({
       query: generateSeatsMutation,
-      invalidatesTags: ["ConvocationLists", "ConvocationListSeats"],
+      invalidatesTags: ["ConvocationLists", "ConvocationListSeats", "ConvocationListApplications"],
     }),
     generateApplications: mutation<{ message: string }, { id: string }>({
       query: postNoBody("generate-applications"),
-      invalidatesTags: ["ConvocationLists", "ConvocationListApplications"],
+      invalidatesTags: ["ConvocationLists", "ConvocationListApplications", "ConvocationListApplications"],
     }),
     allocateSeats: mutation<{ message: string }, { id: string }>({
       query: postNoBody("allocate-seats"),
-      invalidatesTags: ["ConvocationLists", "ConvocationListSeats"],
+      invalidatesTags: ["ConvocationLists", "ConvocationListSeats", "ConvocationListApplications"],
     }),
     publishConvocationList: mutation<{ data: ConvocationList }, { id: string }>({
       query: ({ id }) => ({
