@@ -125,7 +125,6 @@ export const ConvocationListDetail = () => {
   const admissionCategories: AdmissionCategory[] =
     processSelectionResponse?.data.admission_categories ?? [];
 
-  /* ───────────── helpers ───────────── */
   const runServiceWithToast = async (
     service: (arg: any) => any,
     arg: object,
@@ -175,7 +174,7 @@ export const ConvocationListDetail = () => {
     );
   };
 
-  if (isFetching) return <Typography>Carregando…</Typography>;
+  if (isFetchingSeats) return <Typography>Carregando…</Typography>;
   if (!processSelectionResponse) return null;
 
   const categories = processSelectionResponse.data.admission_categories ?? [];

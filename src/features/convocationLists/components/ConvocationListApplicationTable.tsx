@@ -79,12 +79,13 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
           <TableHead>
             <TableRow>
               {[
-                "ID",
-                "Candidato",
+                "Campus",
                 "Curso",
-                "Categoria",
+                "Nome do Candidato",
+                "Nota",
                 "Ranking",
-                "Status",
+                "Categoria",
+                "Situação",
                 "Ações",
               ].map((h) => (
                 <TableCell
@@ -121,23 +122,26 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
             {rows.map((app) => (
               <TableRow key={app.id} style={{ border: "1px solid black" }}>
                 <TableCell style={{ border: "1px solid black", padding: "6px" }}>
-                  {app.id}
-                </TableCell>
-                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
-                  <Link to={`/application-outcomes/edit/${app.application.id}`} style={{ textDecoration: 'none', color: 'blue' }}>
-                    {app.application?.form_data?.name}
-                  </Link>
-
+                  {app.course?.academic_unit?.state}
                 </TableCell>
                 <TableCell style={{ border: "1px solid black", padding: "6px" }}>
                   {app.course?.name}
                 </TableCell>
                 <TableCell style={{ border: "1px solid black", padding: "6px" }}>
-                  {app.category?.name}
+                  <Link to={`/application-outcomes/edit/${app.application.id}`} style={{ textDecoration: 'none', color: 'blue' }}>
+                    {app.application?.form_data?.name}
+                  </Link>
+                </TableCell>
+                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                  {app.application?.application_outcome?.final_score}
                 </TableCell>
                 <TableCell style={{ border: "1px solid black", padding: "6px" }}>
                   {app.ranking_at_generation}
                 </TableCell>
+                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                  {app.category?.name}
+                </TableCell>
+
                 <TableCell style={{ border: "1px solid black", padding: "6px" }}>
                   {translate(app.status)}
                 </TableCell>

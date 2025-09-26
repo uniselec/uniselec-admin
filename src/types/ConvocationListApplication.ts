@@ -1,6 +1,7 @@
 import { AcademicUnit } from "./AcademicUnit";
 import { AdmissionCategory } from "./AdmissionCategory";
 import { Application } from "./Application";
+import { ApplicationOutcome } from "./ApplicationOutcome";
 import { ConvocationListSeat } from "./ConvocationListSeat";
 import { Course } from "./Course";
 
@@ -22,7 +23,6 @@ export interface ConvocationListApplication {
   /* inscrição & relacionamento ------------------------------------ */
   application_id: number;
   application: Application;
-
   course_id: number;
   course: Course;
 
