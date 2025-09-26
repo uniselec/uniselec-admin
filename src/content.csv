@@ -1,0 +1,57 @@
+language.language,Portugês - Brasil,Portugês - Portugal,English,Français,Epañol
+status.reopened,Reaberto,Reaberto,Opened,Ouvert,Abierto
+status.opened,Aberto,Aberto,opened,ouvert (minúsculo),abierto (minúsculo)
+status.closed,Fechado,Fechado,closed,Fermé,Cerrado
+status.inProgress,Em Atendimento,Em Atendimento,in progress,En cours,En progreso
+status.reserved,Reservado,Reservado,reserved,Réservé,Reservado
+status.pendingResource,Aguardando Ativo,Aguardando Ativo,pending resource,En attente de ressources,Pendiente de recurso
+status.pendingCustomerResponse,Aguardando Resposta do Cliente,Aguardando Resposta do Cliente,pending customer response,En attente de la réponse du client,Pendiente de respuesta del cliente
+status.committed,Confirmado,Confirmado,committed,Engagé,Comprometido
+status.canceled,Cancelado,Cancelado,canceled,Annulé,Cancelado
+home.create,Criar uma Nova,Criar uma Nova,Create new,Créer un nouveau,Crear uno nuevo
+home.popular events,Eventos Populares,Eventos Populares,Eventos Populares,Eventos Populares,Eventos Populares
+home.see all,Ver Todos,Ver Todos,Ver Todos,Ver Todos,Ver Todos
+home.see details,Ver detalhes,Ver detalhes,Ver detalhes,Ver detalhes,Ver detalhes
+home.next events,Próximos Eventos,Próximos Eventos,Próximos Eventos,Próximos Eventos,Próximos Eventos
+home.title,O MELHOR DA TAUROMAQUIA EM PORTUGAL!,O MELHOR DA TAUROMAQUIA EM PORTUGAL!,O MELHOR DA TAUROMAQUIA EM PORTUGAL!,O MELHOR DA TAUROMAQUIA EM PORTUGAL!,O MELHOR DA TAUROMAQUIA EM PORTUGAL!
+home.subtitle,"Compre já os seus bilhetes para Touradas, Ganadarias e outros Grandes Espetáculos. Junte-se à emoção e faça parte desta tradição.","Compre já os seus bilhetes para Touradas, Ganadarias e outros Grandes Espetáculos. Junte-se à emoção e faça parte desta tradição.","Compre já os seus bilhetes para Touradas, Ganadarias e outros Grandes Espetáculos. Junte-se à emoção e faça parte desta tradição.","Compre já os seus bilhetes para Touradas, Ganadarias e outros Grandes Espetáculos. Junte-se à emoção e faça parte desta tradição.","Compre já os seus bilhetes para Touradas, Ganadarias e outros Grandes Espetáculos. Junte-se à emoção e faça parte desta tradição."
+home.home,Home.,Home.,Home.,Home.,Home.
+auth.The email address has already been taken., esse email já foi utilizado.,Este email já tem dono., The email address has already been taken., L'adresse e-mail est déjà prise.,La dirección de correo electrónico ya ha sido tomada.
+auth.The email has already been taken, esse email já foi utilizado.,Este email já tem dono., The email address has already been taken., L'adresse e-mail est déjà prise.,La dirección de correo electrónico ya ha sido tomada.
+auth."The email has already been taken. (and 1 more error)", esse email já foi utilizado. E mais um erro.,Esse email já foi utilizado. E mais um erro., The email address has already been taken., L'adresse e-mail est déjà prise.,La dirección de correo electrónico ya ha sido tomada.
+auth.The promoter code has already been taken, Esse código de promotor já está em uso, Esse código de promotor já está em uso, The promoter code has already been taken, Le code de promoteur a déjà été pris, El código de promotor ya ha sido tomado
+auth.Invalid Email or password.,E-mail ou senha inválidos.,E-mail ou senha inválidos.,Invalid email or password.,E-mail ou mot de passe invalide.,Correo electrónico o contraseña no válidos.
+auth.Password reset link sent successfully,Link enviado por email com sucesso.,Link enviado por email com sucesso.,Password reset link sent successfully.,Password reset link sent successfully.,Password reset link sent successfully.
+auth.Please wait before retrying.,Espere antes de tentar novamente.,Espere antes de tentar novamente.,Please wait before retrying.,Please wait before retrying.,Please wait before retrying.
+auth.Login successful!,Login realizado com sucesso,Login realizado com sucesso,Login realizado com sucesso,Login realizado com sucesso,Login realizado com sucesso
+auth.We can't find a user with that email address, Não conseguimos encontrar um usuário com esse email, Não conseguimos encontrar um usuário com esse email, We can't find a user with that email address, Nous ne pouvons pas trouver un utilisateur avec cette adresse e-mail, No podemos encontrar un usuario con esa dirección de correo electrónico
+users.status.pending, Pendente, Pendente, Pending, En attente, Pendiente
+users.status.active, Ativo, Ativo, Active, Actif, Activo
+users.status.inactive, Inativo, Inativo, Inactive, Inactif, Inactivo
+users.status.rejected, Indeferido, Indeferido, Rejected, Rejeté, Rechazado
+filters.user."select status", Selecionar Status, Selecionar Status, Select user status, Sélectionnez le statut de l'utilisateur, Seleccione el estado del usuario
+filters.user.apply filter, Aplicar Filtro, Aplicar Filtro, Apply filter, Appliquer le filtre, Aplicar filtro
+filters.user."add filter", Adicionar Filtro, Adicionar Filtro, Add filter, Ajouter un filtre, Añadir filtro
+filters.user.id, ID do Usuário, ID do Usuário, User ID, ID de l'utilisateur, ID del usuario
+filters.user.name, Nome, Nome, Name, Nom, Nombre
+filters.user.created_at, Data de Criação, Data de Criação, Created at, Créé le, Creado el
+filters.user.email, E-mail, E-mail, Email, E-mail, Correo electrónico
+filters.user.status, Status, Status, Status, Statut, Estado
+eventSupportRequest.pending, Pendente, Pendente, Pendente, Pendente, Pendente
+eventSupportRequest.under_review, Em análise, Em análise, Em análise, Em análise, Em análise
+eventSupportRequest.rejected, Indeferido, Indeferido, Indeferido, Indeferido, Indeferido
+eventSupportRequest.approved, Deferido, Deferido, Deferido, Deferido, Deferido
+convocationListApplication.status.convoked, Convocado, Convocado, Convoked, Convoqué, Convocado
+convocationListApplication.status.eligible, Classificável, Classificável, Classificável, Classificável, Classificável
+convocationListApplication.status.skipped, Convocado em Lista Anterior, Convocado em Lista Anterior, Convocado em Lista Anterior, Convocado em Lista Anterior, Convocado em Lista Anterior
+status.approved, Deferido,Deferido,Deferido,Deferido,Deferido
+status.rejected,Indeferido,Indeferido,Indeferido,Indeferido,Indeferido
+status.pending,Pendente,Pendente,Pendente,Pendente,Pendente
+status.classified,Classificado,Classificado,Classificado,Classificado,Classificado
+status.classifiable,Classificável,Classificável,Classificável,Classificável,Classificável
+status.disqualified,Desclassificado,Desclassificado,Desclassificado,Desclassificado,Desclassificado
+processSelection.status.draft,Rascunho,Rascunho,Draft,Brouillon,Borrador
+processSelection.status.published,Publicado,Publicado,Published,Publié,Publicado
+processSelection.status.archived,Arquivado,Arquivado,Archived,Archivé,Archivado
+processSelection.status.active,Ativo,Ativo,Active,Actif,Activo
+processSelection.status.finished,Finalizado,Finalizado,Finished,Terminé,Finalizado

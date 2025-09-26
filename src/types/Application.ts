@@ -1,4 +1,5 @@
 import { AdmissionCategory } from "./AdmissionCategory";
+import { ApplicationOutcome } from "./ApplicationOutcome";
 import { BonusOption } from "./BonusOption";
 import { Course } from "./Course";
 import { EnemScore } from "./EnemScore";
@@ -42,6 +43,7 @@ export interface Application {
     verification_expected: string;
     verification_code: string;
     valid_verification_code: boolean;
+    application_outcome?: ApplicationOutcome;
     created_at: string | null;
     updated_at: string | null;
 }

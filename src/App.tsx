@@ -40,6 +40,10 @@ import { ApplicationOutcomeList } from "./features/applicationOutcomes/Applicati
 import { ApplicationOutcomeEdit } from "./features/applicationOutcomes/ApplicationOutcomeEdit";
 import { DeferidosIndeferidosList } from "./features/processSelections/DeferidosIndeferidosList";
 import { ApplicationResults } from "./features/processSelections/ApplicationResults";
+import { ConvocationListList } from "./features/convocationLists/ConvocationListList";
+import { ConvocationListCreate } from "./features/convocationLists/ConvocationListCreate";
+import { ConvocationListDetail } from "./features/convocationLists/ConvocationListDetail";
+import { ConvocationListEdit } from "./features/convocationLists/ConvocationListEdit";
 
 
 
@@ -86,6 +90,11 @@ function App() {
           <Route path="/courses/edit/:id" element={<ProtectedRoute><CourseEdit /></ProtectedRoute>} />
           <Route path="/courses/create" element={<ProtectedRoute><CourseCreate /></ProtectedRoute>} />
 
+
+          <Route path="/process-selections/:id/convocation-lists" element={<ProtectedRoute><ConvocationListList /></ProtectedRoute>} />
+          <Route path="/process-selections/:id/convocation-lists/detail/:convocationListId" element={<ProtectedRoute><ConvocationListDetail /></ProtectedRoute>} />
+          <Route path="/process-selections/:id/convocation-lists/edit/:convocationListId" element={<ProtectedRoute><ConvocationListEdit /></ProtectedRoute>} />
+          <Route path="/process-selections/:id/convocation-lists/create" element={<ProtectedRoute><ConvocationListCreate /></ProtectedRoute>} />
           <Route path="/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} />
           <Route path="/applications/detail/:id" element={<ProtectedRoute><ApplicationDetail /></ProtectedRoute>} />
 
@@ -99,44 +108,13 @@ function App() {
           <Route path="/admins" element={<ProtectedRoute><AdminList /></ProtectedRoute>} />
           <Route path="/admins/edit/:id" element={<ProtectedRoute><AdminEdit /></ProtectedRoute>} />
           <Route path="/admins/create" element={<ProtectedRoute><AdminCreate /></ProtectedRoute>} />
-
           <Route path="/application-outcomes" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} />
           <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} />
-
-
           <Route path="/profile" element={<ProtectedRoute><AuthProfile /></ProtectedRoute>} />
           <Route path="/profile/edit" element={<ProtectedRoute><AuthProfileEdit /></ProtectedRoute>} />
-
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password/:token/:email" element={<PasswordReset />} />
-
           <Route path="*" element={<NotFoundCard />} />
-
-
-          {/* <Route path="/deferidos-indeferidos" element={<ProtectedRoute><DeferidosIndeferidosList /></ProtectedRoute>} /> */}
-          {/* <Route path="/:processSelectionId/import-enem-score/" element={<ProtectedRoute><EnemScoreImport /><EnemScoreList /></ProtectedRoute>} /> */}
-          {/* <Route path="/:processSelectionId/export-csv" element={<ProtectedRoute><ApplicationCSVDownload /></ProtectedRoute>} /> */}
-          {/* <Route path="/:processSelectionId/generate-results" element={<ProtectedRoute><GenerateApplicationOutcomes /></ProtectedRoute>} /> */}
-
-
-          {/* <Route path="/:processSelectionId/applications" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} /> */}
-
-          {/*
-          <Route path="/applications-results/no20/:categoryId" element={<ProtectedRoute><ApplicationResultsNo20 /></ProtectedRoute>} /> */}
-          {/* <Route path="/charts" element={<ProtectedRoute><ApplicationList /></ProtectedRoute>} /> */}
-
-
-          {/* <Route path="/dashboard" element={<ProtectedRoute><DashboardApplications /></ProtectedRoute>} /> */}
-
-
-
-          {/* <Route path="/:processSelectionId/enem-scores/edit/:id" element={<ProtectedRoute><EnemScoreSelected /></ProtectedRoute>} /> */}
-
-          {/* <Route path="/application-outcomes/:processSelectionId" element={<ProtectedRoute><ApplicationOutcomeList /></ProtectedRoute>} /> */}
-          {/* <Route path="/application-outcomes/edit/:id" element={<ProtectedRoute><ApplicationOutcomeEdit /></ProtectedRoute>} /> */}
-
-
-
         </Routes>
       </Layout>
 

@@ -31,17 +31,22 @@ type Props = {
 export default function ResponsiveDrawer({ open, onClose, isDark }: Props) {
   const userAuth = useAppSelector(selectAuthUser);
   const routes = [
-    { path: "/", name: "Início", roles: ["super_user", "promoter"]  },
-    { path: "/academic-units", name: "Unidades Academicas", roles: ["super_user", "promoter"]  },
-    { path: "/admission-categories", name: "Modalidades", roles: ["super_user", "promoter"]  },
-    { path: "/bonus-options", name: "Bonificação", roles: ["super_user", "promoter"]  },
-    { path: "/courses", name: "Cursos", roles: ["super_user", "promoter"]  },
-    { path: "/process-selections", name: "Seleções", roles: ["super_user", "promoter"]  },
-    { path: "/admins", name: "Admins", roles: ["super_user"] },
-    { path: "/users", name: "Candidatos", roles: ["super_user"]},
-    { path: "/applications", name: "Inscrições", roles: ["super_user"]},
-    { path: "/enem-scores", name: "Notas do Enem", roles: ["super_user"]},
-    { path: "/application-outcomes", name: "Resultados", roles: ["super_user"]},
+    { path: "/", name: "Início", roles: ["super_user", "promoter"] },
+    { path: "/academic-units", name: "Unidades Academicas", roles: ["super_user", "promoter"] },
+    { path: "/admission-categories", name: "Modalidades", roles: ["super_user", "promoter"] },
+    { path: "/bonus-options", name: "Bonificação", roles: ["super_user", "promoter"] },
+    { path: "/courses", name: "Cursos", roles: ["super_user", "promoter"] },
+    { path: "/process-selections", name: "Seleções", roles: ["super_user", "promoter"] },
+    // { path: "/admins", name: "Admins", roles: ["super_user"] },
+    // { path: "/users", name: "Candidatos", roles: ["super_user"] },
+    // { path: "/applications", name: "Inscrições", roles: ["super_user"] },
+    // { path: "/enem-scores", name: "Notas do Enem", roles: ["super_user"] },
+    // { path: "/application-outcomes", name: "Resultados", roles: ["super_user"] },
+
+    // { path: "/convocation-list-seats", name: "ConvocationListSeat", roles: ["super_user"] },
+    // { path: "/convocation-list-applications", name: "ConvocationListApplication", roles: ["super_user"] },
+
+
     { path: "/profile", name: "Perfil", roles: ["super_user"] },
   ];
 

@@ -1,53 +1,427 @@
 {
     "pt-BR": {
+        "language": {
+            "language": "Portugês - Brasil"
+        },
         "status": {
+            "reopened": "Reaberto",
+            "opened": "Aberto",
+            "closed": "Fechado",
+            "inProgress": "Em Atendimento",
+            "reserved": "Reservado",
+            "pendingResource": "Aguardando Ativo",
+            "pendingCustomerResponse": "Aguardando Resposta do Cliente",
+            "committed": "Confirmado",
+            "canceled": "Cancelado",
+            "approved": " Deferido",
+            "rejected": "Indeferido",
+            "pending": "Pendente",
+            "classified": "Classificado",
+            "classifiable": "Classificável",
+            "disqualified": "Desclassificado"
+        },
+        "home": {
+            "create": "Criar uma Nova",
+            "popular events": "Eventos Populares",
+            "see all": "Ver Todos",
+            "see details": "Ver detalhes",
+            "next events": "Próximos Eventos",
+            "title": "O MELHOR DA TAUROMAQUIA EM PORTUGAL!",
+            "subtitle": "Compre já os seus bilhetes para Touradas, Ganadarias e outros Grandes Espetáculos. Junte-se à emoção e faça parte desta tradição.",
+            "home": "Home."
+        },
+        "auth": {
+            "The email address has already been taken": " esse email já foi utilizado.",
+            "The email has already been taken": " esse email já foi utilizado.",
+            "The email has already been taken. (and 1 more error)": " esse email já foi utilizado. E mais um erro.",
+            "The promoter code has already been taken": " Esse código de promotor já está em uso",
+            "Invalid Email or password": "E-mail ou senha inválidos.",
+            "Password reset link sent successfully": "Link enviado por email com sucesso.",
+            "Please wait before retrying": "Espere antes de tentar novamente.",
+            "Login successful!": "Login realizado com sucesso",
+            "We can't find a user with that email address": " Não conseguimos encontrar um usuário com esse email"
+        },
+        "users": {
+            "status": {
+                "pending": " Pendente",
+                "active": " Ativo",
+                "inactive": " Inativo",
+                "rejected": " Indeferido"
+            }
+        },
+        "filters": {
+            "user": {
+                "select status": " Selecionar Status",
+                "apply filter": " Aplicar Filtro",
+                "add filter": " Adicionar Filtro",
+                "id": " ID do Usuário",
+                "name": " Nome",
+                "created_at": " Data de Criação",
+                "email": " E-mail",
+                "status": " Status"
+            }
+        },
+        "eventSupportRequest": {
+            "pending": " Pendente",
+            "under_review": " Em análise",
+            "rejected": " Indeferido",
+            "approved": " Deferido"
+        },
+        "convocationListApplication": {
+            "status": {
+                "convoked": " Convocado",
+                "eligible": " Classificável",
+                "skipped": " Convocado em Lista Anterior"
+            }
+        },
+        "processSelection": {
+            "status": {
+                "draft": "Rascunho",
+                "published": "Publicado",
+                "archived": "Arquivado",
+                "active": "Ativo",
+                "finished": "Finalizado"
+            }
+        }
+    },
+    "pt-PT": {
+        "language": {
+            "language": "Portugês - Portugal"
+        },
+        "status": {
+            "reopened": "Reaberto",
+            "opened": "Aberto",
+            "closed": "Fechado",
+            "inProgress": "Em Atendimento",
+            "reserved": "Reservado",
+            "pendingResource": "Aguardando Ativo",
+            "pendingCustomerResponse": "Aguardando Resposta do Cliente",
+            "committed": "Confirmado",
+            "canceled": "Cancelado",
             "approved": "Deferido",
             "rejected": "Indeferido",
             "pending": "Pendente",
             "classified": "Classificado",
             "classifiable": "Classificável",
-            "disqualified": "Desclassificado",
-            "processSelection.status": "Rascunho"
+            "disqualified": "Desclassificado"
         },
-        "processSelection.status": {
-            "draft": "Rascunho",
-            "published": "Publicado",
-            "archived": "Arquivado",
-            "active": "Ativo",
-            "finished": "Finalizado"
+        "home": {
+            "create": "Criar uma Nova",
+            "popular events": "Eventos Populares",
+            "see all": "Ver Todos",
+            "see details": "Ver detalhes",
+            "next events": "Próximos Eventos",
+            "title": "O MELHOR DA TAUROMAQUIA EM PORTUGAL!",
+            "subtitle": "Compre já os seus bilhetes para Touradas, Ganadarias e outros Grandes Espetáculos. Junte-se à emoção e faça parte desta tradição.",
+            "home": "Home."
+        },
+        "auth": {
+            "The email address has already been taken": "Este email já tem dono.",
+            "The email has already been taken": "Este email já tem dono.",
+            "The email has already been taken. (and 1 more error)": "Esse email já foi utilizado. E mais um erro.",
+            "The promoter code has already been taken": " Esse código de promotor já está em uso",
+            "Invalid Email or password": "E-mail ou senha inválidos.",
+            "Password reset link sent successfully": "Link enviado por email com sucesso.",
+            "Please wait before retrying": "Espere antes de tentar novamente.",
+            "Login successful!": "Login realizado com sucesso",
+            "We can't find a user with that email address": " Não conseguimos encontrar um usuário com esse email"
+        },
+        "users": {
+            "status": {
+                "pending": " Pendente",
+                "active": " Ativo",
+                "inactive": " Inativo",
+                "rejected": " Indeferido"
+            }
+        },
+        "filters": {
+            "user": {
+                "select status": " Selecionar Status",
+                "apply filter": " Aplicar Filtro",
+                "add filter": " Adicionar Filtro",
+                "id": " ID do Usuário",
+                "name": " Nome",
+                "created_at": " Data de Criação",
+                "email": " E-mail",
+                "status": " Status"
+            }
+        },
+        "eventSupportRequest": {
+            "pending": " Pendente",
+            "under_review": " Em análise",
+            "rejected": " Indeferido",
+            "approved": " Deferido"
+        },
+        "convocationListApplication": {
+            "status": {
+                "convoked": " Convocado",
+                "eligible": " Classificável",
+                "skipped": " Convocado em Lista Anterior"
+            }
+        },
+        "processSelection": {
+            "status": {
+                "draft": "Rascunho",
+                "published": "Publicado",
+                "archived": "Arquivado",
+                "active": "Ativo",
+                "finished": "Finalizado"
+            }
         }
     },
     "en": {
+        "language": {
+            "language": "English"
+        },
         "status": {
+            "reopened": "Opened",
+            "opened": "opened",
+            "closed": "closed",
+            "inProgress": "in progress",
+            "reserved": "reserved",
+            "pendingResource": "pending resource",
+            "pendingCustomerResponse": "pending customer response",
+            "committed": "committed",
+            "canceled": "canceled",
             "approved": "Deferido",
             "rejected": "Indeferido",
             "pending": "Pendente",
             "classified": "Classificado",
             "classifiable": "Classificável",
             "disqualified": "Desclassificado"
-
+        },
+        "home": {
+            "create": "Create new",
+            "popular events": "Eventos Populares",
+            "see all": "Ver Todos",
+            "see details": "Ver detalhes",
+            "next events": "Próximos Eventos",
+            "title": "O MELHOR DA TAUROMAQUIA EM PORTUGAL!",
+            "subtitle": "Compre já os seus bilhetes para Touradas, Ganadarias e outros Grandes Espetáculos. Junte-se à emoção e faça parte desta tradição.",
+            "home": "Home."
+        },
+        "auth": {
+            "The email address has already been taken": " The email address has already been taken.",
+            "The email has already been taken": " The email address has already been taken.",
+            "The email has already been taken. (and 1 more error)": " The email address has already been taken.",
+            "The promoter code has already been taken": " The promoter code has already been taken",
+            "Invalid Email or password": "Invalid email or password.",
+            "Password reset link sent successfully": "Password reset link sent successfully.",
+            "Please wait before retrying": "Please wait before retrying.",
+            "Login successful!": "Login realizado com sucesso",
+            "We can't find a user with that email address": " We can't find a user with that email address"
+        },
+        "users": {
+            "status": {
+                "pending": " Pending",
+                "active": " Active",
+                "inactive": " Inactive",
+                "rejected": " Rejected"
+            }
+        },
+        "filters": {
+            "user": {
+                "select status": " Select user status",
+                "apply filter": " Apply filter",
+                "add filter": " Add filter",
+                "id": " User ID",
+                "name": " Name",
+                "created_at": " Created at",
+                "email": " Email",
+                "status": " Status"
+            }
+        },
+        "eventSupportRequest": {
+            "pending": " Pendente",
+            "under_review": " Em análise",
+            "rejected": " Indeferido",
+            "approved": " Deferido"
+        },
+        "convocationListApplication": {
+            "status": {
+                "convoked": " Convoked",
+                "eligible": " Classificável",
+                "skipped": " Convocado em Lista Anterior"
+            }
+        },
+        "processSelection": {
+            "status": {
+                "draft": "Draft",
+                "published": "Published",
+                "archived": "Archived",
+                "active": "Active",
+                "finished": "Finished"
+            }
         }
     },
     "fr": {
+        "language": {
+            "language": "Français"
+        },
         "status": {
+            "reopened": "Ouvert",
+            "opened": "ouvert (minúsculo)",
+            "closed": "Fermé",
+            "inProgress": "En cours",
+            "reserved": "Réservé",
+            "pendingResource": "En attente de ressources",
+            "pendingCustomerResponse": "En attente de la réponse du client",
+            "committed": "Engagé",
+            "canceled": "Annulé",
             "approved": "Deferido",
             "rejected": "Indeferido",
             "pending": "Pendente",
             "classified": "Classificado",
             "classifiable": "Classificável",
             "disqualified": "Desclassificado"
-
+        },
+        "home": {
+            "create": "Créer un nouveau",
+            "popular events": "Eventos Populares",
+            "see all": "Ver Todos",
+            "see details": "Ver detalhes",
+            "next events": "Próximos Eventos",
+            "title": "O MELHOR DA TAUROMAQUIA EM PORTUGAL!",
+            "subtitle": "Compre já os seus bilhetes para Touradas, Ganadarias e outros Grandes Espetáculos. Junte-se à emoção e faça parte desta tradição.",
+            "home": "Home."
+        },
+        "auth": {
+            "The email address has already been taken": " L'adresse e-mail est déjà prise.",
+            "The email has already been taken": " L'adresse e-mail est déjà prise.",
+            "The email has already been taken. (and 1 more error)": " L'adresse e-mail est déjà prise.",
+            "The promoter code has already been taken": " Le code de promoteur a déjà été pris",
+            "Invalid Email or password": "E-mail ou mot de passe invalide.",
+            "Password reset link sent successfully": "Password reset link sent successfully.",
+            "Please wait before retrying": "Please wait before retrying.",
+            "Login successful!": "Login realizado com sucesso",
+            "We can't find a user with that email address": " Nous ne pouvons pas trouver un utilisateur avec cette adresse e-mail"
+        },
+        "users": {
+            "status": {
+                "pending": " En attente",
+                "active": " Actif",
+                "inactive": " Inactif",
+                "rejected": " Rejeté"
+            }
+        },
+        "filters": {
+            "user": {
+                "select status": " Sélectionnez le statut de l'utilisateur",
+                "apply filter": " Appliquer le filtre",
+                "add filter": " Ajouter un filtre",
+                "id": " ID de l'utilisateur",
+                "name": " Nom",
+                "created_at": " Créé le",
+                "email": " E-mail",
+                "status": " Statut"
+            }
+        },
+        "eventSupportRequest": {
+            "pending": " Pendente",
+            "under_review": " Em análise",
+            "rejected": " Indeferido",
+            "approved": " Deferido"
+        },
+        "convocationListApplication": {
+            "status": {
+                "convoked": " Convoqué",
+                "eligible": " Classificável",
+                "skipped": " Convocado em Lista Anterior"
+            }
+        },
+        "processSelection": {
+            "status": {
+                "draft": "Brouillon",
+                "published": "Publié",
+                "archived": "Archivé",
+                "active": "Actif",
+                "finished": "Terminé"
+            }
         }
     },
     "es": {
+        "language": {
+            "language": "Epañol"
+        },
         "status": {
+            "reopened": "Abierto",
+            "opened": "abierto (minúsculo)",
+            "closed": "Cerrado",
+            "inProgress": "En progreso",
+            "reserved": "Reservado",
+            "pendingResource": "Pendiente de recurso",
+            "pendingCustomerResponse": "Pendiente de respuesta del cliente",
+            "committed": "Comprometido",
+            "canceled": "Cancelado",
             "approved": "Deferido",
             "rejected": "Indeferido",
             "pending": "Pendente",
             "classified": "Classificado",
             "classifiable": "Classificável",
             "disqualified": "Desclassificado"
-
+        },
+        "home": {
+            "create": "Crear uno nuevo",
+            "popular events": "Eventos Populares",
+            "see all": "Ver Todos",
+            "see details": "Ver detalhes",
+            "next events": "Próximos Eventos",
+            "title": "O MELHOR DA TAUROMAQUIA EM PORTUGAL!",
+            "subtitle": "Compre já os seus bilhetes para Touradas, Ganadarias e outros Grandes Espetáculos. Junte-se à emoção e faça parte desta tradição.",
+            "home": "Home."
+        },
+        "auth": {
+            "The email address has already been taken": "La dirección de correo electrónico ya ha sido tomada.",
+            "The email has already been taken": "La dirección de correo electrónico ya ha sido tomada.",
+            "The email has already been taken. (and 1 more error)": "La dirección de correo electrónico ya ha sido tomada.",
+            "The promoter code has already been taken": " El código de promotor ya ha sido tomado",
+            "Invalid Email or password": "Correo electrónico o contraseña no válidos.",
+            "Password reset link sent successfully": "Password reset link sent successfully.",
+            "Please wait before retrying": "Please wait before retrying.",
+            "Login successful!": "Login realizado com sucesso",
+            "We can't find a user with that email address": " No podemos encontrar un usuario con esa dirección de correo electrónico"
+        },
+        "users": {
+            "status": {
+                "pending": " Pendiente",
+                "active": " Activo",
+                "inactive": " Inactivo",
+                "rejected": " Rechazado"
+            }
+        },
+        "filters": {
+            "user": {
+                "select status": " Seleccione el estado del usuario",
+                "apply filter": " Aplicar filtro",
+                "add filter": " Añadir filtro",
+                "id": " ID del usuario",
+                "name": " Nombre",
+                "created_at": " Creado el",
+                "email": " Correo electrónico",
+                "status": " Estado"
+            }
+        },
+        "eventSupportRequest": {
+            "pending": " Pendente",
+            "under_review": " Em análise",
+            "rejected": " Indeferido",
+            "approved": " Deferido"
+        },
+        "convocationListApplication": {
+            "status": {
+                "convoked": " Convocado",
+                "eligible": " Classificável",
+                "skipped": " Convocado em Lista Anterior"
+            }
+        },
+        "processSelection": {
+            "status": {
+                "draft": "Borrador",
+                "published": "Publicado",
+                "archived": "Archivado",
+                "active": "Activo",
+                "finished": "Finalizado"
+            }
         }
     }
 }
