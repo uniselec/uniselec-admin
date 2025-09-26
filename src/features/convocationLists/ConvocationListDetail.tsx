@@ -20,6 +20,7 @@ import {
   useGenerateApplicationsMutation,
   useAllocateSeatsMutation,
   usePublishConvocationListMutation,
+  useRedistributeSeatsMutation,
 } from './convocationListSlice';
 
 import ChainsEditor from './components/ChainsEditor';
@@ -72,9 +73,10 @@ export const ConvocationListDetail = () => {
   const [generateSeats, generateSeatsStatus] = useGenerateSeatsMutation();
   const [generateApplications, generateApplicationsStatus] = useGenerateApplicationsMutation();
   const [allocateSeats, allocateSeatsStatus] = useAllocateSeatsMutation();
+  const [redistributeSeats, redistributeSeatsStatus] = useRedistributeSeatsMutation();
   const [publishConvocationList, publishStatus] = usePublishConvocationListMutation();
   const hasAllParams =
-    !!processSelectionId && !!admissionCategoryId && !!courseId;
+    !!processSelectionId && !!courseId;
 
   const { data: dataApplication, isFetching: isFetchingApplication, error: errorApplication } = useGetConvocationListApplicationsQuery(
     hasAllParams
@@ -254,6 +256,23 @@ export const ConvocationListDetail = () => {
               Processar distribuição
             </Button>
           </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="secondary"
+              disabled={allocateSeatsStatus.isLoading}
+              onClick={() =>
+                runServiceWithToast(
+                  redistributeSeats,
+                  { id: convocationListId! },
+                  'Redistribuição concluída',
+                )
+              }
+            >
+              Processar redistribuição
+            </Button>
+          </Grid>
+
 
           {/* publicar lista */}
           {convocationList.status === 'draft' && (
@@ -326,7 +345,7 @@ export const ConvocationListDetail = () => {
       ) : fetchingOut ? (
         <Typography>Carregando resultados…</Typography>
       ) : (
-        selectedCategory && selectedCourse && (
+        selectedCourse && (
           <>
             <Box sx={{ mt: 4, mb: 4 }}>
               <Paper sx={{ p: 3, mb: 2 }}>

@@ -15,37 +15,85 @@ import {
   DragDropContext,
   Droppable,
   Draggable,
+  DropResult,
 } from "@hello-pangea/dnd";
 import { useEffect, useState } from "react";
-
 import { AdmissionCategory } from "../../../types/AdmissionCategory";
 
-/* ---------- NOVO tipo de regra (chave = name) ---------- */
+/* ------------------------------------------------------------------ */
+/* NOVO formato:
+   {
+     order: ["AC","LI - PCD","LI - EP"],     // ← ordem global
+     AC:        ["LI - PCD","LI - EP"],      // ← destinos
+     "LI - PCD":["LI - EP","AC"],
+     …
+   }
+   (continua 100 % retro-compatível: se chegar no “jeito antigo”
+   convertemos on-the-fly.)
+--------------------------------------------------------------------- */
 export interface RemapRules {
-  /** ex.: "AC": ["LB-PPI", "LB-Q"] */
-  [categoryName: string]: string[];
+  order: string[];
+  [categoryName: string]: string[] | string[];
 }
 
-/* ---------- Props ---------- */
+/* ------------------------------------------------------------------ */
+/* Props */
 interface ChainsEditorProps {
   open: boolean;
   onClose: () => void;
-  value: RemapRules | null;             // regras atuais
-  categories: AdmissionCategory[];      // somente as do PS
+  value: RemapRules | null;
+  categories: AdmissionCategory[];
   onSave: (rules: RemapRules | null) => void;
 }
 
-/* ---------- Helpers ---------- */
+/* Helpers ----------------------------------------------------------- */
 const buildDefault = (cats: AdmissionCategory[]): RemapRules => {
   const names = cats.map((c) => c.name);
-  const def: RemapRules = {};
+  const chains: RemapRules = { order: [...names] };
   names.forEach((n) => {
-    def[n] = names.filter((other) => other !== n);
+    chains[n] = names.filter((o) => o !== n);
   });
-  return def;
+  return chains;
 };
 
-/* ---------- Componente ---------- */
+/* Converte regras antigas (chave numérica ou sem “order”) ----------- */
+const migrateRules = (
+  raw: any,
+  cats: AdmissionCategory[],
+): RemapRules => {
+  if (!raw) return buildDefault(cats);
+
+  /*         ids → names           */
+  const idToName: Record<number, string> = {};
+  cats.forEach((c) => (idToName[c.id!] = c.name));
+
+  /* já está no modelo novo? */
+  if (raw.order && Array.isArray(raw.order)) {
+    return raw as RemapRules;
+  }
+
+  /* modelo antigo */
+  const migrated: RemapRules = { order: [] };
+  Object.entries(raw).forEach(([k, arr]) => {
+    const originName = isNaN(Number(k)) ? k : idToName[Number(k)];
+    migrated.order.push(originName);
+    migrated[originName] = (arr as (string | number)[])
+      .map((x) => (typeof x === "number" ? idToName[x] : x))
+      .filter(Boolean) as string[];
+  });
+
+  /* garante todas as categorias */
+  cats.forEach((c) => {
+    if (!migrated.order.includes(c.name)) migrated.order.push(c.name);
+    if (!migrated[c.name])
+      migrated[c.name] = migrated.order.filter((n) => n !== c.name);
+  });
+
+  return migrated;
+};
+
+/* ------------------------------------------------------------------ */
+/* Componente */
 export default function ChainsEditor({
   open,
   onClose,
@@ -53,137 +101,172 @@ export default function ChainsEditor({
   categories,
   onSave,
 }: ChainsEditorProps) {
-  /* estado interno sempre baseado em NAMES ------------------------- */
-  const [rulesState, setRulesState] = useState<RemapRules>({});
+  const [rules, setRules] = useState<RemapRules>({ order: [] });
 
-  /* converte regras que vierem com IDs numéricos (versão antiga) ---- */
-  const migrateFromIds = (raw: any): RemapRules => {
-    if (!raw) return buildDefault(categories);
-
-    const idToName: Record<number, string> = {};
-    categories.forEach((c) => (idToName[c.id!] = c.name));
-
-    const converted: RemapRules = {};
-    Object.entries(raw).forEach(([key, arr]) => {
-      const originName =
-        isNaN(Number(key)) ? key : idToName[Number(key)];
-      converted[originName] = (arr as (string | number)[])
-        .map((x) => (typeof x === "number" ? idToName[x] : x))
-        .filter(Boolean) as string[];
-    });
-    return converted;
-  };
-
-  /* sincronia inicial / mudanças de categorias --------------------- */
+  /* -------- inicialização / quando categorias mudam --------------- */
   useEffect(() => {
-    const base = migrateFromIds(value);
-    const catNames = categories.map((c) => c.name);
-
-    const complete: RemapRules = {};
-    catNames.forEach((name) => {
-      complete[name] =
-        base[name] ??
-        catNames.filter((other) => other !== name);
-    });
-    setRulesState(complete);
+    setRules(migrateRules(value, categories));
   }, [value, categories]);
 
-  /* drag-and-drop --------------------------------------------------- */
-  const onDragEnd = (
-    result: any,
+  /* -------- Drag & Drop: categorias (ordem global) ---------------- */
+  const handleCategoryDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    const newOrder = Array.from(rules.order);
+    const [moved] = newOrder.splice(result.source.index, 1);
+    newOrder.splice(result.destination.index, 0, moved);
+    setRules({ ...rules, order: newOrder });
+  };
+
+  /* -------- Drag & Drop: destinos dentro de cada categoria -------- */
+  const handleTargetsDragEnd = (
+    result: DropResult,
     originName: string,
   ) => {
     if (!result.destination) return;
 
-    const items = Array.from(rulesState[originName]);
+    const items = Array.from(rules[originName] as string[]);
     const [removed] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, removed);
 
-    setRulesState({ ...rulesState, [originName]: items });
+    setRules({ ...rules, [originName]: items });
   };
 
-  /* remove destino individual -------------------------------------- */
-  const removeTarget = (origin: string, target: string) => {
-    setRulesState({
-      ...rulesState,
-      [origin]: rulesState[origin].filter((t) => t !== target),
+  const deleteTarget = (origin: string, target: string) => {
+    setRules({
+      ...rules,
+      [origin]: (rules[origin] as string[]).filter((t) => t !== target),
     });
   };
 
-  /* salvar ---------------------------------------------------------- */
-  const handleSave = () => onSave(rulesState);
+  /* -------- salvar ----------------------------------------------- */
+  const handleSave = () => onSave(rules);
 
-  /* UI -------------------------------------------------------------- */
+  /* ---------------------------------------------------------------- */
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>Ordem de remanejamento de vagas</DialogTitle>
+      <DialogTitle>Sequência de redistribuição de vagas</DialogTitle>
 
-      <DialogContent dividers sx={{ maxHeight: 480 }}>
-        {categories.map((cat) => (
-          <Paper
-            key={cat.name}
-            variant="outlined"
-            sx={{ p: 2, mb: 2, bgcolor: "grey.50" }}
-          >
-            <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-              {cat.name}
-            </Typography>
+      {/* ===================== ORDEM DAS LISTAS ===================== */}
+      <DialogContent dividers sx={{ maxHeight: 520 }}>
+        <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
+          Arraste os blocos para definir <strong>a ordem geral</strong>. <br />
+          Dentro de cada bloco, arraste as modalidades destino.
+        </Typography>
 
-            <DragDropContext
-              onDragEnd={(res) => onDragEnd(res, cat.name)}
-            >
-              <Droppable droppableId={`drop-${cat.name}`}>
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: 8,
-                    }}
-                  >
-                    {rulesState[cat.name]?.map((targetName, idx) => (
-                      <Draggable
-                        key={targetName}
-                        draggableId={`drag-${cat.name}-${targetName}`}
-                        index={idx}
-                      >
-                        {(dragProps) => (
-                          <Paper
-                            ref={dragProps.innerRef}
-                            {...dragProps.draggableProps}
-                            {...dragProps.dragHandleProps}
-                            sx={{
-                              px: 1.5,
-                              py: 0.5,
-                              display: "flex",
-                              alignItems: "center",
-                              bgcolor: "primary.light",
-                              color: "primary.contrastText",
-                            }}
+        <DragDropContext onDragEnd={handleCategoryDragEnd}>
+          <Droppable droppableId="categories-droppable" type="CATEGORY">
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                {rules.order.map((catName, catIndex) => {
+                  const catObj = categories.find((c) => c.name === catName);
+                  if (!catObj) return null;
+
+                  return (
+                    <Draggable
+                      key={catName}
+                      draggableId={`cat-${catName}`}
+                      index={catIndex}
+                    >
+                      {(dragCat) => (
+                        <Paper
+                          ref={dragCat.innerRef}
+                          {...dragCat.draggableProps}
+                          sx={{
+                            p: 2,
+                            mb: 2,
+                            bgcolor: "grey.50",
+                            border: "1px solid #ccc",
+                          }}
+                        >
+                          {/* cabeçalho do bloco ------------------- */}
+                          <Typography
+                            variant="subtitle1"
+                            fontWeight="bold"
+                            gutterBottom
+                            {...dragCat.dragHandleProps} // ← pega aqui
+                            sx={{ cursor: "grab" }}
                           >
-                            {targetName}
-                            <IconButton
-                              size="small"
-                              onClick={() =>
-                                removeTarget(cat.name, targetName)
-                              }
-                              sx={{ ml: 0.5, color: "inherit" }}
+                            {catName}
+                          </Typography>
+
+                          {/* destinos ----------------------------- */}
+                          <DragDropContext
+                            onDragEnd={(res) =>
+                              handleTargetsDragEnd(res, catName)
+                            }
+                          >
+                            <Droppable
+                              droppableId={`targets-${catName}`}
+                              type={`TARGETS-${catName}`}
+                              direction="horizontal"
                             >
-                              <DeleteIcon fontSize="small" />
-                            </IconButton>
-                          </Paper>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
-          </Paper>
-        ))}
+                              {(prov) => (
+                                <div
+                                  ref={prov.innerRef}
+                                  {...prov.droppableProps}
+                                  style={{
+                                    display: "flex",
+                                    flexWrap: "wrap",
+                                    gap: 8,
+                                  }}
+                                >
+                                  {(rules[catName] as string[]).map(
+                                    (targetName, idx) => (
+                                      <Draggable
+                                        key={targetName}
+                                        draggableId={`t-${catName}-${targetName}`}
+                                        index={idx}
+                                      >
+                                        {(dragT) => (
+                                          <Paper
+                                            ref={dragT.innerRef}
+                                            {...dragT.draggableProps}
+                                            {...dragT.dragHandleProps}
+                                            sx={{
+                                              px: 1.5,
+                                              py: 0.5,
+                                              display: "flex",
+                                              alignItems: "center",
+                                              bgcolor: "primary.light",
+                                              color: "primary.contrastText",
+                                            }}
+                                          >
+                                            {targetName}
+                                            <IconButton
+                                              size="small"
+                                              onClick={() =>
+                                                deleteTarget(
+                                                  catName,
+                                                  targetName,
+                                                )
+                                              }
+                                              sx={{
+                                                ml: 0.5,
+                                                color: "inherit",
+                                              }}
+                                            >
+                                              <DeleteIcon fontSize="small" />
+                                            </IconButton>
+                                          </Paper>
+                                        )}
+                                      </Draggable>
+                                    ),
+                                  )}
+                                  {prov.placeholder}
+                                </div>
+                              )}
+                            </Droppable>
+                          </DragDropContext>
+                        </Paper>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </DialogContent>
 
       <DialogActions>

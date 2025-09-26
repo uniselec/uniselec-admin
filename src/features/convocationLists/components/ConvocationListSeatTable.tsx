@@ -65,8 +65,15 @@ export const ConvocationListSeatTable: React.FC<Props> = ({
     d ? new Date(d).toLocaleDateString("pt-BR") : "-";
 
   /* ---- tabela ---- */
-  const rows = convocationListSeats?.data ?? [];
-
+  const rows =
+    [...(convocationListSeats?.data ?? [])]               // ← cópia “mutável”
+      .sort((a, b) =>
+        (a.seat_code ?? "").localeCompare(
+          b.seat_code ?? "",
+          "pt-BR",               // usa regras locais
+          { numeric: true }      // 001 < 010 < 100
+        )
+      );
   return (
     <Box sx={{ mt: 2 }}>
       <Paper sx={{ p: 3, mb: 2 }}>

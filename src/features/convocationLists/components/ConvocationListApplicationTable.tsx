@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Box,
   Button,
@@ -9,7 +9,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  TextField,
   Typography,
   Table,
   TableHead,
@@ -30,23 +29,29 @@ type Props = {
 
 export const ConvocationListApplicationTable: React.FC<Props> = ({
   convocationListApplications,
-  isFetching
+  isFetching,
 }) => {
   const translate = useTranslate("convocationListApplication.status");
   const [deleteRow, { isLoading }] =
     useDeleteConvocationListApplicationMutation();
 
-  const [alert, setAlert] = useState<{ open: boolean; msg: string; sev: "success" | "error" }>({
-    open: false,
-    msg: "",
-    sev: "success",
-  });
+  /* ---------- feedback UI ---------- */
+  const [alert, setAlert] = useState<{
+    open: boolean;
+    msg: string;
+    sev: "success" | "error";
+  }>({ open: false, msg: "", sev: "success" });
+
   const [confirm, setConfirm] = useState<{ open: boolean; id: string | null }>({
     open: false,
     id: null,
   });
 
-  const closeAlert = () => setAlert({ ...alert, open: false });
+  const closeAlert = () =>
+    setAlert((prev) => ({
+      ...prev,
+      open: false,
+    }));
   const openConfirm = (id: string) => setConfirm({ open: true, id });
   const closeConfirm = () => setConfirm({ open: false, id: null });
 
@@ -62,8 +67,26 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
     }
   };
 
-  const rows = convocationListApplications?.data ?? [];
+  /* ---------- dados ---------- */
+  const rawRows = convocationListApplications?.data ?? [];
 
+  /* ►► Ordena por categoria (alfabética) e, dentro dela, pelo ranking_in_category */
+  const rows = useMemo(() => {
+    return [...rawRows].sort((a: any, b: any) => {
+      const catA = a?.category?.name ?? "";
+      const catB = b?.category?.name ?? "";
+
+      if (catA !== catB) {
+        return catA.localeCompare(catB, "pt-BR");
+      }
+      /* mesma categoria → ranking crescente */
+      const rankA = a?.ranking_in_category ?? 0;
+      const rankB = b?.ranking_in_category ?? 0;
+      return rankA - rankB;
+    });
+  }, [rawRows]);
+
+  /* ---------- render ---------- */
   return (
     <Box sx={{ mt: 2 }}>
       <Paper sx={{ p: 3, mb: 2 }}>
@@ -76,6 +99,7 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
             wordWrap: "break-word",
           }}
         >
+          {/* cabeçalho -------------------------------------------------- */}
           <TableHead>
             <TableRow>
               {[
@@ -83,18 +107,15 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                 "Curso",
                 "Nome do Candidato",
                 "Nota",
-                "Ranking",
+                "Ranking (cat.)",
                 "Categoria",
                 "Situação",
+                "Vaga",
                 "Ações",
               ].map((h) => (
                 <TableCell
                   key={h}
-                  style={{
-                    border: "1px solid black",
-                    padding: "8px",
-                    fontWeight: "bold",
-                  }}
+                  sx={{ border: "1px solid black", p: 1, fontWeight: "bold" }}
                 >
                   {h}
                 </TableCell>
@@ -102,10 +123,11 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
             </TableRow>
           </TableHead>
 
+          {/* corpo ------------------------------------------------------ */}
           <TableBody>
             {isFetching && (
               <TableRow>
-                <TableCell colSpan={7}>
+                <TableCell colSpan={8}>
                   <Typography align="center">Carregando…</Typography>
                 </TableCell>
               </TableRow>
@@ -113,49 +135,52 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
 
             {!isFetching && rows.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7}>
+                <TableCell colSpan={8}>
                   <Typography align="center">Nenhum registro.</Typography>
                 </TableCell>
               </TableRow>
             )}
 
-            {rows.map((app) => (
-              <TableRow key={app.id} style={{ border: "1px solid black" }}>
-                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+            {rows.map((app: any) => (
+              <TableRow key={app.id} sx={{ border: "1px solid black" }}>
+                <TableCell sx={{ border: "1px solid black", p: 1 }}>
                   {app.course?.academic_unit?.state}
                 </TableCell>
-                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                <TableCell sx={{ border: "1px solid black", p: 1 }}>
                   {app.course?.name}
                 </TableCell>
-                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
-                  <Link to={`/application-outcomes/edit/${app.application.id}`} style={{ textDecoration: 'none', color: 'blue' }}>
+                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                  <Link
+                    to={`/application-outcomes/edit/${app.application.id}`}
+                    style={{ textDecoration: "none", color: "blue" }}
+                  >
                     {app.application?.form_data?.name}
                   </Link>
                 </TableCell>
-                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                <TableCell sx={{ border: "1px solid black", p: 1 }}>
                   {app.application?.application_outcome?.final_score}
                 </TableCell>
-                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
-                  {app.ranking_at_generation}
+                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                  {app.ranking_in_category}
                 </TableCell>
-                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                <TableCell sx={{ border: "1px solid black", p: 1 }}>
                   {app.category?.name}
                 </TableCell>
-
-                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                <TableCell sx={{ border: "1px solid black", p: 1 }}>
                   {translate(app.status)}
                 </TableCell>
-                <TableCell style={{ border: "1px solid black", padding: "6px" }}>
+                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                  {app?.seat?.seat_code ?? "-"}
+                </TableCell>
+                <TableCell sx={{ border: "1px solid black", p: 1 }}>
                   {/* <Button
                     variant="contained"
                     size="small"
-                    color="primary"
+                    color="secondary"
                     disabled={isLoading}
-                    onClick={() => {
-                      setAlert({ open: true, sev: "info" as any, msg: "EM desenvolvimento" });
-                    }}
+                    onClick={() => openConfirm(app.id)}
                   >
-                    Eleger Manual
+                    Apagar
                   </Button> */}
                 </TableCell>
               </TableRow>
@@ -163,51 +188,23 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
           </TableBody>
         </Table>
 
-        {/* paginação simples */}
-        {convocationListApplications && (
-          <Box sx={{ mt: 1, display: "flex", gap: 2, justifyContent: "center" }}>
-            {/* <Button
-              size="small"
-              disabled={!convocationListApplications.links.prev}
-              onClick={() =>
-                handleSetPaginationModel(
-                  convocationListApplications.meta.current_page - 1,
-                )
-              }
-            >
-              Anterior
-            </Button>
-            <Typography variant="caption" sx={{ mt: 1 }}>
-              Página {convocationListApplications.meta.current_page} de{" "}
-              {convocationListApplications.meta.last_page}
-            </Typography>
-            <Button
-              size="small"
-              disabled={!convocationListApplications.links.next}
-              onClick={() =>
-                handleSetPaginationModel(
-                  convocationListApplications.meta.current_page + 1,
-                )
-              }
-            >
-              Próxima
-            </Button> */}
-          </Box>
-        )}
-
-        {/* snack de feedback */}
+        {/* Snackbar ---------------------------------------------------- */}
         <Snackbar
           open={alert.open}
           autoHideDuration={3000}
           onClose={closeAlert}
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
         >
-          <Alert onClose={closeAlert} severity={alert.sev} sx={{ width: "100%" }}>
+          <Alert
+            onClose={closeAlert}
+            severity={alert.sev}
+            sx={{ width: "100%" }}
+          >
             {alert.msg}
           </Alert>
         </Snackbar>
 
-        {/* diálogo confirmação */}
+        {/* Diálogo de confirmação -------------------------------------- */}
         <Dialog open={confirm.open} onClose={closeConfirm}>
           <DialogTitle>Confirmação</DialogTitle>
           <DialogContent>
