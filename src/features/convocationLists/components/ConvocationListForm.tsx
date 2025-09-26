@@ -43,7 +43,7 @@ export function ConvocationListForm({
               <TextField
                 required
                 name="name"
-                label="Nome do Curso"
+                label="Nome da Lista"
                 value={convocationList.name || ""}
                 disabled={isdisabled}
                 onChange={handleChange}
