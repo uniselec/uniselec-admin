@@ -110,6 +110,7 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                 "Ranking (cat.)",
                 "Categoria",
                 "Situação",
+                "Vaga",
                 "Ações",
               ].map((h) => (
                 <TableCell
@@ -167,6 +168,9 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                 </TableCell>
                 <TableCell sx={{ border: "1px solid black", p: 1 }}>
                   {translate(app.status)}
+                </TableCell>
+                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                  {app?.seat?.seat_code ?? "-"}
                 </TableCell>
                 <TableCell sx={{ border: "1px solid black", p: 1 }}>
                   {/* <Button

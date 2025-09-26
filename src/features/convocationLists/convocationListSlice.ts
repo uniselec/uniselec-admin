@@ -46,9 +46,27 @@ function generateSeatsMutation({ id, seats }: { id: string; seats: any[] }) {
   };
 }
 
+function redistributeSeatsMutation({ id }: { id: string }) {
+  /* se preferir, podia ter usado postNoBody('redistribute-seats')  */
+  return {
+    url: `${endpointUrl}/${id}/redistribute-seats`,
+    method: "POST",
+  };
+}
 
 export const processSelectionsApiSlice = apiSlice.injectEndpoints({
   endpoints: ({ query, mutation }) => ({
+    redistributeSeats: mutation<
+      { message: string; seats_filled: number },
+      { id: string }
+    >({
+      query: redistributeSeatsMutation,
+      invalidatesTags: [
+        "ConvocationLists",
+        "ConvocationListSeats",
+        "ConvocationListApplications",
+      ],
+    }),
     generateSeats: mutation<
       { message: string; created: number },
       { id: string; seats: any[] }
@@ -108,4 +126,5 @@ export const {
   useGenerateApplicationsMutation,
   useAllocateSeatsMutation,
   usePublishConvocationListMutation,
+  useRedistributeSeatsMutation,
 } = processSelectionsApiSlice;
