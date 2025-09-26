@@ -25,16 +25,11 @@ import { Link } from "react-router-dom";
 type Props = {
   convocationListSeats: Results | undefined;
   isFetching: boolean;
-  /* paginação & filtro */
-  handleSetPaginationModel: (page: number) => void;
-  handleFilterChange: (search: string) => void;
 };
 
 export const ConvocationListSeatTable: React.FC<Props> = ({
   convocationListSeats,
   isFetching,
-  handleSetPaginationModel,
-  handleFilterChange,
 }) => {
   /* ---- mutations & feedback ---- */
   const [deleteSeat, { isLoading }] = useDeleteConvocationListSeatMutation();

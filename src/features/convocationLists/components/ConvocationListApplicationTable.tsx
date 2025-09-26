@@ -26,18 +26,13 @@ import { Link } from "react-router-dom";
 type Props = {
   convocationListApplications: Results | undefined;
   isFetching: boolean;
-  handleSetPaginationModel: (page: number) => void;
-  handleFilterChange: (search: string) => void;
 };
 
 export const ConvocationListApplicationTable: React.FC<Props> = ({
   convocationListApplications,
-  isFetching,
-  handleSetPaginationModel,
-  handleFilterChange,
+  isFetching
 }) => {
   const translate = useTranslate("convocationListApplication.status");
-  /* mutation + feedback */
   const [deleteRow, { isLoading }] =
     useDeleteConvocationListApplicationMutation();
 

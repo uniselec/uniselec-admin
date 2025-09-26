@@ -33,8 +33,14 @@ function getConvocationListSeat({ id }: { id: string }) {
 
 export const processSelectionsApiSlice = apiSlice.injectEndpoints({
   endpoints: ({ query, mutation }) => ({
-    getConvocationListSeats: query<Results, ConvocationListSeatParams>({
-      query: getConvocationListSeats,
+    getConvocationListSeats: query<Results, { page: number; perPage: number; filters: Record<string, string> }>({
+      query: ({ page, perPage, filters }) => {
+        const params = new URLSearchParams({ page: String(page), per_page: String(perPage) });
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value) params.append(key, value);
+        });
+        return `${endpointUrl}?${params.toString()}`;
+      },
       providesTags: ["ConvocationListSeats"],
     }),
     getConvocationListSeat: query<Result, { id: string }>({

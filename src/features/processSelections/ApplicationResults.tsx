@@ -7,7 +7,7 @@ import {
   Box, Paper, Typography, Grid, Autocomplete, TextField, Card, CardContent,
 } from "@mui/material";
 
-import { useGetProcessSelectionQuery }  from
+import { useGetProcessSelectionQuery } from
   "../processSelections/processSelectionSlice";
 import { useGetApplicationOutcomesQuery } from
   "../applicationOutcomes/applicationOutcomeSlice";
@@ -18,12 +18,12 @@ import { ApplicationOutcomeGenerateDocuments } from
 const ApplicationResults = () => {
   /* ---------- query-string helpers -------------------------------------- */
   const { search } = useLocation();
-  const navigate   = useNavigate();
-  const qs         = new URLSearchParams(search);
+  const navigate = useNavigate();
+  const qs = new URLSearchParams(search);
 
-  const processSelectionId  = qs.get("process_selection_id")  ?? "";
+  const processSelectionId = qs.get("process_selection_id") ?? "";
   const admissionCategoryId = qs.get("admission_category_id") ?? "";
-  const courseId            = qs.get("course_id")             ?? "";
+  const courseId = qs.get("course_id") ?? "";
 
   /* ---------- fetch processo seletivo ----------------------------------- */
   const { data: psData, isFetching: fetchingPS } =
@@ -40,30 +40,30 @@ const ApplicationResults = () => {
   } = useGetApplicationOutcomesQuery(
     shouldFetchOutcomes
       ? {
-          page: 1,
-          perPage: 5000,
-          filters: {
-            process_selection_id: processSelectionId,
-            admission_category_id: admissionCategoryId,
-            course_id: courseId,
-          },
-        }
+        page: 1,
+        perPage: 5000,
+        filters: {
+          process_selection_id: processSelectionId,
+          admission_category_id: admissionCategoryId,
+          course_id: courseId,
+        },
+      }
       : // não faz consulta se não deve
-        { skip: true } as any
+      { skip: true } as any
   );
 
   /* ---------- estados de carregamento / erro ---------------------------- */
   if (!processSelectionId)
     return <Typography>process_selection_id ausente na URL.</Typography>;
-  if (fetchingPS)           return <Typography>Carregando…</Typography>;
-  if (!psData)              return null;
+  if (fetchingPS) return <Typography>Carregando…</Typography>;
+  if (!psData) return null;
 
   /* ---------- helpers --------------------------------------------------- */
   const categories = psData.data.admission_categories ?? [];
-  const courses    = psData.data.courses ?? [];
+  const courses = psData.data.courses ?? [];
 
   const selectedCategory = categories.find(c => c.id === Number(admissionCategoryId));
-  const selectedCourse   = courses   .find(c => c.id === Number(courseId));
+  const selectedCourse = courses.find(c => c.id === Number(courseId));
 
   /* ===>>  NOVO: quantidade de vagas da modalidade no curso  <<=== */
   const vacancies =
@@ -72,11 +72,11 @@ const ApplicationResults = () => {
       : 0;
 
   /* controla a QS */
-  const updateParam = (key: string, value?: string|number) => {
+  const updateParam = (key: string, value?: string | number) => {
     const next = new URLSearchParams(search);
     if (!value) next.delete(key);
-    else        next.set(key, String(value));
-    navigate({ search:`?${next.toString()}` }, { replace:true });
+    else next.set(key, String(value));
+    navigate({ search: `?${next.toString()}` }, { replace: true });
   };
 
   /* ---------- render ---------------------------------------------------- */
@@ -108,7 +108,7 @@ const ApplicationResults = () => {
         </Grid>
 
         {/* conteudo principal ----------------------------------------- */}
-        { !shouldFetchOutcomes ? (
+        {!shouldFetchOutcomes ? (
           <Card variant="outlined">
             <CardContent>
               <Typography>

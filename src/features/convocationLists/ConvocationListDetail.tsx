@@ -4,10 +4,14 @@ import {
   Typography,
   Button,
   Grid,
+  Autocomplete,
+  TextField,
+  Card,
+  CardContent,
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import {
   useGetConvocationListQuery,
@@ -29,8 +33,10 @@ import {
 } from '../../types/ConvocationList';
 import { AdmissionCategory } from '../../types/AdmissionCategory';
 import { Course } from '../../types/Course';
-import { ConvocationListSeatList } from './ConvocationListSeatist';
-import { ConvocationListApplicationList } from './ConvocationListApplicationList';
+import { useGetConvocationListApplicationsQuery } from './convocationListApplicationSlice';
+import { ConvocationListApplicationTable } from './components/ConvocationListApplicationTable';
+import { ConvocationListSeatTable } from './components/ConvocationListSeatTable';
+import { useGetConvocationListSeatsQuery } from './convocationListSeatSlice';
 
 /* ────────────────────────────────────────────────────────────── */
 /* utilitário: converte o VacancyPlan no formato aceito pelo back */
@@ -42,6 +48,13 @@ const vacancyPlanToSeats = (plan: VacancyPlan) =>
 
 /* ────────────────────────────────────────────────────────────── */
 export const ConvocationListDetail = () => {
+  const { search } = useLocation();
+  const navigate = useNavigate();
+  const qs = new URLSearchParams(search);
+  const admissionCategoryId = qs.get("admission_category_id") ?? "";
+  const courseId = qs.get("course_id") ?? "";
+
+
   const { id: processSelectionId, convocationListId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -49,18 +62,50 @@ export const ConvocationListDetail = () => {
   const { data: convocationListResponse, isFetching } =
     useGetConvocationListQuery({ id: convocationListId! });
 
-  const { data: processSelectionResponse } = useGetProcessSelectionQuery({
+  const { data: processSelectionResponse, isFetching: fetchingOut,
+    error: outError
+  } = useGetProcessSelectionQuery({
     id: processSelectionId!,
   });
 
-  /* ────── mutations ────── */
   const [updateConvocationList] = useUpdateConvocationListMutation();
   const [generateSeats, generateSeatsStatus] = useGenerateSeatsMutation();
-  const [generateApplications, generateApplicationsStatus] =
-    useGenerateApplicationsMutation();
+  const [generateApplications, generateApplicationsStatus] = useGenerateApplicationsMutation();
   const [allocateSeats, allocateSeatsStatus] = useAllocateSeatsMutation();
-  const [publishConvocationList, publishStatus] =
-    usePublishConvocationListMutation();
+  const [publishConvocationList, publishStatus] = usePublishConvocationListMutation();
+  const hasAllParams =
+    !!processSelectionId && !!admissionCategoryId && !!courseId;
+
+  const { data: dataApplication, isFetching: isFetchingApplication, error: errorApplication } = useGetConvocationListApplicationsQuery(
+    hasAllParams
+      ? {
+        fixedCacheKey: "convocationList",
+        page: 1,
+        perPage: 5000,
+        filters: {
+          convocation_list_id: convocationListId,
+          admission_category_id: admissionCategoryId,
+          course_id: courseId,
+        },
+      }
+      : // não faz consulta se não deve
+      { skip: true } as any);
+
+
+  const { data: dataSeats, isFetching: isFetchingSeats, error: errorSeats } = useGetConvocationListSeatsQuery(
+    hasAllParams
+      ? {
+        fixedCacheKey: "convocationList",
+        page: 1,
+        perPage: 5000,
+        filters: {
+          convocation_list_id: convocationListId,
+          admission_category_id: admissionCategoryId,
+          course_id: courseId,
+        },
+      }
+      : // não faz consulta se não deve
+      { skip: true } as any);
 
   /* ────── estado local ────── */
   const [convocationList, setConvocationList] = useState<ConvocationList>(
@@ -131,8 +176,22 @@ export const ConvocationListDetail = () => {
   };
 
   if (isFetching) return <Typography>Carregando…</Typography>;
+  if (!processSelectionResponse) return null;
 
-  /* ───────────────── UI ───────────────── */
+  const categories = processSelectionResponse.data.admission_categories ?? [];
+  const courses = processSelectionResponse.data.courses ?? [];
+  const updateParam = (key: string, value?: string | number) => {
+    const next = new URLSearchParams(search);
+    if (!value) next.delete(key);
+    else next.set(key, String(value));
+    navigate({ search: `?${next.toString()}` }, { replace: true });
+  };
+  const selectedCategory = categories.find(c => c.id === Number(admissionCategoryId));
+  const selectedCourse = courses.find(c => c.id === Number(courseId));
+
+
+
+
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
       <Paper sx={{ p: 3 }}>
@@ -228,8 +287,75 @@ export const ConvocationListDetail = () => {
           </Grid>
         </Grid>
       </Paper>
-      <ConvocationListSeatList />
-      <ConvocationListApplicationList />
+      <Box sx={{ mt: 4 }}>
+        <Paper sx={{ p: 3 }}>
+          <Typography variant="h6">Vagas e Inscrições</Typography>
+          {/* filtros ----------------------------------------------------- */}
+          <Grid container spacing={3} sx={{ mb: 3 }}>
+            <Grid item xs={12} md={6}>
+              <Autocomplete
+                options={courses}
+                getOptionLabel={o => `${o.name} - ${o.academic_unit?.name ?? ""}`}
+                value={selectedCourse ?? null}
+                onChange={(_, v) => updateParam("course_id", v?.id)}
+                renderInput={p => <TextField {...p} label="Curso" />}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Autocomplete
+                options={categories}
+                getOptionLabel={o => o.description ?? o.name}
+                value={selectedCategory ?? null}
+                onChange={(_, v) => updateParam("admission_category_id", v?.id)}
+                renderInput={p => <TextField {...p} label="Modalidade" />}
+              />
+            </Grid>
+          </Grid>
+        </Paper>
+
+      </Box>
+      {!hasAllParams ? (
+        <Card variant="outlined">
+          <CardContent>
+            <Typography>
+              Selecione um <strong>Curso</strong> e uma <strong>Modalidade</strong> para visualizar ou gerar documentos.
+            </Typography>
+          </CardContent>
+        </Card>
+      ) : outError ? (
+        <Typography color="error">Erro ao carregar resultados.</Typography>
+      ) : fetchingOut ? (
+        <Typography>Carregando resultados…</Typography>
+      ) : (
+        selectedCategory && selectedCourse && (
+          <>
+            <Box sx={{ mt: 4, mb: 4 }}>
+              <Paper sx={{ p: 3, mb: 2 }}>
+                <Typography variant="h4" gutterBottom>
+                  Vagas
+                </Typography>
+
+              </Paper>
+              <ConvocationListSeatTable
+                convocationListSeats={dataSeats}
+                isFetching={isFetchingSeats}
+              />
+            </Box>
+            <Box sx={{ mt: 4, mb: 4 }}>
+              <Paper sx={{ p: 3, mb: 2 }}>
+                <Typography variant="h4" gutterBottom>
+                  Inscrições em Listas de Convocação
+                </Typography>
+              </Paper>
+              <ConvocationListApplicationTable
+                convocationListApplications={dataApplication}
+                isFetching={isFetchingApplication}
+              />
+            </Box>
+          </>
+        )
+      )}
+
       {/* EDITORs */}
       <ChainsEditor
         open={remapEditorOpen}
