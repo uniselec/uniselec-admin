@@ -21,6 +21,10 @@ export interface ProcessSelection {
     status:         string;
     start_date:     string;
     end_date:       string;
+    preliminary_result_date:  string;
+    appeal_start_date:        string;
+    appeal_end_date:          string;
+    final_result_date:        string;
     type:           string;
     courses: Course[];
     documents?: Document[];
