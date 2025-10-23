@@ -70,7 +70,7 @@
         "convocationListApplication": {
             "status": {
                 "convoked": " Convocado",
-                "eligible": " Classificável",
+                "eligible": " Elegível",
                 "skipped": " Convocado em Lista Anterior"
             }
         },
@@ -155,7 +155,7 @@
         "convocationListApplication": {
             "status": {
                 "convoked": " Convocado",
-                "eligible": " Classificável",
+                "eligible": " Elegível",
                 "skipped": " Convocado em Lista Anterior"
             }
         },
@@ -240,7 +240,7 @@
         "convocationListApplication": {
             "status": {
                 "convoked": " Convoked",
-                "eligible": " Classificável",
+                "eligible": " Elegível",
                 "skipped": " Convocado em Lista Anterior"
             }
         },
@@ -325,7 +325,7 @@
         "convocationListApplication": {
             "status": {
                 "convoked": " Convoqué",
-                "eligible": " Classificável",
+                "eligible": " Elegível",
                 "skipped": " Convocado em Lista Anterior"
             }
         },
@@ -410,7 +410,7 @@
         "convocationListApplication": {
             "status": {
                 "convoked": " Convocado",
-                "eligible": " Classificável",
+                "eligible": " Elegível",
                 "skipped": " Convocado em Lista Anterior"
             }
         },

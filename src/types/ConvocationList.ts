@@ -9,10 +9,6 @@ export interface Results {
 export interface Result {
     data:  ConvocationList;
 }
-export interface RemapRules {
-  order: string[];
-  [categoryName: string]: string[];
-}
 
 export interface ConvocationList {
   id?: number;
@@ -21,20 +17,6 @@ export interface ConvocationList {
   status?: "draft" | "published";
   published_at?: string | null;
   generated_by?: number | null;
-
-  /**
-   * Regras de remanejamento.
-   * Formato:
-   * {
-   *   "chains": {
-   *     "AC": ["LB-PPI", "LB-Q", …],
-   *     "LB-PPI": ["AC", "LB-Q", …],
-   *     …
-   *   }
-   * }
-   */
-  remap_rules?: RemapRules | null;
-
   created_at?: string | null;
   updated_at?: string | null;
 }

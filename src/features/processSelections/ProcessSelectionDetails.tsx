@@ -21,11 +21,16 @@ import {
   useGetProcessSelectionQuery,
   useAttachCoursesMutation,
   useRemoveCourseFromProcessSelectionMutation,
+  useUpdateProcessSelectionMutation,
 } from './processSelectionSlice';
 import { useGetCoursesQuery } from '../courses/courseSlice';
 import { useGetConvocationListsQuery } from '../convocationLists/convocationListSlice';   // ← novo
 import { DocumentList } from '../documents/DocumentList';
 import useTranslate from '../polyglot/useTranslate';
+import ChainsEditor from './components/ChainsEditor';
+import { AdmissionCategory } from '../../types/AdmissionCategory';
+import { ProcessSelection, RemapRules } from '../../types/ProcessSelection';
+import { useSnackbar } from 'notistack';
 
 export const ProcessSelectionDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -96,8 +101,17 @@ export const ProcessSelectionDetails = () => {
       }
     }
   };
+  const [updateProcessSelection] = useUpdateProcessSelectionMutation();
+  const { enqueueSnackbar } = useSnackbar();
+  const handleSaveRemapRules = async (rules: RemapRules | null) => {
+    await runServiceWithToast(
+      updateProcessSelection,
+      { ...processSelectionState, remap_rules: rules },
+      'Regras de remanejamento atualizadas',
+    );
+    setProcessSelectionState((prev) => ({ ...prev, remap_rules: rules }));
+  };
 
-  /* remover curso */
   const handleRemoveCourse = (courseId: string) => {
     setCourseToRemove(courseId);
     setConfirmRemoveOpen(true);
@@ -117,14 +131,39 @@ export const ProcessSelectionDetails = () => {
     setConfirmRemoveOpen(false);
     setCourseToRemove(null);
   };
+  const processSelection = processSelectionResult?.data;
+  const [remapEditorOpen, setRemapEditorOpen] = useState(false);
+  const admissionCategories: AdmissionCategory[] = processSelectionResult?.data.admission_categories ?? [];
+  const [processSelectionState, setProcessSelectionState] = useState<ProcessSelection>(
+    { ...processSelectionResult?.data } as ProcessSelection,
+  );
+  useEffect(() => {
+    if (processSelectionResult?.data) {
+      setProcessSelectionState(processSelectionResult.data);
+    }
+  }, [processSelectionResult]);
+
+
+  const runServiceWithToast = async (
+    service: (arg: any) => any,
+    arg: object,
+    successMessage: string,
+  ) => {
+    try {
+      await service(arg).unwrap();
+      enqueueSnackbar(successMessage, { variant: 'success' });
+    } catch (error: any) {
+      enqueueSnackbar(error?.data?.message || 'Erro inesperado', {
+        variant: 'error',
+      });
+    }
+  };
 
   /* loaders & 404 */
   if (fetchingProcess) return <Typography>Carregando…</Typography>;
   if (!processSelectionResult) {
     return <Typography>Processo Seletivo não encontrado.</Typography>;
   }
-
-  const processSelection = processSelectionResult.data;
 
   /* ────────── UI ────────── */
   return (
@@ -133,30 +172,45 @@ export const ProcessSelectionDetails = () => {
         {/* ───── CARD · Detalhes ───── */}
         <Grid item xs={12} md={6}>
           <Paper sx={{ p: 3, height: '100%' }}>
-            <Typography variant="h4">{processSelection.name}</Typography>
-            <Typography>{processSelection.description}</Typography>
+            <Typography variant="h4">{processSelectionState.name}</Typography>
+            <Typography>{processSelectionState.description}</Typography>
             <Typography>
               Tipo:{' '}
-              {processSelection.type === 'enem_score' ? 'Notas do Enem' : 'SISU'}
+              {processSelectionState.type === 'enem_score' ? 'Notas do Enem' : 'SISU'}
             </Typography>
-            <Typography>Status: {translate(processSelection.status)}</Typography>
-            <Typography>Início: {processSelection.start_date}</Typography>
-            <Typography>Fim: {processSelection.end_date}</Typography>
+            <Typography>Status: {translate(processSelectionState.status)}</Typography>
+            <Typography>Início: {processSelectionState.start_date}</Typography>
+            <Typography>Fim: {processSelectionState.end_date}</Typography>
 
             <Button
               variant="contained"
               color="primary"
               sx={{ mt: 2 }}
               onClick={() =>
-                navigate(`/process-selections/edit/${processSelection.id}`)
+                navigate(`/process-selections/edit/${processSelectionState.id}`)
               }
             >
-              Editar Processo Seletivo
+              Editar
             </Button>
+            <Button
+              variant="outlined"
+              sx={{ ml: 2, mt: 2 }}
+              onClick={() => setRemapEditorOpen(true)}
+            >
+              Remanejamento
+            </Button>
+            <ChainsEditor
+              open={remapEditorOpen}
+              onClose={() => setRemapEditorOpen(false)}
+              value={processSelectionState.remap_rules ?? null}
+              categories={admissionCategories}
+              onSave={handleSaveRemapRules}
+            />
+
           </Paper>
         </Grid>
 
-        {/* ───── CARD · Listas de convocação ───── */}
+
         <Grid item xs={12} md={6}>
           <Paper
             sx={{
@@ -181,7 +235,7 @@ export const ProcessSelectionDetails = () => {
             >
               <Button
                 component={Link}
-                to={`/process-selections/${processSelection.id}/convocation-lists`}
+                to={`/process-selections/${processSelectionState.id}/convocation-lists`}
                 variant="outlined"
                 color="secondary"
                 sx={{ fontSize: '12px' }}
@@ -190,7 +244,7 @@ export const ProcessSelectionDetails = () => {
               </Button>
               <Button
                 component={Link}
-                to={`/process-selections/${processSelection.id}/convocation-lists/create`}
+                to={`/process-selections/${processSelectionState.id}/convocation-lists/create`}
                 variant="outlined"
                 color="secondary"
                 sx={{ fontSize: '12px' }}
@@ -206,7 +260,7 @@ export const ProcessSelectionDetails = () => {
                   <Typography
                     key={list.id}
                     component={Link}
-                    to={`/process-selections/${processSelection.id}/convocation-lists/detail/${list.id}`}
+                    to={`/process-selections/${processSelectionState.id}/convocation-lists/detail/${list.id}`}
                     sx={{
                       display: 'block',
                       color: 'primary.main',
