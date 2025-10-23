@@ -6,30 +6,47 @@ import { KnowledgeArea } from "./KnowledgeArea";
 
 
 export interface Results {
-    data:  ProcessSelection[];
-    links: Links;
-    meta:  Meta;
+  data: ProcessSelection[];
+  links: Links;
+  meta: Meta;
 }
 export interface Result {
-    data:  ProcessSelection;
+  data: ProcessSelection;
+}
+export interface RemapRules {
+  order: string[];
+  [categoryName: string]: string[];
 }
 
 export interface ProcessSelection {
-    id?:              number;
-    name:            string;
-    description:            string;
-    status:           string;
-    start_date:           string;
-    end_date:           string;
-    type:           string;
-    courses: Course[];
-    documents?: Document[];
-    bonus_options?: BonusOption[];
-    allowed_enem_years?: number[];
-    admission_categories?: AdmissionCategory[];
-    knowledge_areas?: KnowledgeArea[];
-    created_at?: null | string;
-    updated_at?: null | string;
+  id?: number;
+  name: string;
+  description: string;
+  status: string;
+  start_date: string;
+  end_date: string;
+  type: string;
+  courses: Course[];
+  documents?: Document[];
+  bonus_options?: BonusOption[];
+  allowed_enem_years?: number[];
+  admission_categories?: AdmissionCategory[];
+  knowledge_areas?: KnowledgeArea[];
+
+  /**
+   * Regras de remanejamento.
+   * Formato:
+   * {
+   *   "chains": {
+   *     "AC": ["LB-PPI", "LB-Q", …],
+   *     "LB-PPI": ["AC", "LB-Q", …],
+   *     …
+   *   }
+   * }
+   */
+  remap_rules?: RemapRules | null;
+  created_at?: null | string;
+  updated_at?: null | string;
 }
 export interface Links {
   prev: string;

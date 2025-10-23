@@ -19,7 +19,6 @@ const ApplicationOutcomeCard = ({
     }
 
 
-    console.log(applicationOutcome);
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} sm={12} xl={4} lg={4} md={4}>

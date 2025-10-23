@@ -23,31 +23,27 @@ import {
   useRedistributeSeatsMutation,
 } from './convocationListSlice';
 
-import ChainsEditor from './components/ChainsEditor';
 import SeatEditor, { VacancyPlan } from './components/SeatEditor';
 
 import { useGetProcessSelectionQuery } from '../processSelections/processSelectionSlice';
 
 import {
-  ConvocationList,
-  RemapRules,
+  ConvocationList
 } from '../../types/ConvocationList';
-import { AdmissionCategory } from '../../types/AdmissionCategory';
 import { Course } from '../../types/Course';
 import { useGetConvocationListApplicationsQuery } from './convocationListApplicationSlice';
 import { ConvocationListApplicationTable } from './components/ConvocationListApplicationTable';
 import { ConvocationListSeatTable } from './components/ConvocationListSeatTable';
 import { useGetConvocationListSeatsQuery } from './convocationListSeatSlice';
 
-/* ────────────────────────────────────────────────────────────── */
-/* utilitário: converte o VacancyPlan no formato aceito pelo back */
+
 const vacancyPlanToSeats = (plan: VacancyPlan) =>
   Object.entries(plan).map(([courseId, { vacancies }]) => ({
     course_id: Number(courseId),
     vacanciesByCategory: vacancies,
   }));
 
-/* ────────────────────────────────────────────────────────────── */
+
 export const ConvocationListDetail = () => {
   const { search } = useLocation();
   const navigate = useNavigate();
@@ -59,7 +55,7 @@ export const ConvocationListDetail = () => {
   const { id: processSelectionId, convocationListId } = useParams();
   const { enqueueSnackbar } = useSnackbar();
 
-  /* ────── dados remotos ────── */
+
   const { data: convocationListResponse, isFetching } =
     useGetConvocationListQuery({ id: convocationListId! });
 
@@ -113,7 +109,7 @@ export const ConvocationListDetail = () => {
   const [convocationList, setConvocationList] = useState<ConvocationList>(
     {} as ConvocationList,
   );
-  const [remapEditorOpen, setRemapEditorOpen] = useState(false);
+
   const [seatEditorOpen, setSeatEditorOpen] = useState(false);
   const [defaultVacancyPlan, setDefaultVacancyPlan] =
     useState<VacancyPlan>({});
@@ -124,8 +120,7 @@ export const ConvocationListDetail = () => {
     }
   }, [convocationListResponse]);
 
-  const admissionCategories: AdmissionCategory[] =
-    processSelectionResponse?.data.admission_categories ?? [];
+
 
   const runServiceWithToast = async (
     service: (arg: any) => any,
@@ -140,15 +135,6 @@ export const ConvocationListDetail = () => {
         variant: 'error',
       });
     }
-  };
-
-  const handleSaveRemapRules = async (rules: RemapRules | null) => {
-    await runServiceWithToast(
-      updateConvocationList,
-      { ...convocationList, remap_rules: rules },
-      'Regras de remanejamento atualizadas',
-    );
-    setConvocationList((prev) => ({ ...prev, remap_rules: rules }));
   };
 
   const handleOpenSeatEditor = () => {
@@ -199,17 +185,6 @@ export const ConvocationListDetail = () => {
         <Typography variant="h4">{convocationList.name}</Typography>
 
         <Grid container spacing={2} sx={{ mt: 3 }}>
-          {/* editar remanejamento */}
-          <Grid item>
-            <Button
-              variant="outlined"
-              onClick={() => setRemapEditorOpen(true)}
-            >
-              Editar remanejamento
-            </Button>
-          </Grid>
-
-          {/* criar vagas */}
           <Grid item>
             <Button
               variant="contained"
@@ -217,7 +192,7 @@ export const ConvocationListDetail = () => {
               disabled={generateSeatsStatus.isLoading}
               onClick={handleOpenSeatEditor}
             >
-              Criar vagas
+              Quantitativo de vagas
             </Button>
           </Grid>
 
@@ -373,16 +348,6 @@ export const ConvocationListDetail = () => {
           </>
         )
       )}
-
-      {/* EDITORs */}
-      <ChainsEditor
-        open={remapEditorOpen}
-        onClose={() => setRemapEditorOpen(false)}
-        value={convocationList.remap_rules ?? null}
-        categories={admissionCategories}
-        onSave={handleSaveRemapRules}
-      />
-
       <SeatEditor
         open={seatEditorOpen}
         onClose={() => setSeatEditorOpen(false)}
