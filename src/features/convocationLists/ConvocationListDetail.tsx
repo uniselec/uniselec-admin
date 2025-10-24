@@ -196,23 +196,7 @@ export const ConvocationListDetail = () => {
             </Button>
           </Grid>
 
-          {/* gerar inscrições */}
-          <Grid item>
-            <Button
-              variant="contained"
-              color="secondary"
-              disabled={generateApplicationsStatus.isLoading}
-              onClick={() =>
-                runServiceWithToast(
-                  generateApplications,
-                  { id: convocationListId! },
-                  'Inscrições geradas',
-                )
-              }
-            >
-              Gerar inscrições
-            </Button>
-          </Grid>
+
 
           {/* processar distribuição */}
           <Grid item>
