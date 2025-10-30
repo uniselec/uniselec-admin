@@ -42,8 +42,13 @@ eventSupportRequest.under_review, Em análise, Em análise, Em análise, Em aná
 eventSupportRequest.rejected, Indeferido, Indeferido, Indeferido, Indeferido, Indeferido
 eventSupportRequest.approved, Deferido, Deferido, Deferido, Deferido, Deferido
 convocationListApplication.status.convoked, Convocado, Convocado, Convoked, Convoqué, Convocado
-convocationListApplication.status.eligible, Elegível, Elegível, Elegível, Elegível, Elegível
-convocationListApplication.status.skipped, Convocado em Lista Anterior, Convocado em Lista Anterior, Convocado em Lista Anterior, Convocado em Lista Anterior, Convocado em Lista Anterior
+convocationListApplication.resultStatus.classifiable, Classificável, Classificável, Classificável, Classificável, Classificável
+convocationListApplication.resultStatus.classified, Classificado, Classificado, Classificado, Classificado, Classificado
+convocationListApplication.convocationStatus.pending, Em Espera, Em Espera, Em Espera, Em Espera, Em Espera
+convocationListApplication.convocationStatus.called, Convocado, Convocado, Convocado, Convocado, Convocado
+convocationListApplication.convocationStatus.called_out_of_quota, Convocado forda de Vaga, Convocado forda de Vaga, Convocado forda de Vaga, Convocado forda de Vaga, Convocado forda de Vaga
+convocationListApplication.convocationStatus.skipped, Excluído, Excluído, Excluído, Excluído, Excluído
+convocationListApplication.responseStatus.pending, Em Espera, Em Espera, Em Espera, Em Espera, Em Espera
 status.approved, Deferido,Deferido,Deferido,Deferido,Deferido
 status.rejected,Indeferido,Indeferido,Indeferido,Indeferido,Indeferido
 status.pending,Pendente,Pendente,Pendente,Pendente,Pendente

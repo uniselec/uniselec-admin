@@ -185,55 +185,7 @@ export const ConvocationListDetail = () => {
         <Typography variant="h4">{convocationList.name}</Typography>
 
         <Grid container spacing={2} sx={{ mt: 3 }}>
-          <Grid item>
-            <Button
-              variant="contained"
-              color="secondary"
-              disabled={generateSeatsStatus.isLoading}
-              onClick={handleOpenSeatEditor}
-            >
-              Quantitativo de vagas
-            </Button>
-          </Grid>
-
-
-
           {/* processar distribuição */}
-          <Grid item>
-            <Button
-              variant="contained"
-              color="secondary"
-              disabled={allocateSeatsStatus.isLoading}
-              onClick={() =>
-                runServiceWithToast(
-                  allocateSeats,
-                  { id: convocationListId! },
-                  'Distribuição concluída',
-                )
-              }
-            >
-              Processar distribuição
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              variant="contained"
-              color="secondary"
-              disabled={allocateSeatsStatus.isLoading}
-              onClick={() =>
-                runServiceWithToast(
-                  redistributeSeats,
-                  { id: convocationListId! },
-                  'Redistribuição concluída',
-                )
-              }
-            >
-              Processar redistribuição
-            </Button>
-          </Grid>
-
-
-          {/* publicar lista */}
           {convocationList.status === 'draft' && (
             <Grid item>
               <Button
@@ -307,12 +259,6 @@ export const ConvocationListDetail = () => {
         selectedCourse && (
           <>
             <Box sx={{ mt: 4, mb: 4 }}>
-              <Paper sx={{ p: 3, mb: 2 }}>
-                <Typography variant="h4" gutterBottom>
-                  Vagas
-                </Typography>
-
-              </Paper>
               <ConvocationListSeatTable
                 convocationListSeats={dataSeats}
                 isFetching={isFetchingSeats}

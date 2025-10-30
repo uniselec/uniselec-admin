@@ -69,9 +69,20 @@
         },
         "convocationListApplication": {
             "status": {
-                "convoked": " Convocado",
-                "eligible": " Elegível",
-                "skipped": " Convocado em Lista Anterior"
+                "convoked": " Convocado"
+            },
+            "resultStatus": {
+                "classifiable": " Classificável",
+                "classified": " Classificado"
+            },
+            "convocationStatus": {
+                "pending": " Em Espera",
+                "called": " Convocado",
+                "called_out_of_quota": " Convocado forda de Vaga",
+                "skipped": " Excluído"
+            },
+            "responseStatus": {
+                "pending": " Em Espera"
             }
         },
         "processSelection": {
@@ -154,9 +165,20 @@
         },
         "convocationListApplication": {
             "status": {
-                "convoked": " Convocado",
-                "eligible": " Elegível",
-                "skipped": " Convocado em Lista Anterior"
+                "convoked": " Convocado"
+            },
+            "resultStatus": {
+                "classifiable": " Classificável",
+                "classified": " Classificado"
+            },
+            "convocationStatus": {
+                "pending": " Em Espera",
+                "called": " Convocado",
+                "called_out_of_quota": " Convocado forda de Vaga",
+                "skipped": " Excluído"
+            },
+            "responseStatus": {
+                "pending": " Em Espera"
             }
         },
         "processSelection": {
@@ -239,9 +261,20 @@
         },
         "convocationListApplication": {
             "status": {
-                "convoked": " Convoked",
-                "eligible": " Elegível",
-                "skipped": " Convocado em Lista Anterior"
+                "convoked": " Convoked"
+            },
+            "resultStatus": {
+                "classifiable": " Classificável",
+                "classified": " Classificado"
+            },
+            "convocationStatus": {
+                "pending": " Em Espera",
+                "called": " Convocado",
+                "called_out_of_quota": " Convocado forda de Vaga",
+                "skipped": " Excluído"
+            },
+            "responseStatus": {
+                "pending": " Em Espera"
             }
         },
         "processSelection": {
@@ -324,9 +357,20 @@
         },
         "convocationListApplication": {
             "status": {
-                "convoked": " Convoqué",
-                "eligible": " Elegível",
-                "skipped": " Convocado em Lista Anterior"
+                "convoked": " Convoqué"
+            },
+            "resultStatus": {
+                "classifiable": " Classificável",
+                "classified": " Classificado"
+            },
+            "convocationStatus": {
+                "pending": " Em Espera",
+                "called": " Convocado",
+                "called_out_of_quota": " Convocado forda de Vaga",
+                "skipped": " Excluído"
+            },
+            "responseStatus": {
+                "pending": " Em Espera"
             }
         },
         "processSelection": {
@@ -409,9 +453,20 @@
         },
         "convocationListApplication": {
             "status": {
-                "convoked": " Convocado",
-                "eligible": " Elegível",
-                "skipped": " Convocado em Lista Anterior"
+                "convoked": " Convocado"
+            },
+            "resultStatus": {
+                "classifiable": " Classificável",
+                "classified": " Classificado"
+            },
+            "convocationStatus": {
+                "pending": " Em Espera",
+                "called": " Convocado",
+                "called_out_of_quota": " Convocado forda de Vaga",
+                "skipped": " Excluído"
+            },
+            "responseStatus": {
+                "pending": " Em Espera"
             }
         },
         "processSelection": {
