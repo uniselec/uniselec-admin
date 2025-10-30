@@ -31,7 +31,7 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
   convocationListApplications,
   isFetching,
 }) => {
-  const translate = useTranslate("convocationListApplication.status");
+  const translate = useTranslate("convocationListApplication");
   const [deleteRow, { isLoading }] =
     useDeleteConvocationListApplicationMutation();
 
@@ -70,7 +70,7 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
   /* ---------- dados ---------- */
   const rawRows = convocationListApplications?.data ?? [];
 
-  /* ►► Ordena por categoria (alfabética) e, dentro dela, pelo ranking_in_category */
+  /* ►► Ordena por categoria (alfabética) e, dentro dela, pelo category_ranking */
   const rows = useMemo(() => {
     return [...rawRows].sort((a: any, b: any) => {
       const catA = a?.category?.name ?? "";
@@ -80,8 +80,8 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
         return catA.localeCompare(catB, "pt-BR");
       }
       /* mesma categoria → ranking crescente */
-      const rankA = a?.ranking_in_category ?? 0;
-      const rankB = b?.ranking_in_category ?? 0;
+      const rankA = a?.category_ranking ?? 0;
+      const rankB = b?.category_ranking ?? 0;
       return rankA - rankB;
     });
   }, [rawRows]);
@@ -109,7 +109,9 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                 "Nota",
                 "Ranking (cat.)",
                 "Categoria",
-                "Situação",
+                "Resultado",
+                "Convocação",
+                "Aceitação",
                 "Vaga",
                 "Ações",
               ].map((h) => (
@@ -161,13 +163,19 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                   {app.application?.application_outcome?.final_score}
                 </TableCell>
                 <TableCell sx={{ border: "1px solid black", p: 1 }}>
-                  {app.ranking_in_category}
+                  {app.general_ranking}
                 </TableCell>
                 <TableCell sx={{ border: "1px solid black", p: 1 }}>
                   {app.category?.name}
                 </TableCell>
                 <TableCell sx={{ border: "1px solid black", p: 1 }}>
-                  {translate(app.status)}
+                  {translate(`resultStatus.${app.result_status}`)}
+                </TableCell>
+                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                  {translate(`convocationStatus.${app.convocation_status}`)}
+                </TableCell>
+                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                  {translate(`responseStatus.${app.response_status}`)}
                 </TableCell>
                 <TableCell sx={{ border: "1px solid black", p: 1 }}>
                   {app?.seat?.seat_code ?? "-"}

@@ -34,8 +34,8 @@ export interface ConvocationListApplication {
   seat?: ConvocationListSeat | null;
 
   /* dados de geração / status ------------------------------------ */
-  ranking_at_generation: number;
-  ranking_in_category: number;
+  general_ranking: number;
+  category_ranking: number;
   status: "eligible" | "convoked" | "skipped";
 
   /* timestamps ---------------------------------------------------- */

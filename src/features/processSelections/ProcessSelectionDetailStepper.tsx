@@ -17,6 +17,7 @@ import { CardAdvise } from "./components/CardAdvise";
 import { ApplicationCSVDownload } from "../applications/ApplicationCSVDownload";
 import { ImportEnemScoreStep } from "./ImportEnemScoreStep";
 import { ApplicationOutcomesStep } from "./ApplicationOutcomesStep";
+import { ProcessSelectionConvocation } from "./ProcessSelectionConvocation";
 
 
 export const ProcessSelectionDetailStepper = () => {
@@ -39,7 +40,8 @@ export const ProcessSelectionDetailStepper = () => {
   const stepLabels = [
     "Processo Seletivo",
     "Importar Notas ",
-    "Resultados"
+    "Resultados",
+    "Convocações"
   ]
 
 
@@ -69,8 +71,8 @@ export const ProcessSelectionDetailStepper = () => {
       <Box sx={{ p: 3, mt: 3, minHeight: 300 }}>
         {activeStep === 0 && <ProcessSelectionDetails />}
         {activeStep === 1 && <ImportEnemScoreStep />}
-        {activeStep === 2 && <ApplicationOutcomesStep/>}
-        {activeStep === 3 && <CardAdvise/>}
+        {activeStep === 2 && <ApplicationOutcomesStep />}
+        {activeStep === 3 && <ProcessSelectionConvocation />}
       </Box>
     </Box>
   );

@@ -32,7 +32,7 @@ import { AdmissionCategory } from '../../types/AdmissionCategory';
 import { ProcessSelection, RemapRules } from '../../types/ProcessSelection';
 import { useSnackbar } from 'notistack';
 
-export const ProcessSelectionDetails = () => {
+export const ProcessSelectionConvocation = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -169,54 +169,83 @@ export const ProcessSelectionDetails = () => {
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={2} sx={{ mb: 2 }}>
-        {/* ───── CARD · Detalhes ───── */}
+
+
+
         <Grid item xs={12} md={12}>
-          <Paper sx={{ p: 3, height: '100%' }}>
-            <Typography variant="h4">{processSelectionState.name}</Typography>
-            <Typography>{processSelectionState.description}</Typography>
-            <Typography>
-              Tipo:{' '}
-              {processSelectionState.type === 'enem_score' ? 'Notas do Enem' : 'SISU'}
+          <Paper
+            sx={{
+              p: 3,
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <Typography variant="h5" gutterBottom>
+              Listas de Convocação
             </Typography>
-            <Typography>Status: {translate(processSelectionState.status)}</Typography>
-            <Typography>Início: {processSelectionState.start_date}</Typography>
-            <Typography>Fim: {processSelectionState.end_date}</Typography>
 
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ mt: 2 }}
-              onClick={() =>
-                navigate(`/process-selections/edit/${processSelectionState.id}`)
-              }
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 2,
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                mt: 2,
+              }}
             >
-              Editar
-            </Button>
-            <Button
-              variant="outlined"
-              sx={{ ml: 2, mt: 2 }}
-              onClick={() => setRemapEditorOpen(true)}
-            >
-              Remanejamento
-            </Button>
-            <ChainsEditor
-              open={remapEditorOpen}
-              onClose={() => setRemapEditorOpen(false)}
-              value={processSelectionState.remap_rules ?? null}
-              categories={admissionCategories}
-              onSave={handleSaveRemapRules}
-            />
+              <Button
+                component={Link}
+                to={`/process-selections/${processSelectionState.id}/convocation-lists`}
+                variant="outlined"
+                color="secondary"
+                sx={{ fontSize: '12px' }}
+              >
+                Listas de Convocação
+              </Button>
+              <Button
+                component={Link}
+                to={`/process-selections/${processSelectionState.id}/convocation-lists/create`}
+                variant="outlined"
+                color="secondary"
+                sx={{ fontSize: '12px' }}
+              >
+                Criar Lista de Convocação
+              </Button>
+            </Box>
 
+            <Box sx={{ flexGrow: 1, mt: 2, overflowY: 'auto' }}>
+              {fetchingLists && <CircularProgress size={24} />}
+              {!fetchingLists &&
+                convocationListsResult?.data.map((list) => (
+                  <Typography
+                    key={list.id}
+                    component={Link}
+                    to={`/process-selections/${processSelectionState.id}/convocation-lists/detail/${list.id}`}
+                    sx={{
+                      display: 'block',
+                      color: 'primary.main',
+                      textDecoration: 'none',
+                      mb: 0.5,
+                    }}
+                  >
+                    • {list.name}{' '}
+                    {list.status === 'published'
+                      ? `(publicada em ${new Date(
+                        list.published_at!,
+                      ).toLocaleDateString()})`
+                      : `(rascunho)`}
+                  </Typography>
+                ))}
+              {!fetchingLists && convocationListsResult?.data.length === 0 && (
+                <Typography color="text.secondary">
+                  Nenhuma lista cadastrada ainda.
+                </Typography>
+              )}
+            </Box>
           </Paper>
         </Grid>
-
-
       </Grid>
-
-      {/* documentos vinculados */}
-      <DocumentList processSelectionId={id!} />
-
-      {/* dialogo remover curso */}
       <Dialog
         open={confirmRemoveOpen}
         onClose={() => setConfirmRemoveOpen(false)}
