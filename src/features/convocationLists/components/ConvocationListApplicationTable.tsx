@@ -18,7 +18,7 @@ import {
   Paper,
 } from "@mui/material";
 import { Results } from "../../../types/ConvocationListApplication";
-import { useDeleteConvocationListApplicationMutation } from "../convocationListApplicationSlice";
+import { useCallConvocationListApplicationMutation, useDeleteConvocationListApplicationMutation } from "../convocationListApplicationSlice";
 import useTranslate from "../../polyglot/useTranslate";
 import { Link } from "react-router-dom";
 
@@ -31,6 +31,20 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
   convocationListApplications,
   isFetching,
 }) => {
+  const [callApplication, { isLoading: isCalling }] = useCallConvocationListApplicationMutation();
+  const handleCall = async (id: string) => {
+    try {
+      await callApplication({ id }).unwrap();
+      setAlert({ open: true, sev: "success", msg: "Candidato convocado." });
+    } catch (err: any) {
+      setAlert({
+        open: true,
+        sev: "error",
+        msg: err?.data?.message || "Erro ao convocar.",
+      });
+    }
+  };
+
   const translate = useTranslate("convocationListApplication");
   const [deleteRow, { isLoading }] =
     useDeleteConvocationListApplicationMutation();
@@ -163,7 +177,7 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                   {app.application?.application_outcome?.final_score}
                 </TableCell>
                 <TableCell sx={{ border: "1px solid black", p: 1 }}>
-                  {app.general_ranking}
+                  {app.category_ranking}
                 </TableCell>
                 <TableCell sx={{ border: "1px solid black", p: 1 }}>
                   {app.category?.name}
@@ -181,15 +195,18 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                   {app?.seat?.seat_code ?? "-"}
                 </TableCell>
                 <TableCell sx={{ border: "1px solid black", p: 1 }}>
-                  {/* <Button
-                    variant="contained"
-                    size="small"
-                    color="secondary"
-                    disabled={isLoading}
-                    onClick={() => openConfirm(app.id)}
-                  >
-                    Apagar
-                  </Button> */}
+                  {app.convocation_status === "pending" ? (
+                    <Button
+                      variant="contained"
+                      size="small"
+                      disabled={isCalling}
+                      onClick={() => handleCall(app.id)}
+                    >
+                      Convocar
+                    </Button>
+                  ) : (
+                    <>-</>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
