@@ -21,11 +21,13 @@ import {
   AccordionSummary,
   AccordionDetails,
   Chip,
+  Tooltip
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Results } from "../../../types/ConvocationListSeat";
-import { useDeleteConvocationListSeatMutation } from "../convocationListSeatSlice";
+import { useDeleteConvocationListSeatMutation, useRedistributeSeatMutation } from "../convocationListSeatSlice";
 import { Link } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 type Props = {
   convocationListSeats: Results | undefined;
@@ -36,6 +38,10 @@ export const ConvocationListSeatTable: React.FC<Props> = ({
   convocationListSeats,
   isFetching,
 }) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const [redistributeSeat, { isLoading: loadingRedistribute }] =
+    useRedistributeSeatMutation();
+
   /* ---- mutations & feedback ---- */
   const [deleteSeat, { isLoading }] = useDeleteConvocationListSeatMutation();
   const [alert, setAlert] = useState<{ open: boolean; msg: string; sev: "success" | "error" }>({
@@ -164,28 +170,41 @@ export const ConvocationListSeatTable: React.FC<Props> = ({
                       {seat.status === "open"
                         ? "Aberta"
                         : seat.status === "reserved"
-                        ? "Reservada"
-                        : (
-                          <Link
-                            to={`/application-outcomes/edit/${seat?.application?.id}`}
-                            style={{ textDecoration: "none", color: "blue" }}
-                          >
-                            {seat.application?.form_data?.name}
-                          </Link>
-                        )}
+                          ? "Reservada"
+                          : (
+                            <Link
+                              to={`/application-outcomes/edit/${seat?.application?.id}`}
+                              style={{ textDecoration: "none", color: "blue" }}
+                            >
+                              {seat.application?.form_data?.name}
+                            </Link>
+                          )}
                     </TableCell>
                     <TableCell style={{ border: "1px solid black", padding: "6px" }}>
-                      {/*
-                      <Button
-                        variant="contained"
-                        size="small"
-                        color="secondary"
-                        disabled={isLoading}
-                        onClick={() => openConfirm(String(seat.id))}
-                      >
-                        Apagar
-                      </Button>
-                      */}
+                      <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
+                        {seat.can_redistribute && (
+                          <Tooltip title="Redistribuir vaga">
+                            <Button
+                              variant="outlined"
+                              size="small"
+                              disabled={loadingRedistribute}
+                              onClick={async () => {
+                                try {
+                                  await redistributeSeat({ id: String(seat.id) }).unwrap();
+                                  enqueueSnackbar("Vaga redistribuída", { variant: "success" });
+                                } catch (e: any) {
+                                  enqueueSnackbar(
+                                    e?.data?.message || "Falha ao redistribuir",
+                                    { variant: "error" }
+                                  );
+                                }
+                              }}
+                            >
+                              Redistribuir
+                            </Button>
+                          </Tooltip>
+                        )}
+                      </TableCell>
                     </TableCell>
                   </TableRow>
                 ))}

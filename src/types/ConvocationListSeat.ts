@@ -32,7 +32,7 @@ export interface ConvocationListSeat {
   application?: Application | null;
 
   status: "open" | "reserved" | "filled";
-
+  can_redistribute?: boolean;
   created_at?: string | null;
   updated_at?: string | null;
 }
