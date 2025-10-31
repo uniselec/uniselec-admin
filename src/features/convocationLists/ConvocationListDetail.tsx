@@ -196,11 +196,11 @@ export const ConvocationListDetail = () => {
                   runServiceWithToast(
                     publishConvocationList,
                     { id: convocationListId! },
-                    'Lista publicada',
+                    'Convocação Finalizada com sucesso',
                   )
                 }
               >
-                Publicar lista
+                Finalizar Convocação
               </Button>
             </Grid>
           )}
