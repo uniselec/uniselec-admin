@@ -116,7 +116,7 @@ export const ConvocationListSeatTable: React.FC<Props> = ({
             >
               <TableHead>
                 <TableRow>
-                  {["Código", "Curso", "Cat. Origem", "Cat. Atual", "Status", "Criada em", "Ações"].map(
+                  {["Código", "Curso", "Cat. Origem", "Cat. Atual", "Status", "Ações"].map(
                     (h) => (
                       <TableCell
                         key={h}
@@ -173,9 +173,6 @@ export const ConvocationListSeatTable: React.FC<Props> = ({
                             {seat.application?.form_data?.name}
                           </Link>
                         )}
-                    </TableCell>
-                    <TableCell style={{ border: "1px solid black", padding: "6px" }}>
-                      {formatDate(seat.created_at)}
                     </TableCell>
                     <TableCell style={{ border: "1px solid black", padding: "6px" }}>
                       {/*

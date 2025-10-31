@@ -2,6 +2,8 @@ import React, { useState, useMemo } from "react";
 import {
   Box,
   Button,
+  ButtonGroup,
+  IconButton,
   Snackbar,
   Alert,
   Dialog,
@@ -16,11 +18,22 @@ import {
   TableRow,
   TableCell,
   Paper,
+  Tooltip,
 } from "@mui/material";
-import { Results } from "../../../types/ConvocationListApplication";
-import { useAcceptConvocationMutation, useCallConvocationListApplicationMutation, useDeclineConvocationMutation, useDeleteConvocationListApplicationMutation, useRejectConvocationMutation } from "../convocationListApplicationSlice";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import BlockIcon from "@mui/icons-material/Block";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  useCallConvocationListApplicationMutation,
+  useAcceptConvocationMutation,
+  useDeclineConvocationMutation,
+  useRejectConvocationMutation,
+  useDeleteConvocationListApplicationMutation,
+} from "../convocationListApplicationSlice";
 import useTranslate from "../../polyglot/useTranslate";
 import { Link } from "react-router-dom";
+import { Results } from "../../../types/ConvocationListApplication";
 
 type Props = {
   convocationListApplications: Results | undefined;
@@ -31,69 +44,33 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
   convocationListApplications,
   isFetching,
 }) => {
-  const [callApplication, { isLoading: isCalling }] = useCallConvocationListApplicationMutation();
-
-  const [callApp, { isLoading: loadingCall }] = useCallConvocationListApplicationMutation();
-  const [acceptApp, { isLoading: loadingAccept }] = useAcceptConvocationMutation();
-  const [declineApp, { isLoading: loadingDecline }] = useDeclineConvocationMutation();
-  const [rejectApp, { isLoading: loadingReject }] = useRejectConvocationMutation();
-
-  const handleCall = async (id: string) => {
-    try {
-      await callApplication({ id }).unwrap();
-      setAlert({ open: true, sev: "success", msg: "Candidato convocado." });
-    } catch (err: any) {
-      setAlert({
-        open: true,
-        sev: "error",
-        msg: err?.data?.message || "Erro ao convocar.",
-      });
-    }
-  };
-  const handleAction = async (
-    fn: (args: { id: string }) => Promise<any>,
-    id: string,
-    successMsg: string,
-    errorMsg = "Erro inesperado"
-  ) => {
-    try {
-      const result = await fn({ id });
-      // RTK Query devolve { data } ou { error }
-      if ("error" in result) {
-        throw result.error;
-      }
-      setAlert({ open: true, sev: "success", msg: successMsg });
-    } catch (e: any) {
-      setAlert({
-        open: true,
-        sev: "error",
-        msg: e?.data?.message || errorMsg
-      });
-    }
-  };
-
-
-  const translate = useTranslate("convocationListApplication");
-  const [deleteRow, { isLoading }] =
+  const [callApp, { isLoading: loadingCall }] =
+    useCallConvocationListApplicationMutation();
+  const [acceptApp, { isLoading: loadingAccept }] =
+    useAcceptConvocationMutation();
+  const [declineApp, { isLoading: loadingDecline }] =
+    useDeclineConvocationMutation();
+  const [rejectApp, { isLoading: loadingReject }] =
+    useRejectConvocationMutation();
+  const [deleteRow, { isLoading: loadingDelete }] =
     useDeleteConvocationListApplicationMutation();
 
-  /* ---------- feedback UI ---------- */
+  const translate = useTranslate("convocationListApplication");
+
   const [alert, setAlert] = useState<{
     open: boolean;
     msg: string;
     sev: "success" | "error";
   }>({ open: false, msg: "", sev: "success" });
 
-  const [confirm, setConfirm] = useState<{ open: boolean; id: string | null }>({
-    open: false,
-    id: null,
-  });
+  const [confirm, setConfirm] = useState<{
+    open: boolean;
+    id: string | null;
+  }>({ open: false, id: null });
 
   const closeAlert = () =>
-    setAlert((prev) => ({
-      ...prev,
-      open: false,
-    }));
+    setAlert((prev) => ({ ...prev, open: false }));
+
   const openConfirm = (id: string) => setConfirm({ open: true, id });
   const closeConfirm = () => setConfirm({ open: false, id: null });
 
@@ -109,26 +86,37 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
     }
   };
 
-  /* ---------- dados ---------- */
-  const rawRows = convocationListApplications?.data ?? [];
+  const handleAction = async (
+    fn: (args: { id: string }) => Promise<any>,
+    id: string,
+    successMsg: string,
+    errorMsg = "Erro inesperado"
+  ) => {
+    try {
+      const result = await fn({ id });
+      if ("error" in result) throw result.error;
+      setAlert({ open: true, sev: "success", msg: successMsg });
+    } catch (e: any) {
+      setAlert({
+        open: true,
+        sev: "error",
+        msg: e?.data?.message || errorMsg,
+      });
+    }
+  };
 
-  /* ►► Ordena por categoria (alfabética) e, dentro dela, pelo category_ranking */
   const rows = useMemo(() => {
-    return [...rawRows].sort((a: any, b: any) => {
-      const catA = a?.category?.name ?? "";
-      const catB = b?.category?.name ?? "";
-
+    const raw = convocationListApplications?.data ?? [];
+    return [...raw].sort((a: any, b: any) => {
+      const catA = a.category?.name ?? "";
+      const catB = b.category?.name ?? "";
       if (catA !== catB) {
         return catA.localeCompare(catB, "pt-BR");
       }
-      /* mesma categoria → ranking crescente */
-      const rankA = a?.category_ranking ?? 0;
-      const rankB = b?.category_ranking ?? 0;
-      return rankA - rankB;
+      return (a.category_ranking ?? 0) - (b.category_ranking ?? 0);
     });
-  }, [rawRows]);
+  }, [convocationListApplications]);
 
-  /* ---------- render ---------- */
   return (
     <Box sx={{ mt: 2 }}>
       <Paper sx={{ p: 3, mb: 2 }}>
@@ -141,147 +129,167 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
             wordWrap: "break-word",
           }}
         >
-          {/* cabeçalho -------------------------------------------------- */}
           <TableHead>
             <TableRow>
               {[
                 "Campus",
                 "Curso",
-                "Nome do Candidato",
+                "Candidato",
                 "Nota",
-                "Ranking (cat.)",
+                "Rank(cat.)",
                 "Categoria",
                 "Resultado",
                 "Convocação",
-                "Aceitação",
+                "Resposta",
                 "Vaga",
                 "Ações",
               ].map((h) => (
                 <TableCell
                   key={h}
-                  sx={{ border: "1px solid black", p: 1, fontWeight: "bold" }}
+                  sx={{ border: "1px solid #ddd", p: 1, fontWeight: "bold" }}
                 >
                   {h}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
-
-          {/* corpo ------------------------------------------------------ */}
           <TableBody>
             {isFetching && (
               <TableRow>
-                <TableCell colSpan={8}>
+                <TableCell colSpan={11}>
                   <Typography align="center">Carregando…</Typography>
                 </TableCell>
               </TableRow>
             )}
-
             {!isFetching && rows.length === 0 && (
               <TableRow>
-                <TableCell colSpan={8}>
+                <TableCell colSpan={11}>
                   <Typography align="center">Nenhum registro.</Typography>
                 </TableCell>
               </TableRow>
             )}
-
             {rows.map((app: any) => (
-              <TableRow key={app.id} sx={{ border: "1px solid black" }}>
-                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+              <TableRow key={app.id} hover>
+                <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
                   {app.course?.academic_unit?.state}
                 </TableCell>
-                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
                   {app.course?.name}
                 </TableCell>
-                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
                   <Link
                     to={`/application-outcomes/edit/${app.application.id}`}
-                    style={{ textDecoration: "none", color: "blue" }}
+                    style={{ textDecoration: "none", color: "#1976d2" }}
                   >
                     {app.application?.form_data?.name}
                   </Link>
                 </TableCell>
-                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
                   {app.application?.application_outcome?.final_score}
                 </TableCell>
-                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
                   {app.category_ranking}
                 </TableCell>
-                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
                   {app.category?.name}
                 </TableCell>
-                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
                   {translate(`resultStatus.${app.result_status}`)}
                 </TableCell>
-                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
                   {translate(`convocationStatus.${app.convocation_status}`)}
                 </TableCell>
-                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
                   {translate(`responseStatus.${app.response_status}`)}
                 </TableCell>
-                <TableCell sx={{ border: "1px solid black", p: 1 }}>
+                <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
                   {app.seat?.seat_code ? (
-                    (app.response_status === "rejected" || app.response_status === "declined") ? (
-                      <Typography component="span" sx={{ textDecoration: "line-through" }}>
+                    ["rejected", "declined"].includes(app.response_status) ? (
+                      <Typography
+                        component="span"
+                        sx={{ textDecoration: "line-through" }}
+                      >
                         {app.seat.seat_code}
                       </Typography>
                     ) : (
                       app.seat.seat_code
                     )
                   ) : (
-                    "-"
+                    "–"
                   )}
                 </TableCell>
-                <TableCell sx={{ border: "1px solid black", p: 1 }}>
-                  {["pending", "called_out_of_quota"].includes(app.convocation_status) && (
-                    <Button
-                      variant="contained"
-                      size="small"
-                      disabled={loadingCall}
-                      onClick={() => handleAction(callApp, app.id, "Convocado!")}
-                    >
-                      Convocar
-                    </Button>
+
+                {/* Ações */}
+                <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
+                  {/* 1) Convocar */}
+                  {["pending", "called_out_of_quota"].includes(
+                    app.convocation_status
+                  ) && (
+                    <Tooltip title="Convocar candidato">
+                      <Button
+                        variant="contained"
+                        size="small"
+                        disabled={loadingCall}
+                        onClick={() =>
+                          handleAction(callApp, app.id, "Convocado!")
+                        }
+                        sx={{ mr: 1 }}
+                      >
+                        Convocar
+                      </Button>
+                    </Tooltip>
                   )}
 
-                  {app.response_status === 'pending' && app.convocation_status === "called" && (
-                    <>
-                      <Button
-                        variant="outlined"
+                  {/* 2) Resposta (call status = called) */}
+                  {app.convocation_status === "called" &&
+                    app.response_status === "pending" && (
+                      <ButtonGroup
                         size="small"
-                        disabled={loadingAccept}
-                        onClick={() => handleAction(acceptApp, app.id, "Aceito!")}
-                        sx={{ mr: 1 }}
-                      >
-                        Aceitar
-                      </Button>
-                      <Button
                         variant="outlined"
-                        size="small"
-                        disabled={loadingDecline}
-                        onClick={() => handleAction(declineApp, app.id, "Recusado!")}
-                        sx={{ mr: 1 }}
+                        aria-label="group resposta"
                       >
-                        Recusar
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        color="error"
-                        disabled={loadingReject}
-                        onClick={() => handleAction(rejectApp, app.id, "Indeferido!")}
-                      >
-                        Indeferir
-                      </Button>
-                    </>
-                  )}
+                        <Tooltip title="Aceitar vaga">
+                          <Button
+                            onClick={() =>
+                              handleAction(acceptApp, app.id, "Aceito!")
+                            }
+                            disabled={loadingAccept}
+                          >
+                            <CheckIcon fontSize="small" />
+                          </Button>
+                        </Tooltip>
+                        <Tooltip title="Recusar vaga">
+                          <Button
+                            onClick={() =>
+                              handleAction(declineApp, app.id, "Recusado!")
+                            }
+                            disabled={loadingDecline}
+                          >
+                            <CloseIcon fontSize="small" />
+                          </Button>
+                        </Tooltip>
+                        <Tooltip title="Indeferir inscrição">
+                          <Button
+                            onClick={() =>
+                              handleAction(rejectApp, app.id, "Indeferido!")
+                            }
+                            color="error"
+                            disabled={loadingReject}
+                          >
+                            <BlockIcon fontSize="small" />
+                          </Button>
+                        </Tooltip>
+                      </ButtonGroup>
+                    )}
+
+
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
 
-        {/* Snackbar ---------------------------------------------------- */}
+        {/* notificação */}
         <Snackbar
           open={alert.open}
           autoHideDuration={3000}
@@ -297,7 +305,7 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
           </Alert>
         </Snackbar>
 
-        {/* Diálogo de confirmação -------------------------------------- */}
+        {/* confirmação de exclusão */}
         <Dialog open={confirm.open} onClose={closeConfirm}>
           <DialogTitle>Confirmação</DialogTitle>
           <DialogContent>
