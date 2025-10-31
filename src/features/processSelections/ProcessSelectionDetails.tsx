@@ -197,7 +197,7 @@ export const ProcessSelectionDetails = () => {
               sx={{ ml: 2, mt: 2 }}
               onClick={() => setRemapEditorOpen(true)}
             >
-              Remanejamento
+              Sequência de redistribuição de Vagas
             </Button>
             <ChainsEditor
               open={remapEditorOpen}
