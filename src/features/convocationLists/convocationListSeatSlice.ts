@@ -43,6 +43,13 @@ export const processSelectionsApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ["ConvocationListSeats"],
     }),
+    redistributeSeat: mutation<{ message: string }, { id: string }>({
+      query: ({ id }) => ({
+        url: `/convocation_list_seats/${id}/redistribute`,
+        method: "POST",
+      }),
+      invalidatesTags: ["ConvocationListSeats", "ConvocationListApplications"],
+    }),
     getConvocationListSeat: query<Result, { id: string }>({
       query: getConvocationListSeat,
       providesTags: ["ConvocationListSeats"],
@@ -68,4 +75,5 @@ export const {
   useUpdateConvocationListSeatMutation,
   useGetConvocationListSeatQuery,
   useDeleteConvocationListSeatMutation,
+  useRedistributeSeatMutation,
 } = processSelectionsApiSlice;

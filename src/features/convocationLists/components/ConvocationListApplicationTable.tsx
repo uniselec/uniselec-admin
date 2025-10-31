@@ -3,7 +3,7 @@ import {
   Box,
   Button,
   ButtonGroup,
-  IconButton,
+  Tooltip,
   Snackbar,
   Alert,
   Dialog,
@@ -18,12 +18,10 @@ import {
   TableRow,
   TableCell,
   Paper,
-  Tooltip,
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import BlockIcon from "@mui/icons-material/Block";
-import DeleteIcon from "@mui/icons-material/Delete";
 import {
   useCallConvocationListApplicationMutation,
   useAcceptConvocationMutation,
@@ -199,8 +197,11 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                 <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
                   {translate(`convocationStatus.${app.convocation_status}`)}
                 </TableCell>
+                {/* resposta só se called */}
                 <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
-                  {translate(`responseStatus.${app.response_status}`)}
+                  {app.convocation_status === "called"
+                    ? translate(`responseStatus.${app.response_status}`)
+                    : "–"}
                 </TableCell>
                 <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
                   {app.seat?.seat_code ? (
@@ -221,7 +222,6 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
 
                 {/* Ações */}
                 <TableCell sx={{ border: "1px solid #eee", p: 1 }}>
-                  {/* 1) Convocar */}
                   {["pending", "called_out_of_quota"].includes(
                     app.convocation_status
                   ) && (
@@ -240,7 +240,6 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                     </Tooltip>
                   )}
 
-                  {/* 2) Resposta (call status = called) */}
                   {app.convocation_status === "called" &&
                     app.response_status === "pending" && (
                       <ButtonGroup
@@ -281,8 +280,6 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                         </Tooltip>
                       </ButtonGroup>
                     )}
-
-
                 </TableCell>
               </TableRow>
             ))}
