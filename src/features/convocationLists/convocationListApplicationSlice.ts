@@ -49,7 +49,28 @@ export const processSelectionsApiSlice = apiSlice.injectEndpoints({
         url: `/convocation_list_applications/${id}/call`,
         method: "POST",
       }),
-      invalidatesTags: ["ConvocationListApplications","ConvocationListSeats"],
+      invalidatesTags: ["ConvocationListApplications", "ConvocationListSeats"],
+    }),
+    acceptConvocation: mutation<{ message: string }, { id: string }>({
+      query: ({ id }) => ({
+        url: `/convocation_list_applications/${id}/accept`,
+        method: "POST",
+      }),
+      invalidatesTags: ["ConvocationListApplications", "ConvocationListSeats"],
+    }),
+    declineConvocation: mutation<{ message: string }, { id: string }>({
+      query: ({ id }) => ({
+        url: `/convocation_list_applications/${id}/decline`,
+        method: "POST",
+      }),
+      invalidatesTags: ["ConvocationListApplications", "ConvocationListSeats"],
+    }),
+    rejectConvocation: mutation<{ message: string }, { id: string }>({
+      query: ({ id }) => ({
+        url: `/convocation_list_applications/${id}/reject`,
+        method: "POST",
+      }),
+      invalidatesTags: ["ConvocationListApplications", "ConvocationListSeats"],
     }),
     getConvocationListApplication: query<Result, { id: string }>({
       query: getConvocationListApplication,
@@ -77,4 +98,7 @@ export const {
   useGetConvocationListApplicationQuery,
   useDeleteConvocationListApplicationMutation,
   useCallConvocationListApplicationMutation,
+  useAcceptConvocationMutation,
+  useDeclineConvocationMutation,
+  useRejectConvocationMutation,
 } = processSelectionsApiSlice;
