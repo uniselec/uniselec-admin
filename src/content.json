@@ -78,13 +78,13 @@
             "convocationStatus": {
                 "pending": " Em Espera",
                 "called": " Convocado",
-                "called_out_of_quota": " Convocado forda de Vaga",
+                "called_out_of_quota": " Convocado fora de Vaga",
                 "skipped": " Excluído"
             },
             "responseStatus": {
                 "pending": " Em Espera",
                 "rejected": " Indeferido",
-                "accepted": " Deferido",
+                "accepted": " Matriculado",
                 "declined": " Desistente",
                 "declined_other_list": " Desistente em outra Lista"
             }
@@ -178,13 +178,13 @@
             "convocationStatus": {
                 "pending": " Em Espera",
                 "called": " Convocado",
-                "called_out_of_quota": " Convocado forda de Vaga",
+                "called_out_of_quota": " Convocado fora de Vaga",
                 "skipped": " Excluído"
             },
             "responseStatus": {
                 "pending": " Em Espera",
                 "rejected": " Indeferido",
-                "accepted": " Deferido",
+                "accepted": " Matriculado",
                 "declined": " Desistente",
                 "declined_other_list": " Desistente em outra Lista"
             }
@@ -278,13 +278,13 @@
             "convocationStatus": {
                 "pending": " Em Espera",
                 "called": " Convocado",
-                "called_out_of_quota": " Convocado forda de Vaga",
+                "called_out_of_quota": " Convocado fora de Vaga",
                 "skipped": " Excluído"
             },
             "responseStatus": {
                 "pending": " Em Espera",
                 "rejected": " Indeferido",
-                "accepted": " Deferido",
+                "accepted": " Matriculado",
                 "declined": " Desistente",
                 "declined_other_list": " Desistente em outra Lista"
             }
@@ -378,13 +378,13 @@
             "convocationStatus": {
                 "pending": " Em Espera",
                 "called": " Convocado",
-                "called_out_of_quota": " Convocado forda de Vaga",
+                "called_out_of_quota": " Convocado fora de Vaga",
                 "skipped": " Excluído"
             },
             "responseStatus": {
                 "pending": " Em Espera",
                 "rejected": " Indeferido",
-                "accepted": " Deferido",
+                "accepted": " Matriculado",
                 "declined": " Desistente",
                 "declined_other_list": " Desistente em outra Lista"
             }
@@ -478,13 +478,13 @@
             "convocationStatus": {
                 "pending": " Em Espera",
                 "called": " Convocado",
-                "called_out_of_quota": " Convocado forda de Vaga",
+                "called_out_of_quota": " Convocado fora de Vaga",
                 "skipped": " Excluído"
             },
             "responseStatus": {
                 "pending": " Em Espera",
                 "rejected": " Indeferido",
-                "accepted": " Deferido",
+                "accepted": " Matriculado",
                 "declined": " Desistente",
                 "declined_other_list": " Desistente em outra Lista"
             }
