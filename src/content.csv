@@ -49,6 +49,10 @@ convocationListApplication.convocationStatus.called, Convocado, Convocado, Convo
 convocationListApplication.convocationStatus.called_out_of_quota, Convocado forda de Vaga, Convocado forda de Vaga, Convocado forda de Vaga, Convocado forda de Vaga, Convocado forda de Vaga
 convocationListApplication.convocationStatus.skipped, Excluído, Excluído, Excluído, Excluído, Excluído
 convocationListApplication.responseStatus.pending, Em Espera, Em Espera, Em Espera, Em Espera, Em Espera
+convocationListApplication.responseStatus.rejected, Indeferido, Indeferido, Indeferido, Indeferido, Indeferido
+convocationListApplication.responseStatus.accepted, Deferido, Deferido, Deferido, Deferido, Deferido
+convocationListApplication.responseStatus.declined, Desistente, Desistente, Desistente, Desistente, Desistente
+convocationListApplication.responseStatus.declined_other_list, Desistente em outra Lista, Desistente em outra Lista, Desistente em outra Lista, Desistente em outra Lista, Desistente em outra Lista
 status.approved, Deferido,Deferido,Deferido,Deferido,Deferido
 status.rejected,Indeferido,Indeferido,Indeferido,Indeferido,Indeferido
 status.pending,Pendente,Pendente,Pendente,Pendente,Pendente

@@ -82,7 +82,11 @@
                 "skipped": " Excluído"
             },
             "responseStatus": {
-                "pending": " Em Espera"
+                "pending": " Em Espera",
+                "rejected": " Indeferido",
+                "accepted": " Deferido",
+                "declined": " Desistente",
+                "declined_other_list": " Desistente em outra Lista"
             }
         },
         "processSelection": {
@@ -178,7 +182,11 @@
                 "skipped": " Excluído"
             },
             "responseStatus": {
-                "pending": " Em Espera"
+                "pending": " Em Espera",
+                "rejected": " Indeferido",
+                "accepted": " Deferido",
+                "declined": " Desistente",
+                "declined_other_list": " Desistente em outra Lista"
             }
         },
         "processSelection": {
@@ -274,7 +282,11 @@
                 "skipped": " Excluído"
             },
             "responseStatus": {
-                "pending": " Em Espera"
+                "pending": " Em Espera",
+                "rejected": " Indeferido",
+                "accepted": " Deferido",
+                "declined": " Desistente",
+                "declined_other_list": " Desistente em outra Lista"
             }
         },
         "processSelection": {
@@ -370,7 +382,11 @@
                 "skipped": " Excluído"
             },
             "responseStatus": {
-                "pending": " Em Espera"
+                "pending": " Em Espera",
+                "rejected": " Indeferido",
+                "accepted": " Deferido",
+                "declined": " Desistente",
+                "declined_other_list": " Desistente em outra Lista"
             }
         },
         "processSelection": {
@@ -466,7 +482,11 @@
                 "skipped": " Excluído"
             },
             "responseStatus": {
-                "pending": " Em Espera"
+                "pending": " Em Espera",
+                "rejected": " Indeferido",
+                "accepted": " Deferido",
+                "declined": " Desistente",
+                "declined_other_list": " Desistente em outra Lista"
             }
         },
         "processSelection": {

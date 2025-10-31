@@ -18,7 +18,7 @@ import {
   Paper,
 } from "@mui/material";
 import { Results } from "../../../types/ConvocationListApplication";
-import { useCallConvocationListApplicationMutation, useDeleteConvocationListApplicationMutation } from "../convocationListApplicationSlice";
+import { useAcceptConvocationMutation, useCallConvocationListApplicationMutation, useDeclineConvocationMutation, useDeleteConvocationListApplicationMutation, useRejectConvocationMutation } from "../convocationListApplicationSlice";
 import useTranslate from "../../polyglot/useTranslate";
 import { Link } from "react-router-dom";
 
@@ -32,6 +32,12 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
   isFetching,
 }) => {
   const [callApplication, { isLoading: isCalling }] = useCallConvocationListApplicationMutation();
+
+  const [callApp, { isLoading: loadingCall }] = useCallConvocationListApplicationMutation();
+  const [acceptApp, { isLoading: loadingAccept }] = useAcceptConvocationMutation();
+  const [declineApp, { isLoading: loadingDecline }] = useDeclineConvocationMutation();
+  const [rejectApp, { isLoading: loadingReject }] = useRejectConvocationMutation();
+
   const handleCall = async (id: string) => {
     try {
       await callApplication({ id }).unwrap();
@@ -44,6 +50,28 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
       });
     }
   };
+  const handleAction = async (
+    fn: (args: { id: string }) => Promise<any>,
+    id: string,
+    successMsg: string,
+    errorMsg = "Erro inesperado"
+  ) => {
+    try {
+      const result = await fn({ id });
+      // RTK Query devolve { data } ou { error }
+      if ("error" in result) {
+        throw result.error;
+      }
+      setAlert({ open: true, sev: "success", msg: successMsg });
+    } catch (e: any) {
+      setAlert({
+        open: true,
+        sev: "error",
+        msg: e?.data?.message || errorMsg
+      });
+    }
+  };
+
 
   const translate = useTranslate("convocationListApplication");
   const [deleteRow, { isLoading }] =
@@ -195,17 +223,47 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                   {app?.seat?.seat_code ?? "-"}
                 </TableCell>
                 <TableCell sx={{ border: "1px solid black", p: 1 }}>
-                  {app.convocation_status === "pending" ? (
+                  {["pending", "called_out_of_quota"].includes(app.convocation_status) && (
                     <Button
                       variant="contained"
                       size="small"
-                      disabled={isCalling}
-                      onClick={() => handleCall(app.id)}
+                      disabled={loadingCall}
+                      onClick={() => handleAction(callApp, app.id, "Convocado!")}
                     >
                       Convocar
                     </Button>
-                  ) : (
-                    <>-</>
+                  )}
+
+                  {app.response_status === 'pending' && app.convocation_status === "called" && (
+                    <>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        disabled={loadingAccept}
+                        onClick={() => handleAction(acceptApp, app.id, "Aceito!")}
+                        sx={{ mr: 1 }}
+                      >
+                        Aceitar
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        disabled={loadingDecline}
+                        onClick={() => handleAction(declineApp, app.id, "Recusado!")}
+                        sx={{ mr: 1 }}
+                      >
+                        Recusar
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="error"
+                        disabled={loadingReject}
+                        onClick={() => handleAction(rejectApp, app.id, "Indeferido!")}
+                      >
+                        Indeferir
+                      </Button>
+                    </>
                   )}
                 </TableCell>
               </TableRow>
