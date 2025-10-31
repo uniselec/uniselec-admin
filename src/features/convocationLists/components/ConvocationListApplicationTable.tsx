@@ -220,7 +220,17 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                   {translate(`responseStatus.${app.response_status}`)}
                 </TableCell>
                 <TableCell sx={{ border: "1px solid black", p: 1 }}>
-                  {app?.seat?.seat_code ?? "-"}
+                  {app.seat?.seat_code ? (
+                    (app.response_status === "rejected" || app.response_status === "declined") ? (
+                      <Typography component="span" sx={{ textDecoration: "line-through" }}>
+                        {app.seat.seat_code}
+                      </Typography>
+                    ) : (
+                      app.seat.seat_code
+                    )
+                  ) : (
+                    "-"
+                  )}
                 </TableCell>
                 <TableCell sx={{ border: "1px solid black", p: 1 }}>
                   {["pending", "called_out_of_quota"].includes(app.convocation_status) && (
