@@ -41,8 +41,8 @@ type ActionType =
 const ACTION_LABELS: Record<ActionType, { title: string; confirm: string }> = {
   call: { title: "Convocar candidato?", confirm: "Tem certeza que deseja convocar este candidato?" },
   accept: { title: "Aceitar vaga?", confirm: "Tem certeza que deseja aceitar esta vaga?" },
-  decline: { title: "Recusar vaga?", confirm: "Tem certeza que deseja recusar esta vaga?" },
-  reject: { title: "Indeferir inscrição?", confirm: "Tem certeza que deseja indeferir esta inscrição?" },
+  decline: { title: "Recusar vaga?", confirm: "Ao confirmar essa ação o candidato irá ser excluído de todas as as modalidades." },
+  reject: { title: "Indeferir inscrição?", confirm: "Ao confirmar o candidato sera excluído apenas desta modalidade nesta lista de convocação." },
 };
 
 type Props = {
