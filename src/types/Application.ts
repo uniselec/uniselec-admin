@@ -14,6 +14,13 @@ export interface Result {
     data: Application;
 }
 
+export interface ResolveInconsistenciesResponse {
+    application: Application[];
+    applicationOutcome: ApplicationOutcome
+    links: Links;
+    meta: Meta;
+}
+
 export interface ApplicationFormData {
     edital: string;
     position: Course;
@@ -35,6 +42,19 @@ export interface ApplicationFormData {
     updated_at?: string;
 }
 
+export interface ResolvedInconsistencies {
+    selected_name?: string | null;
+    selected_birthdate?: string | null;
+    selected_cpf?: string | null;
+}
+
+export interface ApplicationFragment {
+    id?: number | string | undefined;
+    name_source?: string | null;
+    birthdate_source?: string | null;
+    cpf_source?: string | null;
+}
+
 export interface Application {
     id?: string;
     process_selection_id: string;
@@ -42,6 +62,10 @@ export interface Application {
     enem_score?: EnemScore;
     verification_expected: string;
     verification_code: string;
+    name_source: string | null | undefined;
+    birthdate_source: string | null | undefined;
+    cpf_source: string | null | undefined;
+    resolved_inconsistencies: ResolvedInconsistencies;
     valid_verification_code: boolean;
     application_outcome?: ApplicationOutcome;
     created_at: string | null;

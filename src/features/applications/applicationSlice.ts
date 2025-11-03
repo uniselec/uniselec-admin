@@ -1,4 +1,4 @@
-import { Result, Results, ApplicationParams, Application } from "../../types/Application";
+import { Result, Results, ApplicationParams, Application, ResolveInconsistenciesResponse, ApplicationFragment } from "../../types/Application";
 import { apiSlice } from "../api/apiSlice";
 
 const endpointUrl = "/applications";
@@ -40,6 +40,18 @@ function updateApplicationMutation(processSelection: Application) {
   };
 }
 
+function resolveInconsistenciesMutation({ id, name_source, birthdate_source, cpf_source }: ApplicationFragment) {
+  return {
+    url: `${endpointUrl}/${id}/resolve-inconsistencies`,
+    method: "PATCH",
+    body: {
+      name_source,
+      birthdate_source,
+      cpf_source,
+    },
+  };
+}
+
 function deleteApplicationMutation({ id }: { id: string }) {
   return {
     url: `${endpointUrl}/${id}`,
@@ -70,6 +82,10 @@ export const processSelectionsApiSlice = apiSlice.injectEndpoints({
       query: updateApplicationMutation,
       invalidatesTags: ["Applications"],
     }),
+    resolveInconsistencies: mutation<ResolveInconsistenciesResponse, ApplicationFragment>({
+      query: resolveInconsistenciesMutation,
+      invalidatesTags: ["Applications"],
+    }),
     deleteApplication: mutation<void, { id: string }>({
       query: deleteApplicationMutation,
       invalidatesTags: ["Applications"],
@@ -85,4 +101,5 @@ export const {
   useUpdateApplicationMutation,
   useGetApplicationQuery,
   useDeleteApplicationMutation,
+  useResolveInconsistenciesMutation,
 } = processSelectionsApiSlice;
