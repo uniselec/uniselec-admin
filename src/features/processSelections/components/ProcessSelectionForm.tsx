@@ -76,7 +76,7 @@ export function ProcessSelectionForm({
   const availableBonusOptions = bonusOptionsData?.data || [];
 
   // Função para tratar a mudança de datas, garantindo o formato UTC para o SQL.
-  const handleDateChange = (field: "start_date" | "end_date") => (newDate: any) => {
+  const handleDateChange = (field: "start_date" | "end_date" | "preliminary_result_date" | "final_result_date" | "appeal_start_date" | "appeal_end_date") => (newDate: any) => {
     if (newDate) {
       const formattedDate = dayjs(newDate).utc().format("YYYY-MM-DD HH:mm:ss");
       setProcessSelection((prev) => ({ ...prev, [field]: formattedDate }));

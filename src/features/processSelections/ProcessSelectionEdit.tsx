@@ -20,6 +20,10 @@ export const ProcessSelectionEdit = () => {
     status: "draft",
     start_date: "",
     end_date: "",
+    preliminary_result_date: "",
+    appeal_start_date: "",
+    appeal_end_date: "",
+    final_result_date: "",
     courses: []
   });
 
