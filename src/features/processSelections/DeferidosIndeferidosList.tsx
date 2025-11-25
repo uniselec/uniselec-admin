@@ -30,6 +30,8 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import useTranslate from '../polyglot/useTranslate';
 import { useGetProcessSelectionQuery } from "./processSelectionSlice";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+
 
 
 interface ProcessedApplicationOutcome extends ApplicationOutcome {
@@ -226,6 +228,13 @@ const DeferidosIndeferidosList = () => {
         return maskCPF(form_data?.cpf || "");
     };
 
+    const translateAppealStatus = (status: string) => {
+        if (status === 'submitted') return 'Não analisado';
+        if (status === 'accepted') return 'Aceito';
+        if (status === 'rejected') return 'Rejeitado';
+        return "";
+    }
+
     return (
         <Box sx={{ mt: 0, mb: 0 }}>
             <Paper sx={{ p: 3, mb: 2 }}>
@@ -295,6 +304,7 @@ const DeferidosIndeferidosList = () => {
                                     <th style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>CPF</th>
                                     <th style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>Situação</th>
                                     <th style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>Motivo</th>
+                                    <th style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>Recurso</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -314,6 +324,35 @@ const DeferidosIndeferidosList = () => {
                                         </td>
                                         <td style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>
                                             {outcome.displayReason}
+                                        </td>
+                                        <td style={{ border: "1px solid black", padding: "8px", color: "black", whiteSpace: "normal" }}>
+                                            {outcome.application?.appeal?.status &&                                            
+                                                <Link
+                                                    to={`/application-outcomes/edit/${outcome.id}?tab=appeal`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    style={{
+                                                        textDecoration: 'none',
+                                                        color:
+                                                            outcome.application?.appeal?.status === "accepted" ? "green" :
+                                                                outcome.application?.appeal?.status === "rejected" ? "red" :
+                                                                    outcome.application?.appeal?.status === "submitted" ? "black" :
+                                                                        "grey.800",
+                                                        fontWeight: 600,
+                                                        textTransform: "capitalize"
+                                                    }}>
+                                                    <>
+                                                        {translateAppealStatus(outcome.application?.appeal?.status ?? "")}
+                                                        <OpenInNewIcon
+                                                            sx={{
+                                                                fontSize: 14,
+                                                                ml: 0.5,
+                                                                verticalAlign: "middle",
+                                                            }}
+                                                        />
+                                                    </>
+                                                </Link>
+                                            }
                                         </td>
                                     </tr>
                                 ))}

@@ -1,4 +1,5 @@
 import { AdmissionCategory } from "./AdmissionCategory";
+import { Appeal } from "./Appeal";
 import { ApplicationOutcome } from "./ApplicationOutcome";
 import { BonusOption } from "./BonusOption";
 import { Course } from "./Course";
@@ -68,6 +69,7 @@ export interface Application {
     resolved_inconsistencies: ResolvedInconsistencies;
     valid_verification_code: boolean;
     application_outcome?: ApplicationOutcome;
+    appeal?: Appeal | null;
     created_at: string | null;
     updated_at: string | null;
 }
