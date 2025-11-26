@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Box,
   Button,
@@ -28,8 +29,7 @@ import { selectAuthUser } from '../../auth/authSlice';
 import { useAppSelector } from '../../../app/hooks';
 import { useSnackbar } from "notistack";
 import { useGetProcessSelectionQuery } from "../../processSelections/processSelectionSlice";
-
-const apiUrl = import.meta.env.VITE_API_URL;
+import { RootState } from "../../../app/store";
 
 type Props = {
   applicationOutcome: ApplicationOutcome;
@@ -83,8 +83,11 @@ export function ApplicationOutcomeForm({
   resolvedInconsistencies,
   applicationRequestIsLoading = false,
 }: Props) {
+
   const translate = useTranslate('status');
   const userAuth = useAppSelector(selectAuthUser);
+  const token = useAppSelector((s: RootState) => s.auth.token);
+  const role = useAppSelector((s: RootState) => s.auth?.userDetails?.role);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -191,9 +194,41 @@ export function ApplicationOutcomeForm({
 
   const spaces = "\u00A0".repeat(8); // 6 espaços
 
-  const handleDownload = (appealId: string | number, documentId: string | number) => {
-    const url = `${apiUrl}/api/appeals/${appealId}/appeal_documents/${documentId}/download`;
-    window.open(url, "_blank");
+  const handleDownload = async (appealId: string | number, documentId: string | number) => {
+
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const baseUrl = role ? `${apiUrl}/api/admin/${role}` : `${apiUrl}/api/admin`;
+    const path = `/appeals/${appealId}/appeal_documents/${documentId}/download`;
+    const url = baseUrl + path;
+
+    try {
+
+      const response = await axios.get(url, {
+        responseType: "blob",
+        headers: {
+          Accept: "application/pdf",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+      const tempUrl = window.URL.createObjectURL(pdfBlob);
+      const tempLink = document.createElement("a");
+      tempLink.href = tempUrl;
+      tempLink.setAttribute(
+        "download",
+        appeal.documents?.[0]?.original_name || "recurso.pdf"
+      );
+
+      document.body.appendChild(tempLink);
+      tempLink.click();
+
+      document.body.removeChild(tempLink);
+      window.URL.revokeObjectURL(tempUrl);
+    } catch (error: any) {
+      enqueueSnackbar("Erro ao baixar o arquivo PDF", { variant: "error" });
+      console.error("Error downloading PDF:", error);
+    }
   };
 
   const handleAppealDecision = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -234,12 +269,11 @@ export function ApplicationOutcomeForm({
       setAppeal(response.data);
       enqueueSnackbar("Decisão salva com sucesso", { variant: "success" });
     } catch (error: any) {
-      console.log(error);
       const errorMessage = error?.data?.message || "Erro ao salvar a decisão";
       enqueueSnackbar(errorMessage, { variant: "error" });
+      console.error("Error saving the decision: ", error);
     }
   }
-
 
   return (
     <Box p={2}>
