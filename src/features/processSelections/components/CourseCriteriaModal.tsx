@@ -14,6 +14,7 @@ import {
 import { AdmissionCategory } from "../../../types/AdmissionCategory";
 import { KnowledgeArea } from "../../../types/KnowledgeArea";
 import { CourseCriteria } from "../../../types/Course";
+import type { SxProps, Theme } from "@mui/material/styles";
 
 type CourseCriteriaModalProps = {
   courseName: string;
@@ -64,6 +65,16 @@ function a11yProps(index: number) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
+
+export const noNumberSpinnerSx = (): SxProps<Theme> => ({
+  "& input[type=number]": {
+    MozAppearance: "textfield", // Firefox
+  },
+  "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button": {
+    WebkitAppearance: "none", // Chrome, Safari, Edge
+    margin: 0,
+  },
+});
 
 export const CourseCriteriaModal: React.FC<CourseCriteriaModalProps> = ({
   courseName,
@@ -133,6 +144,7 @@ export const CourseCriteriaModal: React.FC<CourseCriteriaModalProps> = ({
                   onChange={(e) => handleInputChange(cat.name, e.target.value)}
                   fullWidth
                   margin="dense"
+                  sx={noNumberSpinnerSx()}
                 />
               </Grid>
             ))}
@@ -153,7 +165,7 @@ export const CourseCriteriaModal: React.FC<CourseCriteriaModalProps> = ({
                   onChange={(e) => handleMinimunScore(knowledgeArea.slug, e.target.value)}
                   fullWidth
                   margin="dense"
-                  inputProps={{ step: "0.01" }}
+                  sx={noNumberSpinnerSx()}
                 />
               </Grid>
             ))}
