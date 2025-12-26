@@ -179,8 +179,8 @@ export const ProcessSelectionDetails = () => {
               {processSelectionState.type === 'enem_score' ? 'Notas do Enem' : 'SISU'}
             </Typography>
             <Typography>Status: {translate(processSelectionState.status)}</Typography>
-            <Typography>Início: {processSelectionState.start_date}</Typography>
-            <Typography>Fim: {processSelectionState.end_date}</Typography>
+            <Typography>Início: {processSelectionState.start_date ? new Date(processSelectionState.start_date).toLocaleString() : "-"}</Typography>
+            <Typography>Fim: {processSelectionState.end_date ? new Date(processSelectionState.end_date).toLocaleString() : "-"}</Typography>
 
             <Button
               variant="contained"
