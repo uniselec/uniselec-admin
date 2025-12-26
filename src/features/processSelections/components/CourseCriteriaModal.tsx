@@ -7,6 +7,9 @@ import {
   Button,
   TextField,
   Grid,
+  Tab,
+  Tabs,
+  Box,
 } from "@mui/material";
 import { AdmissionCategory } from "../../../types/AdmissionCategory";
 import { KnowledgeArea } from "../../../types/KnowledgeArea";
@@ -33,6 +36,35 @@ const buildInitialMap = <T extends { name?: string; slug?: string }>(
   }, {});
 };
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
 export const CourseCriteriaModal: React.FC<CourseCriteriaModalProps> = ({
   courseName,
   admissionCategories,
@@ -42,6 +74,12 @@ export const CourseCriteriaModal: React.FC<CourseCriteriaModalProps> = ({
   onClose,
   onSave,
 }) => {
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   const [vacanciesMap, setVacanciesMap] = useState<{ [key: string]: number }>(
     () => buildInitialMap(admissionCategories, currentVacancies)
@@ -69,42 +107,60 @@ export const CourseCriteriaModal: React.FC<CourseCriteriaModalProps> = ({
   };
 
   return (
-    <Dialog open onClose={onClose}>
-      <DialogTitle>Definir Vagas para {courseName}</DialogTitle>
-      <DialogContent>
-        <Grid container spacing={2}>
-          {admissionCategories.map((cat) => (
-            <Grid item xs={12} key={cat.id}>
-              <TextField
-                label={`Vagas para ${cat.name}`}
-                type="number"
-                value={vacanciesMap[cat.name]}
-                onChange={(e) => handleInputChange(cat.name, e.target.value)}
-                fullWidth
-                margin="dense"
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </DialogContent>
-      <DialogTitle>Definir nota mínima para</DialogTitle>
-      <DialogContent>
-        <Grid container spacing={2}>
-          {knowledgeAreas.map((knowledgeArea) => (
-            <Grid item xs={12} key={knowledgeArea.slug}>
-              <TextField
-                label={knowledgeArea.name}
-                type="number"
-                value={minimumScoresMap[knowledgeArea.slug]}
-                onChange={(e) => handleMinimunScore(knowledgeArea.slug, e.target.value)}
-                fullWidth
-                margin="dense"
-                inputProps={{ step: "0.01" }}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </DialogContent>
+    <Dialog open onClose={onClose} fullWidth maxWidth="sm">
+
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        aria-label="Define vagas e nota mínima"
+        variant="fullWidth"
+        sx={{ width: "100%" }}
+      >
+        <Tab label="Definir Vagas" {...a11yProps(0)} sx={{ flex: 1 }} />
+        <Tab label="Definir nota mínima" {...a11yProps(1)} sx={{ flex: 1 }} />
+      </Tabs>
+
+      <CustomTabPanel value={value} index={0}>
+        <DialogTitle>Definir Vagas para {courseName}</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2}>
+            {admissionCategories.map((cat) => (
+              <Grid item xs={12} key={cat.id}>
+                <TextField
+                  label={`Vagas para ${cat.name}`}
+                  type="number"
+                  value={vacanciesMap[cat.name]}
+                  onChange={(e) => handleInputChange(cat.name, e.target.value)}
+                  fullWidth
+                  margin="dense"
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </DialogContent>
+      </CustomTabPanel>
+      
+      <CustomTabPanel value={value} index={1}>
+        <DialogTitle>Definir nota mínima para</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2}>
+            {knowledgeAreas.map((knowledgeArea) => (
+              <Grid item xs={12} key={knowledgeArea.slug}>
+                <TextField
+                  label={knowledgeArea.name}
+                  type="number"
+                  value={minimumScoresMap[knowledgeArea.slug]}
+                  onChange={(e) => handleMinimunScore(knowledgeArea.slug, e.target.value)}
+                  fullWidth
+                  margin="dense"
+                  inputProps={{ step: "0.01" }}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </DialogContent>
+      </CustomTabPanel>
+
       <DialogActions>
         <Button onClick={onClose}>Cancelar</Button>
         <Button onClick={handleSave} color="primary">
