@@ -18,7 +18,9 @@ export const apiSlice = createApi({
         "KnowledgeAreas",
         "ConvocationLists",
         "ConvocationListSeats",
-        "ConvocationListApplications"],
+        "ConvocationListApplications",
+        "Appeals",
+    ],
     baseQuery: async (args, api, extraOptions) => {
         const state = api.getState() as RootState;
         const role = state.auth?.userDetails?.role;
