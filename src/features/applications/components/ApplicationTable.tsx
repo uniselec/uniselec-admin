@@ -92,37 +92,17 @@ export function ApplicationTable({
   }
 
   const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "Id",
-      type: "string",
-      width: 150,
-      renderCell: renderNameCell,
-    },
-    { field: "user_name", headerName: "Nome", flex: 1, renderCell: renderNameCell },
-    { field: "cpf", headerName: "CPF", flex: 1, renderCell: renderNameCell },
-    {
-      field: "course_name",
-      headerName: "Curso",
-      flex: 1,
-      renderCell: renderNameCell,
-    },
+    { field: "id", headerName: "Id", width: 150, minWidth: 120, renderCell: renderNameCell, },
+    { field: "user_name", headerName: "Nome", flex: 3, minWidth: 220, renderCell: renderNameCell },
+    { field: "cpf", headerName: "CPF", width: 170, minWidth: 150, renderCell: renderNameCell },
+    { field: "course_name", headerName: "Curso", flex: 3, minWidth: 220, renderCell: renderNameCell },
     {
       field: "admission_categories",
       headerName: "Categorias",
-      flex: 1,
-      renderCell: (params) => (
-        <Typography>{params.value}</Typography>
-      ),
-
-    }, {
-      field: "phone",
-      headerName: "Telefone",
-      flex: 1,
-      renderCell: renderNameCell,
+      flex: 1, minWidth: 100,
+      renderCell: (params) => <Typography noWrap>{params.value}</Typography>,
     },
-
-
+    { field: "phone", headerName: "Telefone", width: 170, minWidth: 160, renderCell: renderNameCell },
   ];
 
   function mapDataToGridRows(data: Results) {
