@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Paper } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetApplicationsQuery } from "./applicationSlice";
 import { GridFilterModel } from "@mui/x-data-grid";
 import { useState } from "react";
@@ -8,17 +8,20 @@ import { selectAuthUser } from "../auth/authSlice";
 import { ApplicationTable } from "./components/ApplicationTable";
 
 export const ApplicationList = () => {
+
+  const { id: processSelectionId } = useParams<{ id: string }>();
+
   const [options, setOptions] = useState({
     page: 1,
     search: "",
     perPage: 25,
     rowsPerPage: [25, 50, 100],
+    process_selection_id: processSelectionId!,
   });
 
   const { data, isFetching, error } = useGetApplicationsQuery(options);
   const navigate = useNavigate();
-
-
+  
   function setPaginationModel(paginateModel: { page: number; pageSize: number }) {
     setOptions({ ...options, page: paginateModel.page + 1, perPage: paginateModel.pageSize });
   }

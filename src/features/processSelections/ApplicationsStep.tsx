@@ -123,7 +123,7 @@ export const ApplicationsStep = () => {
             {isFetching ? "Gerando arquivo..." : "Download das Inscrições"}
           </Button>
 
-          <Button variant="outlined" onClick={() => navigate(`/applications`)}>
+          <Button variant="outlined" onClick={() => navigate(`/process-selections/${processSelectionId}/applications`)}>
             Ver Inscrições
           </Button>
 
