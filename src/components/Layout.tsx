@@ -7,6 +7,7 @@ import { Header } from "./Header";
 import ResponsiveDrawer from "./ResponsiveDrawer";
 import { useSelector } from "react-redux";
 import { selectIsAuthenticated } from "../features/auth/authSlice";
+import { ApiHealthAlert } from "./ApiHealthAlert";
 
 
 const drawerWidth = 240;
@@ -47,6 +48,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
         >
           <Container maxWidth={false} sx={{ color: "white", mt: 20, mb: 2 }}>
+            <ApiHealthAlert />
             {children}
           </Container>
 
