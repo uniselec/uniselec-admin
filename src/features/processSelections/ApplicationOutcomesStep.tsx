@@ -87,7 +87,7 @@ const ApplicationOutcomesStep = () => {
                     <h2>Processamento dos Resultados</h2>
                     <p>Aqui é possível gerar o processamento dos resultados e classificação.</p>
                     <Typography>
-                        Data do último processamento: {processSelection?.data?.last_applications_processed_at}
+                        Data do último processamento: {processSelection?.data?.last_applications_processed_at ? new Date(processSelection.data.last_applications_processed_at).toLocaleString() : "-"}
                     </Typography>
 
                     <Box
