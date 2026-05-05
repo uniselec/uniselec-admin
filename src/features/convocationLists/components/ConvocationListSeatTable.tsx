@@ -30,15 +30,18 @@ import {
 } from "../convocationListSeatSlice";
 import { Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import { ConvocationList } from "../../../types/ConvocationList";
 
 type Props = {
   convocationListSeats: Results | undefined;
   isFetching: boolean;
+  convocationList: ConvocationList;
 };
 
 export const ConvocationListSeatTable: React.FC<Props> = ({
   convocationListSeats,
   isFetching,
+  convocationList,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [redistributeSeat, { isLoading: loadingRedistribute }] =
@@ -213,7 +216,7 @@ export const ConvocationListSeatTable: React.FC<Props> = ({
                           )}
                     </TableCell>
                     <TableCell sx={{ border: "1px solid black", p: 1 }}>
-                      {seat.can_redistribute && (
+                      {seat.can_redistribute && convocationList?.status !== 'published' && (
                         <Tooltip title="Redistribuir vaga">
                           <Button
                             variant="outlined"

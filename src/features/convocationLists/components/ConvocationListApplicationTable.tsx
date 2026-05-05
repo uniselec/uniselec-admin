@@ -32,7 +32,8 @@ import {
 } from "../convocationListApplicationSlice";
 import useTranslate from "../../polyglot/useTranslate";
 import { Link } from "react-router-dom";
-import { Results } from "../../../types/ConvocationListApplication";
+import { Results as ConvocationListApplicationResults } from "../../../types/ConvocationListApplication";
+import { Results as ConvocationListSeatResults } from "../../../types/ConvocationListSeat";
 import { ConvocationList } from "../../../types/ConvocationList";
 
 type ActionType = "call" | "accept" | "decline" | "reject";
@@ -62,15 +63,17 @@ const ACTION_LABELS: Record<
 };
 
 type Props = {
-  convocationListApplications?: Results;
+  convocationListApplications?: ConvocationListApplicationResults;
   convocationList?: ConvocationList;
   isFetching: boolean;
+  convocationListSeats: ConvocationListSeatResults | undefined;
 };
 
 export const ConvocationListApplicationTable: React.FC<Props> = ({
   convocationListApplications,
   convocationList,
   isFetching,
+  convocationListSeats,
 }) => {
   // mutations
   const [callApp, { isLoading: loadingCall }] =
@@ -159,6 +162,20 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
         return (a.category_ranking ?? 0) - (b.category_ranking ?? 0);
       });
   }, [convocationListApplications, hideSkipped]);
+
+  const seatCounts = useMemo(() => {
+    const seats = convocationListSeats?.data ?? [];
+
+    return seats.reduce(
+      (counts, seat) => {
+        if (seat.status === "open") counts.open += 1;
+        if (seat.status === "reserved") counts.reserved += 1;
+
+        return counts;
+      },
+      { open: 0, reserved: 0 }
+    );
+  }, [convocationListSeats]);
 
   return (
     <Box mt={2}>
@@ -282,7 +299,10 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                   >
                     {["pending", "called_out_of_quota"].includes(
                       app.convocation_status
-                    ) && convocationList?.status === "draft" && (
+                    ) &&
+                      ((convocationList?.status === "draft" &&
+                      (seatCounts.open > 0 || seatCounts.reserved > 0)) ||
+                      (convocationList?.status === "published" && app.convocation_status === "called_out_of_quota" && seatCounts.open > 0)) && (
                         <Tooltip title="Convocar candidato">
                           <Button
                             variant="contained"
@@ -303,8 +323,8 @@ export const ConvocationListApplicationTable: React.FC<Props> = ({
                               },
                             }}
                           >
-
-                            Convocar
+                          {convocationList?.status === "published" && seatCounts.open > 0 && app.convocation_status === "called_out_of_quota" ? "Confirmar convocação" : "Convocar"}
+                            
                           </Button>
 
                         </Tooltip>

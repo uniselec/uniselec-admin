@@ -211,11 +211,11 @@ export const ConvocationListDetail = () => {
                     runServiceWithToast(
                       publishConvocationList,
                       { id: convocationListId! },
-                      'Convocação Finalizada com sucesso',
+                      'Convocação publicada com sucesso',
                     )
                   }
                 >
-                  Finalizar Convocação
+                  Publicar Convocação
                 </Button>
               )}
               {convocationList.status != 'draft' && (
@@ -280,6 +280,7 @@ export const ConvocationListDetail = () => {
               <ConvocationListSeatTable
                 convocationListSeats={dataSeats}
                 isFetching={isFetchingSeats}
+                convocationList={convocationList}
               />
             </Box>
             <Box sx={{ mt: 4, mb: 4 }}>
@@ -292,6 +293,7 @@ export const ConvocationListDetail = () => {
                 convocationList={convocationList}
                 convocationListApplications={dataApplication}
                 isFetching={isFetchingApplication}
+                convocationListSeats={dataSeats}
               />
             </Box>
           </>

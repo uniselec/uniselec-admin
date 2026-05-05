@@ -81,7 +81,7 @@ export function ConvocationListTable({
       width: 250,
       renderCell: (params) => (
         <Box display="flex" gap={2}>
-          <Button variant="contained" size="small" color="primary" component={Link} to={`/process-selections/1/convocation-lists/detail/${params.row.id}`}>
+          <Button variant="contained" size="small" color="primary" component={Link} to={`/process-selections/${params.row.process_selection_id}/convocation-lists/detail/${params.row.id}`}>
             Detalhes
           </Button>
           <Button variant="contained" size="small" color="secondary" onClick={() => handleOpenConfirm(params.row.id)} disabled={isLoading}>
@@ -96,6 +96,7 @@ export function ConvocationListTable({
     return data.data.map((convocationList) => ({
       id: convocationList.id,
       name: convocationList.name,
+      process_selection_id: convocationList.process_selection_id,
       created_at: convocationList.created_at,
       updated_at: convocationList.updated_at,
     }));
