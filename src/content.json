@@ -89,6 +89,12 @@
                 "declined_other_list": " Desistente em outra Lista"
             }
         },
+        "convocationLists": {
+            "status": {
+                "draft": "Rascunho",
+                "published": "Publicado"
+            }
+        },
         "processSelection": {
             "status": {
                 "draft": "Rascunho",

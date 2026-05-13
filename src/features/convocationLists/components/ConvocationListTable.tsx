@@ -75,20 +75,23 @@ export function ConvocationListTable({
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 100 },
     { field: "name", headerName: "Nome", flex: 1 },
+    { field: "status", headerName: "Status", flex: 1},
     {
       field: "actions",
       headerName: "Ações",
       width: 250,
       renderCell: (params) => (
-        <Box display="flex" gap={2}>
-          <Button variant="contained" size="small" color="primary" component={Link} to={`/process-selections/${params.row.process_selection_id}/convocation-lists/detail/${params.row.id}`}>
-            Detalhes
-          </Button>
-          <Button variant="contained" size="small" color="secondary" onClick={() => handleOpenConfirm(params.row.id)} disabled={isLoading}>
-            Apagar
-          </Button>
-        </Box>
-      ),
+          <Box display="flex" gap={2}>
+            <Button variant="contained" size="small" color="primary" component={Link} to={`/process-selections/${params.row.process_selection_id}/convocation-lists/detail/${params.row.id}`}>
+              Detalhes
+            </Button>
+            {params.row.raw_status === "draft" && (
+              <Button variant="contained" size="small" color="secondary" onClick={() => handleOpenConfirm(params.row.id)} disabled={isLoading}>
+                Apagar
+              </Button>
+            )}
+          </Box>
+        ),
     },
   ];
 
@@ -96,6 +99,8 @@ export function ConvocationListTable({
     return data.data.map((convocationList) => ({
       id: convocationList.id,
       name: convocationList.name,
+      status: translate(`status.${convocationList.status}`),
+      raw_status: convocationList.status,
       process_selection_id: convocationList.process_selection_id,
       created_at: convocationList.created_at,
       updated_at: convocationList.updated_at,
