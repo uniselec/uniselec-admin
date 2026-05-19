@@ -1,7 +1,4 @@
-/* --------------------------------------------------------------------------
- * src/features/applicationResults/ApplicationResults.tsx
- * -------------------------------------------------------------------------- */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Box, Paper, Typography, Grid, Autocomplete, TextField, Card, CardContent,
@@ -9,11 +6,9 @@ import {
 
 import { useGetProcessSelectionQuery } from
   "../processSelections/processSelectionSlice";
-import { useGetApplicationOutcomesQuery } from
-  "../applicationOutcomes/applicationOutcomeSlice";
-
-import { ApplicationOutcomeGenerateDocuments } from
-  "./components/ApplicationOutcomeGenerateDocuments";
+import { CategoryBlock } from "./components/CategoryBlock";
+import { DocumentButtons, CategoryData } from "./components/DocumentButtons";
+import { GENERAL_CLASSIFICATION } from "./utils/generalClassification";
 
 const ApplicationResults = () => {
   /* ---------- query-string helpers -------------------------------------- */
@@ -22,36 +17,30 @@ const ApplicationResults = () => {
   const qs = new URLSearchParams(search);
 
   const processSelectionId = qs.get("process_selection_id") ?? "";
-  const admissionCategoryId = qs.get("admission_category_id") ?? "";
+  const admissionCategoryIds = qs.get("admission_category_ids") ?? "";
   const courseId = qs.get("course_id") ?? "";
 
   /* ---------- fetch processo seletivo ----------------------------------- */
   const { data: psData, isFetching: fetchingPS } =
     useGetProcessSelectionQuery({ id: processSelectionId }, { skip: !processSelectionId });
 
-  /* ---------- fetch outcomes (apenas quando tudo escolhido) ------------- */
-  const shouldFetchOutcomes =
-    !!processSelectionId && !!admissionCategoryId && !!courseId;
+  const selectedCategoryIds = admissionCategoryIds
+    ? admissionCategoryIds.split(",").map(Number)
+    : [];
 
-  const {
-    data: outData,
-    isFetching: fetchingOut,
-    error: outError,
-  } = useGetApplicationOutcomesQuery(
-    shouldFetchOutcomes
-      ? {
-        page: 1,
-        perPage: 6000,
-        filters: {
-          process_selection_id: processSelectionId,
-          admission_category_id: admissionCategoryId,
-          course_id: courseId,
-          status: "approved",
-        },
+  /* ---------- estado agregado de outcomes por categoria ----------------- */
+  const [allCategoryData, setAllCategoryData] = useState<Record<number, CategoryData>>({});
+
+  /* limpa entradas de categorias que foram desmarcadas */
+  useEffect(() => {
+    setAllCategoryData(prev => {
+      const next: Record<number, CategoryData> = {};
+      for (const id of selectedCategoryIds) {
+        if (prev[id]) next[id] = prev[id];
       }
-      :
-      { skip: true } as any
-  );
+      return next;
+    });
+  }, [admissionCategoryIds]);
 
   /* ---------- estados de carregamento / erro ---------------------------- */
   if (!processSelectionId)
@@ -60,25 +49,40 @@ const ApplicationResults = () => {
   if (!psData) return null;
 
   /* ---------- helpers --------------------------------------------------- */
-  const categories = psData.data.admission_categories ?? [];
+  const categories = [GENERAL_CLASSIFICATION, ...(psData.data.admission_categories ?? [])];
   const courses = psData.data.courses ?? [];
 
-  const selectedCategory = categories.find(c => c.id === Number(admissionCategoryId));
-  const selectedCourse = courses.find(c => c.id === Number(courseId));
+  const selectedCategories = categories.filter(category => selectedCategoryIds.includes(category.id!));
+  const selectedCourse = courses.find(course => course.id === Number(courseId));
 
-  /* ===>>  NOVO: quantidade de vagas da modalidade no curso  <<=== */
-  const vacancies =
-    selectedCourse && selectedCategory
-      ? selectedCourse.vacanciesByCategory?.[selectedCategory.name] ?? 0
-      : 0;
+  const shouldShowResults = !!processSelectionId && selectedCategories.length > 0 && !!courseId;
 
-  /* controla a QS */
   const updateParam = (key: string, value?: string | number) => {
     const next = new URLSearchParams(search);
     if (!value) next.delete(key);
     else next.set(key, String(value));
     navigate({ search: `?${next.toString()}` }, { replace: true });
   };
+
+  const updateCategories = (ids: number[]) => {
+    const next = new URLSearchParams(search);
+    if (ids.length === 0) next.delete("admission_category_ids");
+    else next.set("admission_category_ids", ids.join(","));
+    navigate({ search: `?${next.toString()}` }, { replace: true });
+  };
+
+  const handleCategoryData = (categoryId: number, data: CategoryData) => {
+    setAllCategoryData(prev => ({ ...prev, [categoryId]: data }));
+  };
+
+  /* lista na ordem de seleção, apenas as que já carregaram */
+  const categoryDataList = selectedCategories
+    .filter(category => !!allCategoryData[category.id!])
+    .map(category => allCategoryData[category.id!]);
+
+  const allDataLoaded =
+    selectedCategories.length > 0 &&
+    selectedCategories.every(category => !!allCategoryData[category.id!]);
 
   /* ---------- render ---------------------------------------------------- */
   return (
@@ -91,45 +95,56 @@ const ApplicationResults = () => {
           <Grid item xs={12} md={6}>
             <Autocomplete
               options={courses}
-              getOptionLabel={o => `${o.name} - ${o.academic_unit?.name ?? ""}`}
+              getOptionLabel={course => `${course.name} - ${course.academic_unit?.name ?? ""}`}
               value={selectedCourse ?? null}
-              onChange={(_, v) => updateParam("course_id", v?.id)}
-              renderInput={p => <TextField {...p} label="Curso" />}
+              onChange={(_, selectedValue) => updateParam("course_id", selectedValue?.id)}
+              renderInput={inputProps => <TextField {...inputProps} label="Curso" />}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <Autocomplete
+              multiple
               options={categories}
-              getOptionLabel={o => o.description ?? o.name}
-              value={selectedCategory ?? null}
-              onChange={(_, v) => updateParam("admission_category_id", v?.id)}
-              renderInput={p => <TextField {...p} label="Modalidade" />}
+              getOptionLabel={category => category.description ?? category.name}
+              value={selectedCategories}
+              onChange={(_, selectedValues) => updateCategories(selectedValues.map(category => category.id!))}
+              renderInput={inputProps => <TextField {...inputProps} label="Modalidade" />}
             />
           </Grid>
         </Grid>
 
         {/* conteudo principal ----------------------------------------- */}
-        {!shouldFetchOutcomes ? (
+        {!shouldShowResults ? (
           <Card variant="outlined">
             <CardContent>
               <Typography>
-                Selecione um <strong>Curso</strong> e uma <strong>Modalidade</strong> para visualizar ou gerar documentos.
+                Selecione um <strong>Curso</strong> e ao menos uma <strong>Modalidade</strong> para visualizar ou gerar documentos.
               </Typography>
             </CardContent>
           </Card>
-        ) : outError ? (
-          <Typography color="error">Erro ao carregar resultados.</Typography>
-        ) : fetchingOut ? (
-          <Typography>Carregando resultados…</Typography>
         ) : (
-          selectedCategory && selectedCourse && (
-            <ApplicationOutcomeGenerateDocuments
-              applicationOutcomes={outData?.data ?? []}
-              processSelection={psData.data}
-              admissionCategory={selectedCategory}
-              course={selectedCourse}
-              vacancies={vacancies}
-            />
+          selectedCourse && (
+            <>
+              <DocumentButtons
+                categoryDataList={categoryDataList}
+                processSelection={psData.data}
+                course={selectedCourse}
+                disabled={!allDataLoaded}
+              />
+                <Typography variant="h5" sx={{ mt: 5, mb: 5, fontWeight: "bold"}}>
+                  {psData?.data?.name} - {selectedCourse.name}
+                </Typography>  
+              {selectedCategories.map(category => (
+                <CategoryBlock
+                  key={category.id}
+                  processSelection={psData.data}
+                  admissionCategory={category}
+                  course={selectedCourse}
+                  processSelectionId={processSelectionId}
+                  onData={handleCategoryData}
+                />
+              ))}
+            </>
           )
         )}
       </Paper>
