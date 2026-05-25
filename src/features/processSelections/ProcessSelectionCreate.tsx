@@ -20,7 +20,8 @@ export const ProcessSelectionCreate = () => {
     appeal_start_date: "",
     appeal_end_date: "",
     final_result_date: "",
-    courses: []
+    courses: [],
+    allows_multiple_admission_categories: true,
   });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

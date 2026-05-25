@@ -8,6 +8,8 @@ import {
   Typography,
   Autocomplete,
   Chip,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { ProcessSelection } from "../../../types/ProcessSelection";
@@ -82,6 +84,10 @@ export function ProcessSelectionForm({
       setProcessSelection((prev) => ({ ...prev, [field]: formattedDate }));
     }
   };
+
+  const handleAllowsMultipleAdmissionCategories = (checked: boolean) => {
+    setProcessSelection((prev) => ({ ...prev, ["allows_multiple_admission_categories"]: checked }));
+  }
 
   return (
     <Box p={2}>
@@ -269,7 +275,7 @@ export function ProcessSelectionForm({
                     }))
                   }
                 }
-              />
+              />    
             </FormControl>
           </Grid>
 
@@ -313,6 +319,22 @@ export function ProcessSelectionForm({
                 selectedBonusOptions={processSelection.bonus_options || []}
                 setSelectedBonusOptions={(newOptions) =>
                   setProcessSelection((prev: any) => ({ ...prev, bonus_options: newOptions }))
+                }
+              />
+            </FormControl>
+          </Grid>
+
+          {/* Permite ou restringe a seleção de múltiplas modalidades de admissão */}
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+
+              <FormControlLabel
+                label="Permitir que o candidato selecione múltiplas modalidades de admissão"
+                control={
+                  <Checkbox
+                    checked={processSelection.allows_multiple_admission_categories}
+                    onChange={event => handleAllowsMultipleAdmissionCategories(event.target.checked)}
+                  />
                 }
               />
             </FormControl>

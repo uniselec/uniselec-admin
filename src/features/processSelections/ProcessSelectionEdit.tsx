@@ -27,6 +27,7 @@ export const ProcessSelectionEdit = () => {
     courses: [],
     allowed_enem_years: [],
     admission_categories: [],
+    allows_multiple_admission_categories: true,
     knowledge_areas: [],
     bonus_options: []
   });
@@ -84,6 +85,7 @@ export const ProcessSelectionEdit = () => {
         status: processSelectionData.data.status,
         courses: processSelectionData.data.courses || [],
         admission_categories: processSelectionData.data.admission_categories || [],
+        allows_multiple_admission_categories: processSelectionData.data.allows_multiple_admission_categories,
         knowledge_areas: processSelectionData.data.knowledge_areas || [],
         bonus_options: processSelectionData.data.bonus_options || [],
         allowed_enem_years: processSelectionData.data.allowed_enem_years || [],

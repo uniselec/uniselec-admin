@@ -36,6 +36,7 @@ export interface ProcessSelection {
   last_applications_processed_at?: null | string;
   allowed_enem_years?: number[];
   admission_categories?: AdmissionCategory[];
+  allows_multiple_admission_categories: boolean;
   knowledge_areas?: KnowledgeArea[];
 
   /**
