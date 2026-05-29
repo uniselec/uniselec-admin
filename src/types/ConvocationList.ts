@@ -10,11 +10,13 @@ export interface Result {
     data:  ConvocationList;
 }
 
+export type ConvocationListStatus = "draft" | "published" | "finalized";
+
 export interface ConvocationList {
   id?: number;
   name: string;
   process_selection_id: number | string;
-  status?: "draft" | "published";
+  status?: ConvocationListStatus;
   published_at?: string | null;
   generated_by?: number | null;
   created_at?: string | null;

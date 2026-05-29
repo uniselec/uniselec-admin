@@ -20,6 +20,7 @@ import {
   useGenerateApplicationsMutation,
   useAllocateSeatsMutation,
   usePublishConvocationListMutation,
+  useFinalizeConvocationListMutation,
   useRedistributeSeatsMutation,
 } from './convocationListSlice';
 
@@ -74,6 +75,7 @@ export const ConvocationListDetail = () => {
   const [allocateSeats, allocateSeatsStatus] = useAllocateSeatsMutation();
   const [redistributeSeats, redistributeSeatsStatus] = useRedistributeSeatsMutation();
   const [publishConvocationList, publishStatus] = usePublishConvocationListMutation();
+  const [finalizeConvocationList, finalizeStatus] = useFinalizeConvocationListMutation();
   const hasAllParams =
     !!processSelectionId && !!courseId;
 
@@ -202,6 +204,7 @@ export const ConvocationListDetail = () => {
           {/* Ações */}
           <Grid item>
             <Box sx={{ display: 'flex', gap: 1 }}>
+
               {convocationList.status === 'draft' && (
                 <Button
                   variant="contained"
@@ -222,7 +225,20 @@ export const ConvocationListDetail = () => {
                 <DownloadConvocationPdfs listId={convocationListId!} />
               )}
 
-
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={finalizeStatus.isLoading}
+                onClick={() =>
+                  runServiceWithToast(
+                    finalizeConvocationList,
+                    { id: convocationListId! },
+                    'Convocação finalizada com sucesso',
+                  )
+                }
+              >
+                Finalizar
+              </Button>
 
               <Button
                 component={Link}
@@ -230,6 +246,7 @@ export const ConvocationListDetail = () => {
               >
                 Voltar
               </Button>
+
             </Box>
           </Grid>
         </Grid>

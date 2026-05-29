@@ -54,6 +54,25 @@ function redistributeSeatsMutation({ id }: { id: string }) {
   };
 }
 
+function publishConvocationListMutation({ id }: { id: string }) {
+  return {
+    url: `${endpointUrl}/${id}`,
+    method: "PATCH",
+    body: {
+      status: "published",
+      published_at: new Date().toISOString(),
+    },
+  };
+}
+
+function finalizeConvocationListMutation({ id }: { id: string }) {
+  return {
+    url: `${endpointUrl}/${id}`,
+    method: "PATCH",
+    body: { status: "finalized" },
+  };
+}
+
 export const processSelectionsApiSlice = apiSlice.injectEndpoints({
   endpoints: ({ query, mutation }) => ({
     redistributeSeats: mutation<
@@ -76,21 +95,18 @@ export const processSelectionsApiSlice = apiSlice.injectEndpoints({
     }),
     generateApplications: mutation<{ message: string }, { id: string }>({
       query: postNoBody("generate-applications"),
-      invalidatesTags: ["ConvocationLists", "ConvocationListApplications", "ConvocationListApplications"],
+      invalidatesTags: ["ConvocationLists", "ConvocationListApplications"],
     }),
     allocateSeats: mutation<{ message: string }, { id: string }>({
       query: postNoBody("allocate-seats"),
       invalidatesTags: ["ConvocationLists", "ConvocationListSeats", "ConvocationListApplications"],
     }),
     publishConvocationList: mutation<{ data: ConvocationList }, { id: string }>({
-      query: ({ id }) => ({
-        url: `${endpointUrl}/${id}`,
-        method: "PATCH",
-        body: {
-          status: "published",
-          published_at: new Date().toISOString(),
-        },
-      }),
+      query: publishConvocationListMutation,
+      invalidatesTags: ["ConvocationLists"],
+    }),
+    finalizeConvocationList: mutation<{ data: ConvocationList }, { id: string }>({
+      query: finalizeConvocationListMutation,
       invalidatesTags: ["ConvocationLists"],
     }),
     getConvocationLists: query<Results, ConvocationListParams>({
@@ -166,6 +182,7 @@ export const {
   useGenerateApplicationsMutation,
   useAllocateSeatsMutation,
   usePublishConvocationListMutation,
+  useFinalizeConvocationListMutation,
   useRedistributeSeatsMutation,
   useLazyExportConvocationListCsvQuery,
   useLazyExportConvocationListPdfsQuery,
