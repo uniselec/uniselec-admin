@@ -1,11 +1,12 @@
 import { Box, Typography, Button, Paper } from "@mui/material";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetConvocationListsQuery } from "./convocationListSlice";
 import { GridFilterModel } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import { selectAuthUser } from "../auth/authSlice";
 import { ConvocationListTable } from "./components/ConvocationListTable";
+import { useSnackbar } from 'notistack';
 
 export const ConvocationListList = () => {
   const [options, setOptions] = useState({
@@ -17,7 +18,7 @@ export const ConvocationListList = () => {
   const { id: processSelectionId } = useParams<{ id: string }>();
   const { data, isFetching, error } = useGetConvocationListsQuery(options);
   const navigate = useNavigate();
-
+  const { enqueueSnackbar } = useSnackbar();
 
   function setPaginationModel(paginateModel: { page: number; pageSize: number }) {
     setOptions({ ...options, page: paginateModel.page + 1, perPage: paginateModel.pageSize });
@@ -43,6 +44,29 @@ export const ConvocationListList = () => {
     );
   }
 
+  function isLatestConvocationListFinalized(): boolean {
+    const convocationLists = data?.data?.filter(
+      (list) => String(list.process_selection_id) === String(processSelectionId)
+    );
+
+    if (!convocationLists?.length) return true;
+
+    const latestConvocationList = convocationLists.reduce((current, next) =>
+      new Date(current.created_at ?? 0) > new Date(next.created_at ?? 0) ? current : next
+    );
+
+    return latestConvocationList.status === 'finalized';
+  }
+
+  const handleClick = () => {
+    if (isLatestConvocationListFinalized()) {
+      navigate(`/process-selections/${processSelectionId}/convocation-lists/create`);
+    } else {
+      enqueueSnackbar("Não é possível criar uma nova convocação enquanto a anterior não for finalizada.", { variant: "warning" });
+    }
+  };
+
+
   return (
     <Box sx={{ mt: 4, mb: 4 }}>
       <Paper sx={{ p: 3, mb: 2 }}>
@@ -51,10 +75,9 @@ export const ConvocationListList = () => {
         </Typography>
 
         <Button
-          component={Link}
-          to={`/process-selections/${processSelectionId}/convocation-lists/create`}
           variant="contained"
           color="primary"
+          onClick={handleClick}
         >
           Criar Lista de Convocação
         </Button>

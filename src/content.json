@@ -92,7 +92,8 @@
         "convocationLists": {
             "status": {
                 "draft": "Rascunho",
-                "published": "Publicado"
+                "published": "Publicado",
+                "finalized": "Finalizado"
             }
         },
         "processSelection": {
